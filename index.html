@@ -96,7 +96,8 @@
           <p>In the file manager, Space shows pictures, PDFs, videos, music and Office files without opening an app.</p></div>
       </div>
       <fieldset class="accents" id="accent">
-        <legend>One colour, everywhere. Pick an accent and this page follows it too:</legend>
+        <legend>One colour, everywhere. This page wears your system's accent; pick another and it follows that:</legend>
+      <input type="radio" name="accent" id="a-system" value="system" checked><label for="a-system" style="--c: AccentColor"><i aria-hidden="true"></i>System</label>
       <input type="radio" name="accent" id="a-rosewater" value="rosewater" data-dark="#f5e0dc" data-light="#dc8a78"><label for="a-rosewater" style="--c: #f5e0dc"><i aria-hidden="true"></i>Rosewater</label>
       <input type="radio" name="accent" id="a-flamingo" value="flamingo" data-dark="#f2cdcd" data-light="#dd7878"><label for="a-flamingo" style="--c: #f2cdcd"><i aria-hidden="true"></i>Flamingo</label>
       <input type="radio" name="accent" id="a-pink" value="pink" data-dark="#f5c2e7" data-light="#ea76cb"><label for="a-pink" style="--c: #f5c2e7"><i aria-hidden="true"></i>Pink</label>
@@ -109,7 +110,7 @@
       <input type="radio" name="accent" id="a-teal" value="teal" data-dark="#94e2d5" data-light="#179299"><label for="a-teal" style="--c: #94e2d5"><i aria-hidden="true"></i>Teal</label>
       <input type="radio" name="accent" id="a-sky" value="sky" data-dark="#89dceb" data-light="#04a5e5"><label for="a-sky" style="--c: #89dceb"><i aria-hidden="true"></i>Sky</label>
       <input type="radio" name="accent" id="a-sapphire" value="sapphire" data-dark="#74c7ec" data-light="#209fb5"><label for="a-sapphire" style="--c: #74c7ec"><i aria-hidden="true"></i>Sapphire</label>
-      <input type="radio" name="accent" id="a-blue" value="blue" checked data-dark="#89b4fa" data-light="#1e66f5"><label for="a-blue" style="--c: #89b4fa"><i aria-hidden="true"></i>Blue</label>
+      <input type="radio" name="accent" id="a-blue" value="blue" data-dark="#89b4fa" data-light="#1e66f5"><label for="a-blue" style="--c: #89b4fa"><i aria-hidden="true"></i>Blue</label>
       <input type="radio" name="accent" id="a-lavender" value="lavender" data-dark="#b4befe" data-light="#7287fd"><label for="a-lavender" style="--c: #b4befe"><i aria-hidden="true"></i>Lavender</label>
       </fieldset>
     </div>
@@ -219,10 +220,17 @@
                   set(v) { try { localStorage.setItem("accent", v); } catch (e) {} } };
   const apply = () => {
     const on = document.querySelector('#accent input:checked');
-    if (on) root.style.setProperty("--accent", light.matches ? on.dataset.light : on.dataset.dark);
+    // System: the stylesheet's own (the system's accent); one of the fourteen: that one, as dark or light
+    if (on && on.value !== "system") {
+      root.dataset.picked = "";
+      root.style.setProperty("--accent", light.matches ? on.dataset.light : on.dataset.dark);
+    } else {
+      delete root.dataset.picked;
+      root.style.removeProperty("--accent");
+    }
     document.querySelectorAll('#accent label').forEach(l => {
       const i = document.getElementById(l.htmlFor);
-      l.style.setProperty("--c", light.matches ? i.dataset.light : i.dataset.dark);
+      if (i.dataset.dark) l.style.setProperty("--c", light.matches ? i.dataset.light : i.dataset.dark);
     });
   };
   const saved = store.get(), pick = saved && document.getElementById("a-" + saved);

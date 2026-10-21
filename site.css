@@ -11,6 +11,9 @@
   /* the accent where it's text, a focus ring or a button's fill: as it is on dark, darker on light, so it
      keeps 4.5:1 whichever of the fourteen accents is picked */
   --ink: var(--accent); --on-ink: #11111b;
+  /* until one is picked, the visitor's own (the system's accent colour, which Firefox passes on: on
+     Vyntaris, the desktop's), lightened on dark so any of them keeps its contrast */
+  --system: color-mix(in oklab, AccentColor 70%, #ffffff);
   --line: rgba(205, 214, 244, .12);
   --s1: 8px; --s2: 16px; --s3: 24px; --s4: 32px; --s6: 48px; --s8: 64px; --s12: 96px;
   --radius: 12px;
@@ -25,6 +28,7 @@
     --text: #4c4f69; --subtext: #4c4f69; --muted: #5c5f77;
     --accent: #1e66f5;
     --ink: color-mix(in oklab, var(--accent) 60%, #000); --on-ink: #ffffff;
+    --system: AccentColor;
     --line: rgba(76, 79, 105, .16);
     color-scheme: light;
   }
@@ -158,3 +162,8 @@ figure { margin: 0; }
 .foot nav { display: flex; flex-wrap: wrap; gap: var(--s3); margin-inline-start: auto; }
 .foot a { color: var(--subtext); }
 .visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+
+/* no accent picked: the system's (where the browser tells it; the page's blue otherwise) */
+@supports (color: AccentColor) {
+  :root:not([data-picked]) { --accent: var(--system); }
+}
