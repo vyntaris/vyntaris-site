@@ -1,0 +1,12 @@
+// Cloudflare Workers serves the site as it is (static assets, no code): vyntarisos.com. Its build runs
+// `npx wrangler deploy` from the repository's root, which reads this.
+{
+  "name": "vyntaris-site",
+  "compatibility_date": "2026-10-01",
+  "assets": {
+    "directory": "./",
+    // /policy → /policy/ → policy/index.html
+    "html_handling": "auto-trailing-slash",
+    "not_found_handling": "404-page"
+  }
+}
