@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Privacy Policy · Vyntaris</title>
+<meta name="description" content="How Vyntaris handles your data, including the Google Drive backup.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<style>
+/* The home page's palette and bar (Mocha, Latte when the system is light), a single column of text */
+:root {
+  --crust: #11111b; --mantle: #181825; --base: #1e1e2e; --surface: #313244; --overlay: #6c7086;
+  --subtext: #a6adc8; --text: #cdd6f4; --accent: #89b4fa; --accent-soft: color-mix(in srgb, var(--accent) 14%, transparent);
+  --rim: rgba(205,214,244,.08);
+  --font-ui: "Inter", "Noto Sans", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", "DejaVu Sans Mono", ui-monospace, monospace;
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) {
+  --crust: #dce0e8; --mantle: #e6e9ef; --base: #eff1f5; --surface: #ccd0da; --overlay: #8c8fa1;
+  --subtext: #5c5f77; --text: #4c4f69; --accent: #1e66f5; --accent-soft: color-mix(in srgb, var(--accent) 10%, transparent);
+  --rim: rgba(76,79,105,.12); color-scheme: light; } }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--crust); color: var(--text); font: 400 16px/1.7 var(--font-ui); -webkit-font-smoothing: antialiased; }
+a { color: var(--accent); }
+a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 6px; }
+.wrap { max-width: 760px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.bar { position: sticky; top: 0; z-index: 5; background: var(--mantle); border-bottom: 1px solid var(--accent); }
+.bar .wrap { max-width: 1160px; display: flex; align-items: center; gap: 16px; height: 40px; }
+.brand { display: flex; align-items: center; gap: 8px; color: var(--accent); text-decoration: none; font-weight: 700; font-size: 14px; }
+.logo { width: 22px; height: 22px; }
+.bar-end { margin-left: auto; display: flex; gap: 18px; }
+.bar-end a { color: var(--subtext); text-decoration: none; font-size: 13px; }
+.bar-end a:hover, .bar-end a[aria-current] { color: var(--text); }
+main { padding-block: 56px 72px; }
+.caps { font-size: 12px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); }
+h1 { font-size: clamp(30px, 5vw, 42px); line-height: 1.15; letter-spacing: -.02em; margin: 8px 0 6px; text-wrap: balance; }
+.date { color: var(--overlay); font-size: 14px; }
+.lead { color: var(--subtext); font-size: 18px; margin: 24px 0 8px; }
+h2 { font-size: 21px; letter-spacing: -.01em; margin: 40px 0 10px; }
+h3 { font-size: 16px; margin: 22px 0 6px; }
+p, li { color: var(--subtext); }
+p { margin: 0 0 12px; }
+ul { margin: 0 0 12px; padding-left: 22px; }
+li { margin-bottom: 6px; }
+strong { color: var(--text); font-weight: 600; }
+code { font-family: var(--font-mono); font-size: .9em; background: var(--accent-soft); border-radius: 6px; padding: 1px 6px; overflow-wrap: anywhere; }
+.note { background: var(--mantle); border: 1px solid var(--rim); border-left: 3px solid var(--accent); border-radius: 12px; padding: 16px 18px; margin: 16px 0; }
+.note p:last-child { margin: 0; }
+footer { border-top: 1px solid var(--accent); background: var(--mantle); padding-block: 22px 32px; color: var(--overlay); font-size: 14px; }
+footer .wrap { max-width: 1160px; display: flex; flex-wrap: wrap; gap: 12px 24px; align-items: center; }
+footer .brand { color: var(--text); }
+</style>
+</head>
+<body>
+<header class="bar">
+  <div class="wrap">
+    <a class="brand" href="/"><svg class="logo" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" fill-rule="evenodd" d="M12.79 11.4L13.97 10.96L14.92 10.55L15.79 10.12L16.57 9.68L16.88 9.05L16.82 8.75L16.79 8.45L16.78 8.15L16.81 7.85L16.85 7.55L16.92 7.26L17.02 6.97L17.14 6.7L17.28 6.44L17.45 6.19L17.66 5.93L17.86 5.71L18.09 5.51L18.33 5.34L18.59 5.18L18.86 5.04L20.16 2.43L16.16 2.43zM6.69 12.72L8.05 12.57L9.18 12.38L10.35 12.12L11.45 11.83L7.26 2.43L1.08 2.43zM22.55 8.18L22.5 7.74L22.36 7.32L22.14 6.93L21.85 6.6L21.5 6.32L21.1 6.12L20.67 6L20.22 5.97L19.78 6.02L19.36 6.16L18.97 6.38L18.64 6.67L18.36 7.03L18.16 7.42L18.04 7.85L18.01 8.3L18.06 8.74L18.2 9.16L18.42 9.55L18.71 9.88L19.07 10.16L19.46 10.36L19.89 10.48L20.34 10.51L20.78 10.46L21.2 10.32L21.59 10.1L21.92 9.81L22.2 9.45L22.4 9.06L22.52 8.63zM3.06 13.46L3.08 13.5L0.65 14.24L0.75 14.52L0.89 14.78L1.1 15.07L1.3 15.28L1.56 15.51L1.85 15.7L2.15 15.86L2.52 16.01L2.92 16.14L3.34 16.24L3.77 16.32L4.23 16.37L4.78 16.41L5.88 16.41L7.15 16.31L7.92 16.21L8.7 16.08L9.49 15.92L10.4 15.7L11.22 15.49L12.13 15.21L12.93 14.95L13.82 14.62L14.69 14.27L15.44 13.94L16.25 13.55L16.93 13.19L17.66 12.77L18.25 12.39L18.81 12L19.32 11.6L18.83 11.42L18.37 11.17L17.96 10.85L17.59 10.48L16.86 10.93L15.99 11.39L15.03 11.84L13.99 12.27L12.9 12.66L11.87 12.98L10.83 13.27L9.7 13.53L8.59 13.73L7.52 13.88L6.52 13.96L5.6 13.98L4.79 13.94L4.06 13.84L3.48 13.69L3.23 13.58zM13.4 16.08L11.97 16.54L11.02 16.81L10.07 17.05L9.15 17.24L11.07 20.77z"/></svg>Vyntaris</a>
+    <nav class="bar-end" aria-label="Pages">
+      <a href="/policy/" aria-current="page">Privacy</a>
+      <a href="/tos/">Terms</a>
+    </nav>
+  </div>
+</header>
+<main class="wrap">
+<p class="caps">Vyntaris</p>
+<h1>Privacy Policy</h1>
+<p class="date">Effective October 22, 2026</p>
+<p class="lead">Vyntaris is a desktop operating system that runs on your own computer. It has no accounts, no
+telemetry and no analytics. Vyntaris's developers don't receive, collect or store your data. This policy
+explains what the system connects to, and how the optional Google Drive backup uses your Google account.</p>
+
+<h2>What Vyntaris doesn't do</h2>
+<ul>
+  <li>It doesn't send usage statistics, crash reports or identifiers anywhere on its own.</li>
+  <li>It doesn't show ads and doesn't sell, rent or share data with anyone.</li>
+  <li>It has no Vyntaris account and no Vyntaris server that holds your files or settings.</li>
+</ul>
+
+<h2>What the system connects to</h2>
+<p>Some features need the internet. Each connects only to the service named here, directly from your computer:</p>
+<ul>
+  <li><strong>Updates:</strong> Arch Linux's package mirrors and Vyntaris's package repository
+    (<code>vyntaris.github.io/vyntaris-packages</code>, hosted by GitHub), to check for and download updates.
+    Firmware updates come from the Linux Vendor Firmware Service through <code>fwupd</code>.</li>
+  <li><strong>Weather:</strong> Open-Meteo (<code>open-meteo.com</code>), sent the coordinates of the city you
+    picked (or of your time zone's city), and what you type when you search for a city, to show the forecast. It
+    can be turned off in Settings.</li>
+  <li><strong>Currency conversion:</strong> ExchangeRate-API (<code>open.er-api.com</code>), for exchange rates
+    when you convert money in the launcher.</li>
+  <li><strong>Free VPN:</strong> if you connect to one of its places, Riseup (<code>riseup.net</code>), which
+    issues an anonymous certificate. No account or personal data is involved.</li>
+  <li><strong>Problem reports:</strong> only when you choose to make one in Dr. Help. It opens GitHub's
+    new-issue page in your browser, filled in with what you wrote and what the system found, with names, the
+    computer's name, network names and addresses taken out first. Nothing is sent until you submit it there
+    yourself.</li>
+  <li><strong>Phone link:</strong> when you turn it on, it talks to your phone on your local network only.</li>
+</ul>
+<p>These services handle requests under their own privacy policies.</p>
+
+<h2>Google Drive backup</h2>
+<p>Backing up to Google Drive is optional and off until you connect your Google account in Settings → Backups.</p>
+
+<h3>What it accesses</h3>
+<p>Vyntaris asks Google for the <code>drive.file</code> permission only. With it, Vyntaris can see and manage
+only the files and folders it creates itself, in a folder named <strong>Vyntaris backup</strong> in your Drive.
+It can't see, read or change any other file in your Google Drive, and it doesn't access your Gmail, contacts,
+calendar, photos or profile.</p>
+
+<h3>How it's used</h3>
+<ul>
+  <li>To copy the folders you pick to <strong>Vyntaris backup</strong>, on the schedule you pick.</li>
+  <li>To keep the previous version of a file you changed or deleted, in that folder's <strong>Older</strong>.</li>
+  <li>To show you the backup, so you can copy files back.</li>
+  <li>To show how much space your Drive has used.</li>
+</ul>
+
+<h3>Where your data goes</h3>
+<p>Your files go directly from your computer to your own Google Drive. They never pass through, and are never
+stored on, any server run by Vyntaris. The permission Google grants (its access token) is stored only on your
+computer, in <code>~/.config/rclone/rclone.conf</code>. Vyntaris's developers never receive it.</p>
+
+<h3>Sharing</h3>
+<p>Data obtained from Google is never shared with, transferred to or sold to anyone. It isn't used for
+advertising, isn't used to train AI or machine-learning models, and no person reads it.</p>
+
+<h3>Removing access and data</h3>
+<ul>
+  <li><strong>Sign out</strong> in Settings → Backups deletes the stored permission from your computer and stops
+    backups.</li>
+  <li>You can also revoke Vyntaris's access at any time at
+    <a href="https://myaccount.google.com/permissions">myaccount.google.com/permissions</a>.</li>
+  <li>The backed-up files stay in your Drive until you delete the <strong>Vyntaris backup</strong> folder
+    yourself in Google Drive.</li>
+</ul>
+
+<div class="note"><p>Vyntaris's use and transfer to any other app of information received from Google APIs will
+adhere to the <a href="https://developers.google.com/terms/api-services-user-data-policy">Google API Services
+User Data Policy</a>, including the Limited Use requirements.</p></div>
+
+<h2>This website</h2>
+<p>This website doesn't use cookies or analytics. It's hosted by GitHub Pages, which may log visitors' IP
+addresses as described in GitHub's privacy statement. Its fonts load from Google Fonts.</p>
+
+<h2>Children</h2>
+<p>Vyntaris doesn't knowingly collect any data from anyone, including children under 13.</p>
+
+<h2>Changes</h2>
+<p>If this policy changes, the new version is published on this page with a new effective date.</p>
+
+<h2>Contact</h2>
+<p>Questions about this policy: <a href="https://github.com/vyntaris/vyntaris.github.io/issues">github.com/vyntaris/vyntaris.github.io/issues</a>.</p>
+
+</main>
+<footer>
+  <div class="wrap">
+    <a class="brand" href="/"><svg class="logo" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" fill-rule="evenodd" d="M12.79 11.4L13.97 10.96L14.92 10.55L15.79 10.12L16.57 9.68L16.88 9.05L16.82 8.75L16.79 8.45L16.78 8.15L16.81 7.85L16.85 7.55L16.92 7.26L17.02 6.97L17.14 6.7L17.28 6.44L17.45 6.19L17.66 5.93L17.86 5.71L18.09 5.51L18.33 5.34L18.59 5.18L18.86 5.04L20.16 2.43L16.16 2.43zM6.69 12.72L8.05 12.57L9.18 12.38L10.35 12.12L11.45 11.83L7.26 2.43L1.08 2.43zM22.55 8.18L22.5 7.74L22.36 7.32L22.14 6.93L21.85 6.6L21.5 6.32L21.1 6.12L20.67 6L20.22 5.97L19.78 6.02L19.36 6.16L18.97 6.38L18.64 6.67L18.36 7.03L18.16 7.42L18.04 7.85L18.01 8.3L18.06 8.74L18.2 9.16L18.42 9.55L18.71 9.88L19.07 10.16L19.46 10.36L19.89 10.48L20.34 10.51L20.78 10.46L21.2 10.32L21.59 10.1L21.92 9.81L22.2 9.45L22.4 9.06L22.52 8.63zM3.06 13.46L3.08 13.5L0.65 14.24L0.75 14.52L0.89 14.78L1.1 15.07L1.3 15.28L1.56 15.51L1.85 15.7L2.15 15.86L2.52 16.01L2.92 16.14L3.34 16.24L3.77 16.32L4.23 16.37L4.78 16.41L5.88 16.41L7.15 16.31L7.92 16.21L8.7 16.08L9.49 15.92L10.4 15.7L11.22 15.49L12.13 15.21L12.93 14.95L13.82 14.62L14.69 14.27L15.44 13.94L16.25 13.55L16.93 13.19L17.66 12.77L18.25 12.39L18.81 12L19.32 11.6L18.83 11.42L18.37 11.17L17.96 10.85L17.59 10.48L16.86 10.93L15.99 11.39L15.03 11.84L13.99 12.27L12.9 12.66L11.87 12.98L10.83 13.27L9.7 13.53L8.59 13.73L7.52 13.88L6.52 13.96L5.6 13.98L4.79 13.94L4.06 13.84L3.48 13.69L3.23 13.58zM13.4 16.08L11.97 16.54L11.02 16.81L10.07 17.05L9.15 17.24L11.07 20.77z"/></svg>Vyntaris</a>
+    <span>Built on Arch Linux, Hyprland and Quickshell.</span>
+    <a href="/policy/" style="margin-left:auto">Privacy</a>
+    <a href="/tos/">Terms</a>
+  </div>
+</footer>
+</body>
+</html>
