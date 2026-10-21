@@ -3,1236 +3,249 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Vyntaris</title>
-<meta name="claude:viewport-fit-sides" content="cover">
-<meta name="description" content="Vyntaris: an Arch Linux desktop built around an island that grows into everything you need.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
-<style>
-/* Layout: the page is the desktop. A bar runs along the top with the island hanging from its middle;
-   sections below are the panels the island grows into, laid on the Mocha (dark) or Latte (light) palette. */
-:root {
-  --crust: #11111b; --mantle: #181825; --base: #1e1e2e; --surface: #313244; --overlay: #6c7086;
-  --subtext: #a6adc8; --text: #cdd6f4; --accent: #89b4fa; --on-accent: #11111b; --accent-soft: color-mix(in srgb, var(--accent) 14%, transparent);
-  --rim: rgba(205,214,244,.08); --peach: #fab387; --green: #a6e3a1;
-  --font-ui: "Inter", "Noto Sans", system-ui, sans-serif;
-  --font-mono: "JetBrains Mono", "DejaVu Sans Mono", ui-monospace, monospace;
-  --caps: .14em;
-  color-scheme: dark;
-}
-@media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) {
-  --crust: #dce0e8; --mantle: #e6e9ef; --base: #eff1f5; --surface: #ccd0da; --overlay: #8c8fa1;
-  --subtext: #5c5f77; --text: #4c4f69; --accent: #1e66f5; --on-accent: #eff1f5; --accent-soft: color-mix(in srgb, var(--accent) 10%, transparent);
-  --rim: rgba(76,79,105,.12); --peach: #fe640b; --green: #40a02b; color-scheme: light; } }
-:root[data-theme="light"] {
-  --crust: #dce0e8; --mantle: #e6e9ef; --base: #eff1f5; --surface: #ccd0da; --overlay: #8c8fa1;
-  --subtext: #5c5f77; --text: #4c4f69; --accent: #1e66f5; --on-accent: #eff1f5; --accent-soft: color-mix(in srgb, var(--accent) 10%, transparent);
-  --rim: rgba(76,79,105,.12); --peach: #fe640b; --green: #40a02b; color-scheme: light; }
-
-* { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
-@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; animation: none !important; } }
-body { margin: 0; background: var(--crust); color: var(--text); font: 400 16px/1.6 var(--font-ui);
-  -webkit-font-smoothing: antialiased; }
-img { max-width: 100%; height: auto; display: block; }
-a { color: var(--accent); }
-a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 6px; }
-.wrap { max-width: 1160px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
-.caps { font-size: 12px; font-weight: 600; letter-spacing: var(--caps); text-transform: uppercase; }
-.mono { font-family: var(--font-mono); }
-h1, h2, h3 { text-wrap: balance; margin: 0; letter-spacing: -.02em; }
-h2 { font-size: clamp(28px, 4vw, 40px); line-height: 1.15; font-weight: 700; }
-h3 { font-size: 18px; font-weight: 600; letter-spacing: -.01em; }
-p { margin: 0; }
-.lead { color: var(--subtext); font-size: 18px; max-width: 62ch; }
-
-/* ---- the bar, with the island in its middle ---- */
-body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--mantle); }
-.bar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--mantle); border-bottom: 1px solid var(--accent); }
-.bar-row { display: flex; align-items: center; gap: 16px; height: 40px; }
-.brand { display: flex; align-items: center; gap: 8px; color: var(--accent); text-decoration: none; font-weight: 700; font-size: 14px; }
-.logo { width: 22px; height: 22px; }
-.ws { font-family: var(--font-mono); font-size: 12px; color: var(--accent); background: var(--accent-soft); border-radius: 9px; padding: 0 8px; line-height: 18px; }
-.bar-end { margin-left: auto; display: flex; gap: 18px; align-items: center; }
-.bar-end a { color: var(--subtext); text-decoration: none; font-size: 13px; }
-.bar-end a:hover { color: var(--text); }
-.island { position: absolute; left: 50%; top: 100%; transform: translateX(-50%); margin-top: -1px;
-  background: var(--mantle); border: 1px solid var(--accent); border-top: 0; border-radius: 0 0 18px 18px;
-  padding: 2px 22px 8px; display: flex; gap: 18px; white-space: nowrap; }
-.island a { color: var(--text); text-decoration: none; font-size: 13px; font-weight: 500; }
-.island a:hover { color: var(--accent); }
-@media (max-width: 760px) { .island { display: none; } .bar-end .hide-s { display: none; } }
-
-/* ---- hero ---- */
-.hero { padding-block: 96px 56px; display: grid; gap: 28px; }
-.eyebrow { color: var(--accent); }
-.hero h1 { font-size: clamp(40px, 7vw, 76px); line-height: 1.02; font-weight: 700; max-width: 14ch; }
-.hero h1 em { font-style: normal; color: var(--accent); }
-.actions { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
-.btn { display: inline-flex; align-items: center; gap: 8px; padding: 0 20px 0 16px; height: 42px; border-radius: 21px; font-weight: 600; font-size: 15px; text-decoration: none; border: 1px solid var(--glass-rim); color: var(--text); background: var(--tile); transition: transform .15s ease, filter .15s ease; }
-.btn .ic { font-size: 17px; }
-.btn:active { transform: scale(.97); }
-.btn.primary { background: var(--accent); color: var(--on-accent); border-color: transparent; }
-.btn:hover { filter: brightness(1.08); }
-.hero .tiles { max-width: 980px; }
-.shot { border-radius: 14px; overflow: hidden; border: 1px solid var(--rim); background: var(--mantle); }
-.hero .shot { box-shadow: 0 40px 120px -40px rgba(0,0,0,.7); }
-
-/* ---- sections ---- */
-section { padding-block: 72px; }
-.head { display: grid; gap: 12px; margin-bottom: 36px; }
-.panel { background: var(--base); border: 1px solid var(--rim); border-radius: 22px; }
-
-/* the island's panels, one at a time */
-.tabs { display: flex; flex-wrap: wrap; gap: 6px; padding: 5px; border-radius: 24px; background: var(--tile); border: 1px solid var(--glass-rim); width: fit-content; max-width: 100%; }
-.tabs button { display: inline-flex; align-items: center; gap: 7px; font: 600 12px/1 var(--font-ui); letter-spacing: var(--caps); text-transform: uppercase; color: var(--subtext); background: none; border: 0; border-radius: 18px; padding: 10px 14px; cursor: pointer; }
-.tabs button .ic { font-size: 15px; }
-.tabs button:hover { background: var(--tile-hover); }
-.tabs button[aria-selected="true"] { background: var(--accent); color: var(--on-accent); }
-.stage { margin-top: 20px; display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); gap: 28px; align-items: start; }
-.stage .view { background: var(--crust); border: 1px solid var(--glass-rim); border-top: 3px solid var(--accent); border-radius: 0 0 26px 26px; padding: 18px; display: grid; place-items: center; min-height: 360px; }
-.stage .view img { border-radius: 10px; max-height: 620px; width: auto; }
-.stage .say { display: grid; gap: 14px; padding-top: 8px; }
-.stage .say ul { margin: 0; padding-left: 18px; color: var(--subtext); display: grid; gap: 6px; }
-.keys { display: flex; flex-wrap: wrap; gap: 8px; }
-kbd { font: 500 12px var(--font-mono); background: var(--mantle); border: 1px solid var(--rim); border-bottom-width: 2px; border-radius: 6px; padding: 2px 8px; color: var(--text); }
-@media (max-width: 860px) { .stage { grid-template-columns: 1fr; } }
-
-/* features */
-.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr)); gap: 14px; }
-.card { padding: 20px; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
-.card .widget { margin-top: auto; padding-top: 6px; }
-.card p { color: var(--subtext); font-size: 15px; }
-.card .label { color: var(--accent); }
-.meter { display: flex; gap: 3px; height: 10px; }
-.meter i { flex: 1; border-radius: 2px; background: var(--rim); }
-.meter i.on { background: var(--accent); }
-
-/* screens */
-.screens { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 18px; }
-.screens figure { margin: 0; display: grid; gap: 10px; }
-.screens figcaption { color: var(--subtext); font-size: 14px; }
-.screens figcaption b { color: var(--text); font-weight: 600; }
-@media (max-width: 760px) { .screens { grid-template-columns: 1fr; } }
-
-/* apps */
-.apps { display: grid; gap: 18px; }
-.app { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); gap: 28px; align-items: center; padding: 22px; }
-.app:nth-child(even) { grid-template-columns: minmax(0, 1.2fr) minmax(0, .8fr); }
-.app:nth-child(even) .text { order: 2; }
-.app .text { display: grid; gap: 12px; }
-.app .text p { color: var(--subtext); }
-@media (max-width: 860px) { .app, .app:nth-child(even) { grid-template-columns: 1fr; } .app:nth-child(even) .text { order: 0; } }
-
-/* under the hood */
-.hood { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr)); gap: 14px; }
-.hood > div { padding: 20px; display: flex; flex-direction: column; gap: 10px; }
-.hood .top { display: flex; align-items: center; gap: 12px; }
-.hood p { color: var(--subtext); font-size: 15px; }
-.hood code { font: 13px var(--font-mono); color: var(--text); background: var(--mantle); padding: 1px 6px; border-radius: 5px; }
-
-/* install */
-.steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr)); gap: 14px; counter-reset: step; }
-.step { padding: 22px; display: grid; gap: 10px; align-content: start; counter-increment: step; }
-.step::before { content: counter(step); font: 700 15px var(--font-mono); color: var(--on-accent); background: var(--accent); width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; }
-.step p { color: var(--subtext); font-size: 15px; }
-pre { margin: 0; overflow-x: auto; background: var(--crust); border: 1px solid var(--rim); border-radius: 10px; padding: 12px 14px; font: 13px/1.5 var(--font-mono); color: var(--text); }
-
-/* ---- take it apart: a laptop (WebGL) that opens on the lock screen as you scroll, comes apart into the
-   system's layers, goes back together and comes up close as its screen goes through the apps ---- */
-.xp { position: relative; height: 1300vh; padding: 0; }
-.xp-pin { position: sticky; top: calc(41px + env(safe-area-inset-top, 0px)); height: calc(100svh - 41px - env(safe-area-inset-top, 0px)); overflow: hidden; }
-.xp-head { position: absolute; left: 0; right: 0; top: 0; padding-top: 40px; display: grid; gap: 10px; z-index: 2; }
-.xp-head .lead { font-size: 16px; }
-.xp-scene { position: absolute; inset: 0; }
-.xp-scene canvas { display: block; width: 100%; height: 100%; }
-.xp-fallback { display: none; }
-/* until the scene has drawn once: the desktop as a picture where the laptop will be, never an empty view */
-.xp:not(.live):not(.nogl) .xp-fallback { display: block; position: absolute; left: 50%; top: 56%; transform: translate(-50%, -50%); width: min(760px, 86%); padding: 0; }
-.xp-status { display: none; color: var(--overlay); font-size: 13px; margin-top: 10px; }
-.xp.nogl .xp-status:not(:empty) { display: block; }
-.xp-lines { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; overflow: visible; }
-.xp-lines path { fill: none; stroke: var(--accent); stroke-width: 1; }
-.xp-lines circle { fill: var(--accent); }
-.xp-lines g { opacity: 0; transition: opacity .35s ease; }
-.xp-lines g.on { opacity: 1; }
-.xp-labels { list-style: none; margin: 0; padding: 0; position: absolute; inset: 0; pointer-events: none; z-index: 2; }
-.xp-labels li { position: absolute; left: 0; top: 0; width: 250px; display: grid; gap: 3px; opacity: 0; transition: opacity .35s ease;
-  background: color-mix(in srgb, var(--base) 86%, transparent); border: 1px solid var(--rim); border-radius: 14px; padding: 10px 14px;
-  -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
-.xp-labels li.on { opacity: 1; transition-delay: calc(var(--i, 0) * 60ms); }
-@media (max-height: 780px) and (min-width: 1080px) { .xp-labels p { display: none; } }
-.xp-labels .caps { color: var(--accent); font-size: 11px; }
-/* a snapshot's date, on the copy itself */
-.xp-labels li.pill { width: auto; white-space: nowrap; padding: 4px 11px; border-radius: 999px; font: 600 12px var(--font-mono); color: var(--accent);
-  border-color: color-mix(in srgb, var(--accent) 45%, transparent); }
-.xp.nogl .xp-labels li.pill { display: none; }
-.xp-labels li.pill.on { transition-delay: .15s; }
-.xp-labels h3 { font-size: 15px; }
-.xp-labels p { color: var(--subtext); font-size: 13px; line-height: 1.45; }
-.xp.narrow .xp-labels li:not(.pill) { left: 16px; right: 16px; top: auto; bottom: 16px; width: auto; transform: translateY(8px) !important; transition: opacity .35s ease, transform .35s ease; }
-.xp.narrow .xp-labels li:not(.pill).on { transform: none !important; transition-delay: 0s; }
-.xp.narrow .xp-lines { display: none; }
-.xp-cap { position: absolute; left: 0; right: 0; bottom: 28px; display: grid; justify-items: center; pointer-events: none; z-index: 2; }
-.xp-cap div { grid-area: 1 / 1; opacity: 0; transform: translateY(10px); transition: opacity .4s ease, transform .4s ease;
-  text-align: center; display: grid; gap: 4px; max-width: 520px; padding: 0 16px; }
-.xp-cap div.on { opacity: 1; transform: none; transition-delay: .15s; }
-.xp-cap .caps { color: var(--accent); }
-.xp-cap h3 { font-size: 22px; }
-.xp-cap p { color: var(--subtext); font-size: 15px; }
-.xp.still { height: auto; }
-.xp.still .xp-pin { position: relative; top: 0; height: min(860px, 100svh); }
-/* without WebGL: the desktop as a picture, the labels as a list under it */
-.xp.nogl { height: auto; }
-.xp.nogl .xp-pin { position: relative; top: 0; height: auto; overflow: visible; padding-bottom: 48px; }
-.xp.nogl .xp-head { position: relative; }
-.xp.nogl .xp-scene, .xp.nogl .xp-lines, .xp.nogl .xp-cap { display: none; }
-.xp.nogl .xp-fallback { display: block; margin-top: 28px; }
-.xp.nogl .xp-labels { position: relative; inset: auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; max-width: 1160px; margin: 20px auto 0; padding: 0 16px; }
-.xp.nogl .xp-labels li { position: relative; width: auto; opacity: 1; }
-
-/* ---- the desktop's own pieces (config/quickshell/components): tiles with a disc, the markers (a level as
-   a row of cells), dashed rings, chips, glass panels with a rim, PanelHeader's icon and capitals ---- */
-:root { --glass-rim: rgba(205,214,244,.14); --tile: rgba(205,214,244,.05); --tile-hover: rgba(205,214,244,.09); --cell: rgba(205,214,244,.1); --accent-bright: color-mix(in srgb, var(--accent) 80%, white); }
-@media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) { --glass-rim: rgba(76,79,105,.16); --tile: rgba(76,79,105,.05); --tile-hover: rgba(76,79,105,.09); --cell: rgba(76,79,105,.12); --accent-bright: color-mix(in srgb, var(--accent) 82%, black); } }
-:root[data-theme="light"] { --glass-rim: rgba(76,79,105,.16); --tile: rgba(76,79,105,.05); --tile-hover: rgba(76,79,105,.09); --cell: rgba(76,79,105,.12); --accent-bright: color-mix(in srgb, var(--accent) 82%, black); }
-.ic { width: 1em; height: 1em; fill: currentColor; flex: none; display: inline-block; vertical-align: -.125em; }
-.eyebrow { display: inline-flex; align-items: center; gap: 8px; }
-.eyebrow .ic, .phead .ic { font-size: 15px; }
-p.phead, .card p.phead, .app .text p.phead { color: var(--accent); }
-.phead { display: flex; align-items: center; gap: 8px; color: var(--accent); font: 600 12px var(--font-ui); letter-spacing: var(--caps); text-transform: uppercase; margin: 0; }
-.panel { background: color-mix(in srgb, var(--crust) 55%, var(--base)); border: 1px solid var(--glass-rim); border-radius: 22px; }
-.tile { display: flex; align-items: center; gap: 10px; min-height: 58px; padding: 0 12px 0 10px; border-radius: 18px; background: var(--tile); border: 1px solid var(--glass-rim); color: var(--text); text-decoration: none; transition: background .2s ease, transform .15s ease; }
-.tile:hover { background: var(--tile-hover); }
-.tile:active { transform: scale(.97); }
-.tile .t { font-weight: 600; font-size: 14px; line-height: 1.3; }
-.tile .s { font-size: 12px; color: var(--overlay); line-height: 1.3; }
-.tile .more { margin-left: auto; color: var(--overlay); font-size: 16px; }
-.disc { width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; background: var(--tile-hover); color: var(--subtext); flex: none; }
-.disc .ic { font-size: 18px; }
-.disc.on { background: var(--accent); color: var(--on-accent); }
-.disc.sm { width: 30px; height: 30px; } .disc.sm .ic { font-size: 16px; }
-.tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr)); gap: 10px; }
-.meter { display: flex; gap: 3px; height: 10px; }
-.meter i { flex: 1; border-radius: 3px; background: var(--cell); }
-.meter i.on { background: var(--accent); }
-.meter i.top { background: var(--accent-bright); }
-.meter.thin { height: 8px; gap: 2px; } .meter.thin i { border-radius: 2px; }
-.level { display: flex; align-items: center; gap: 10px; }
-.level > .ic { font-size: 16px; color: var(--subtext); }
-.level .meter { flex: 1; }
-.level .n { font: 600 12px var(--font-mono); color: var(--subtext); min-width: 26px; text-align: right; }
-.rings { display: flex; justify-content: space-around; gap: 6px; padding: 10px; border-radius: 18px; background: var(--tile); border: 1px solid var(--glass-rim); }
-.ring { position: relative; width: 58px; height: 58px; }
-.ring svg { width: 100%; height: 100%; }
-.ring path { fill: none; stroke-width: 5; stroke-dasharray: 1.1 .7; }
-.ring .track { stroke: var(--cell); }
-.ring .fill { stroke: var(--accent); stroke-dasharray: none; }
-.ring b { position: absolute; inset: 0; display: grid; place-content: center; text-align: center; font: 600 13px/1.1 var(--font-mono); }
-.ring b small { font: 600 7px var(--font-ui); letter-spacing: .14em; color: var(--overlay); }
-.chip { display: inline-flex; align-items: center; gap: 6px; height: 24px; padding: 0 10px; border-radius: 12px; font: 600 11px var(--font-ui); letter-spacing: .1em; text-transform: uppercase;
-  background: var(--tile); border: 1px solid var(--glass-rim); color: var(--subtext); }
-.chip.on { background: color-mix(in srgb, var(--accent) 20%, transparent); border-color: color-mix(in srgb, var(--accent) 50%, transparent); color: var(--accent); }
-.chip .ic { font-size: 13px; }
-.chips { display: flex; flex-wrap: wrap; gap: 6px; }
-/* a search field (SearchField.qml): the accent disc, then what's typed */
-.search { display: flex; align-items: center; gap: 10px; height: 38px; border-radius: 19px; padding: 0 14px 0 4px; background: color-mix(in srgb, var(--crust) 45%, transparent); border: 1px solid color-mix(in srgb, var(--accent) 55%, transparent); font: 500 13px var(--font-mono); }
-.search .caret { width: 2px; height: 16px; background: var(--accent); animation: blink 1s steps(1) infinite; }
-@keyframes blink { 50% { opacity: 0; } }
-/* the island as a capsule, with what's going on in it */
-.capsule { display: flex; align-items: center; gap: 10px; padding: 8px 14px; border-radius: 0 0 18px 18px; background: var(--mantle); border: 1px solid var(--accent); border-top: 0; font-size: 13px; width: fit-content; max-width: 100%; }
-.capsule .ic { color: var(--accent); font-size: 16px; }
-.capsule .mono { color: var(--subtext); font-size: 12px; }
-.privacy { display: flex; align-items: center; gap: 10px; font-size: 13px; }
-.privacy .pdot { width: 9px; height: 9px; border-radius: 50%; background: var(--peach); box-shadow: 0 0 0 4px color-mix(in srgb, var(--peach) 25%, transparent); }
-.privacy .chip { margin-left: auto; }
-.swatches { display: flex; flex-wrap: wrap; gap: 7px; }
-.swatches button { width: 22px; height: 22px; border-radius: 50%; border: 0; padding: 0; cursor: pointer; background: var(--c); outline-offset: 2px; transition: transform .15s ease; }
-.swatches button:hover { transform: scale(1.12); }
-.swatches button[aria-pressed="true"] { outline: 2px solid var(--text); }
-.tray { display: inline-flex; align-items: center; gap: 8px; color: var(--accent); font: 600 12px var(--font-mono); }
-.tray .ic { font-size: 15px; }
-
-/* a phone: nothing wider than the screen, less air between sections, the panels a little tighter */
-body { overflow-x: clip; }
-.hero > *, .stage > *, .app > *, .grid > *, .hood > *, .steps > *, .screens > * { min-width: 0; }
-@media (max-width: 760px) {
-  section { padding-block: 44px; }
-  .hero { padding-block: 48px 28px; gap: 20px; }
-  .hero .lead, .lead { font-size: 16px; }
-  .head { margin-bottom: 22px; }
-  .card, .hood > div, .step { padding: 16px; }
-  .app { padding: 14px; gap: 14px; }
-  .stage { margin-top: 14px; gap: 18px; }
-  .stage .view { min-height: 0; padding: 12px; }
-  .stage .view img { max-height: 520px; }
-  .tabs { gap: 2px; padding: 4px; }
-  .tabs button { padding: 9px 10px; font-size: 11px; }
-  .tile { min-height: 54px; }
-  .hero .tiles { grid-template-columns: 1fr 1fr; gap: 8px; }
-  .hero .tile { padding: 8px 10px 8px 8px; align-items: flex-start; }
-  .hero .tile .more { display: none; }
-  .hero .tile .disc { width: 32px; height: 32px; } .hero .tile .disc .ic { font-size: 16px; }
-  .rings { padding: 8px 4px; }
-  .ring { width: 52px; height: 52px; }
-  footer .wrap { gap: 8px 16px; }
-  footer a[style] { margin-left: 0 !important; }
-}
-
-footer { border-top: 1px solid var(--accent); background: var(--mantle); padding-block: 22px 32px; color: var(--overlay); font-size: 14px; }
-footer .wrap { display: flex; flex-wrap: wrap; gap: 12px 24px; align-items: center; }
-footer .brand { color: var(--text); }
-</style>
+<title>Vyntaris: an Arch Linux desktop that starts at the island</title>
+<meta name="description" content="Vyntaris is a desktop operating system built on Arch Linux. One island at the top of the screen grows into the launcher, the control center, sound, media and your updates.">
+<meta property="og:title" content="Vyntaris">
+<meta property="og:description" content="An Arch Linux desktop that starts at the island.">
+<meta property="og:image" content="https://vyntarisos.com/shots/control.webp">
+<link rel="preload" href="/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/site.css">
 </head>
 <body>
-<svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true"><symbol id="i-calendar" viewBox="0 -960 960 960"><path d="M180-80q-24 0-42-18t-18-42v-620q0-24 18-42t42-18h65v-28q0-13.6 9.2-22.8 9.2-9.2 22.8-9.2 14.02 0 23.51 9.2Q310-861.6 310-848v28h340v-28q0-13.6 9.2-22.8 9.2-9.2 22.8-9.2 14.03 0 23.51 9.2Q715-861.6 715-848v28h65q24 0 42 18t18 42v620q0 24-18 42t-42 18H180Zm0-60h600v-430H180v430Zm300-260q-17 0-28.5-11.5T440-440q0-17 11.5-28.5T480-480q17 0 28.5 11.5T520-440q0 17-11.5 28.5T480-400Zm-160 0q-17 0-28.5-11.5T280-440q0-17 11.5-28.5T320-480q17 0 28.5 11.5T360-440q0 17-11.5 28.5T320-400Zm320 0q-17 0-28.5-11.5T600-440q0-17 11.5-28.5T640-480q17 0 28.5 11.5T680-440q0 17-11.5 28.5T640-400ZM480-240q-17 0-28.5-11.5T440-280q0-17 11.5-28.5T480-320q17 0 28.5 11.5T520-280q0 17-11.5 28.5T480-240Zm-160 0q-17 0-28.5-11.5T280-280q0-17 11.5-28.5T320-320q17 0 28.5 11.5T360-280q0 17-11.5 28.5T320-240Zm320 0q-17 0-28.5-11.5T600-280q0-17 11.5-28.5T640-320q17 0 28.5 11.5T680-280q0 17-11.5 28.5T640-240Z"/></symbol><symbol id="i-bolt" viewBox="0 -960 960 960"><path d="M360-360H217q-18 0-26.5-16t2.5-31l338-488q8-11 20-15t24 1q12 5 19 16t5 24l-39 309h176q19 0 27 17t-4 32L388-66q-8 10-20.5 13T344-55q-11-5-17.5-16T322-95l38-265Z"/></symbol><symbol id="i-mic" viewBox="0 -960 960 960"><path d="M480-423q-43 0-72-30.92-29-30.91-29-75.08v-251q0-41.67 29.44-70.83Q437.88-880 479.94-880t71.56 29.17Q581-821.67 581-780v251q0 44.17-29 75.08Q523-423 480-423Zm-30 273v-106q-96-11-166.5-77.5T202-498q-2-12.85 6.59-21.93 8.6-9.07 21.5-9.07 12.91 0 21.41 9t10.5 22q12 81 74.71 132.5Q399.42-314 479.65-314q81.35 0 143.85-51.5T698-498q2-13 10.68-22 8.67-9 21.5-9 12.82 0 21.32 9.07 8.5 9.08 6.5 21.93-11 97-81 164t-167 78v106q0 12.75-8.68 21.37-8.67 8.63-21.5 8.63-12.82 0-21.32-8.63-8.5-8.62-8.5-21.37Z"/></symbol><symbol id="i-search" viewBox="0 -960 960 960"><path d="M378-329q-108.16 0-183.08-75Q120-479 120-585t75-181q75-75 181.5-75t181 75Q632-691 632-584.85 632-542 618-502q-14 40-42 75l242 240q9 8.56 9 21.78T818-143q-9 9-22.22 9-13.22 0-21.78-9L533-384q-30 26-69.96 40.5Q423.08-329 378-329Zm-1-60q81.25 0 138.13-57.5Q572-504 572-585t-56.87-138.5Q458.25-781 377-781q-82.08 0-139.54 57.5Q180-666 180-585t57.46 138.5Q294.92-389 377-389Z"/></symbol><symbol id="i-palette" viewBox="0 -960 960 960"><path d="M480-80q-82 0-155-31.5t-127.5-86Q143-252 111.5-325T80-480q0-84 32-157t87.5-127q55.5-54 130-85T489-880q79 0 150 26.5T763.5-780q53.5 47 85 111.5T880-527q0 108-63 170.5T650-294h-75q-18 0-31 14t-13 31q0 20 14.5 38t14.5 43q0 26-24.5 57T480-80ZM247-454q20 0 35-15t15-35q0-20-15-35t-35-15q-20 0-35 15t-15 35q0 20 15 35t35 15Zm126-170q20 0 35-15t15-35q0-20-15-35t-35-15q-20 0-35 15t-15 35q0 20 15 35t35 15Zm214 0q20 0 35-15t15-35q0-20-15-35t-35-15q-20 0-35 15t-15 35q0 20 15 35t35 15Zm131 170q20 0 35-15t15-35q0-20-15-35t-35-15q-20 0-35 15t-15 35q0 20 15 35t35 15Z"/></symbol><symbol id="i-volume" viewBox="0 -960 960 960"><path d="M780-481q0-94-52.5-169T590-759q-12-5-17-16t0-22q5-12 17.5-16.5t25.5.5q101 41 162.5 131T840-481q0 111-61.5 201T616-149q-13 5-25.5.5T573-165q-5-11 0-22t17-16q85-34 137.5-109T780-481ZM280-360H150q-13 0-21.5-8.5T120-390v-180q0-13 8.5-21.5T150-600h130l149-149q14-14 32.5-6.5T480-728v496q0 20-18.5 27.5T429-211L280-360Zm380-120q0 52-26 94t-73 64q-8 4-14.5-1t-6.5-13v-289q0-8 6.5-13t14.5-1q47 22 73 65t26 94Z"/></symbol><symbol id="i-phone" viewBox="0 -960 960 960"><path d="M260-40q-25 0-42.5-17.5T200-100v-760q0-24 18-42t42-18h438q25 0 42.5 17.5T758-860v150q18 3 30 17t12 32v74q0 19-12 33t-30 17v437q0 25-17.5 42.5T698-40H260Zm219-680q12 0 21-9t9-21q0-12-9-21t-21-9q-12 0-21 9t-9 21q0 12 9 21t21 9Z"/></symbol><symbol id="i-eye" viewBox="0 -960 960 960"><path d="M480.12-330q70.88 0 120.38-49.62t49.5-120.5q0-70.88-49.62-120.38T479.88-670Q409-670 359.5-620.38T310-499.88q0 70.88 49.62 120.38t120.5 49.5Zm-.36-58q-46.76 0-79.26-32.74-32.5-32.73-32.5-79.5 0-46.76 32.74-79.26 32.73-32.5 79.5-32.5 46.76 0 79.26 32.74 32.5 32.73 32.5 79.5 0 46.76-32.74 79.26-32.73 32.5-79.5 32.5Zm.24 188q-135 0-245.5-76T57-470q-4-7.13-6-14.65-2-7.52-2-15.43 0-7.92 2-15.38 2-7.47 6-14.54 67-118 177.5-194T480-800q135 0 245.5 76T903-530q4 7.12 6 14.65 2 7.52 2 15.43 0 7.92-2 15.38-2 7.47-6 14.54-67 118-177.5 194T480-200Z"/></symbol><symbol id="i-wifi" viewBox="0 -960 960 960"><path d="M438-162 47-553q-9-9.08-13.5-20.43T29-596.14q0-12.86 5.5-24.76Q40-632.79 51-642q91-76 200.5-117T480-800q119 0 228.5 41T909-642q11 9.12 16.5 20.9t5.5 24.7q0 11.4-4.5 22.83Q922-562.14 913-553L522-162q-9 9-20 13t-22 4q-11 0-22-4t-20-13Z"/></symbol><symbol id="i-bt" viewBox="0 -960 960 960"><path d="M450-136v-272L277-235q-9 9-21 9t-21-9q-9-9-9-21t9-21l203-203-203-203q-9-9-9-21t9-21q9-9 21-9t21 9l173 173v-272q0-14 9.5-22t20.5-8q5 0 10.5 2t10.5 7l172 172q5 5 7 10t2 11q0 6-2 11t-7 10L522-480l151 151q5 5 7 10t2 11q0 6-2 11t-7 10L501-115q-5 5-10.5 7t-10.5 2q-11 0-20.5-8t-9.5-22Zm60-416 100-100-100-98v198Zm0 342 100-98-100-100v198Z"/></symbol><symbol id="i-history" viewBox="0 -960 960 960"><path d="M477-120q-142 0-243.5-95.5T121-451q-1-12 7.5-21t21.5-9q12 0 20.5 8.5T181-451q11 115 95 193t201 78q127 0 215-89t88-216q0-124-89-209.5T477-780q-68 0-127.5 31T246-667h75q13 0 21.5 8.5T351-637q0 13-8.5 21.5T321-607H172q-13 0-21.5-8.5T142-637v-148q0-13 8.5-21.5T172-815q13 0 21.5 8.5T202-785v76q52-61 123.5-96T477-840q75 0 141 28t115.5 76.5Q783-687 811.5-622T840-482q0 75-28.5 141t-78 115Q684-177 618-148.5T477-120Zm34-374 115 113q9 9 9 21.5t-9 21.5q-9 9-21 9t-21-9L460-460q-5-5-7-10.5t-2-11.5v-171q0-13 8.5-21.5T481-683q13 0 21.5 8.5T511-653v159Z"/></symbol><symbol id="i-drivers" viewBox="0 -960 960 960"><path d="m725-133-67-67q-5-5-10-5t-10 5q-5 5-5 10.5t5 10.5l81 82q5 5 10 7t11 2q6 0 11-2t10-7l82-82q5-5 5-10.5t-5-10.5q-5-5-10.5-5t-10.5 5l-67 67v-156q0-6-4.5-10.5T740-304q-6 0-10.5 4.5T725-289v156ZM480-455q8 0 15.5-2t14.5-6l240-140q11-6 14-17.5t-3-22.5q-6-11-18-14t-23 3L480-514 239-654q-11-6-23-3t-18 14q-6 11-3 23t14 18l241 139q7 4 14.5 6t15.5 2ZM120-310v-340q0-16 8-30t22-22l300-173q8-5 15-6.5t15-1.5q8 0 15.5 1.5T510-875l300 173q14 8 22 22t8 30v198q0 14-11 21.5t-24 2.5q-18-6-36.5-9t-38.5-3q-102 0-176 73.5T480-189q0 23 3.5 40.5T493-114q6 17-8.5 29T455-82L150-258q-14-8-22-22t-8-30ZM730 0q-78 0-134-55.5T540-189q0-79 56-135t134-56q78 0 134 56t56 135q0 78-56 133.5T730 0Z"/></symbol><symbol id="i-refresh" viewBox="0 -960 960 960"><path d="M480-160q-133 0-226.5-93.5T160-480q0-133 93.5-226.5T480-800q85 0 149 34.5T740-671v-99q0-13 8.5-21.5T770-800q13 0 21.5 8.5T800-770v194q0 13-8.5 21.5T770-546H576q-13 0-21.5-8.5T546-576q0-13 8.5-21.5T576-606h138q-38-60-97-97t-137-37q-109 0-184.5 75.5T220-480q0 109 75.5 184.5T480-220q75 0 140-39.5T717-366q5-11 16.5-16.5t22.5-.5q12 5 16 16.5t-1 23.5q-39 84-117.5 133.5T480-160Z"/></symbol><symbol id="i-check" viewBox="0 -960 960 960"><path d="m378-332 363-363q9.27-9 21.64-9 12.36 0 21.36 9.05 9 9.06 9 21.5 0 12.45-9 21.45L399-267q-9 9-21 9t-21-9L175-449q-9-9.07-8.5-21.53.5-12.47 9.55-21.47 9.06-9 21.5-9 12.45 0 21.45 9l159 160Z"/></symbol><symbol id="i-speed" viewBox="0 -960 960 960"><path d="M418-340q25 25 63 23.5t55-27.5l180-271q7-11-1.5-19.5T695-636L424-456q-26 18-28.5 54.5T418-340ZM192-160q-18 0-34-8.5T134-193q-26-48-40-100T80-399q0-83 31.5-156T197-682.5q54-54.5 126.5-86T478-800q83 0 156.5 31.5t128 86Q817-628 848.5-555T880-399q0 54-13 106.5T827-193q-9 16-25 24.5t-34 8.5H192Z"/></symbol><symbol id="i-lock" viewBox="0 -960 960 960"><path d="M220-80q-24.75 0-42.37-17.63Q160-115.25 160-140v-434q0-24.75 17.63-42.38Q195.25-634 220-634h70v-96q0-78.85 55.61-134.42Q401.21-920 480.11-920q78.89 0 134.39 55.58Q670-808.85 670-730v96h70q24.75 0 42.38 17.62Q800-598.75 800-574v434q0 24.75-17.62 42.37Q764.75-80 740-80H220Zm260.17-200q31.83 0 54.33-22.03T557-355q0-30-22.67-54.5t-54.5-24.5q-31.83 0-54.33 24.5t-22.5 55q0 30.5 22.67 52.5t54.5 22ZM350-634h260v-96q0-54.17-37.88-92.08-37.88-37.92-92-37.92T388-822.08q-38 37.91-38 92.08v96Z"/></symbol><symbol id="i-game" viewBox="0 -960 960 960"><path d="M147-200q-38 0-59.5-25.5T72-296l48-335q8-53 49.5-91t94.5-38h433q53 0 94.5 38t49.5 91l47 335q6 45-15.5 70.5T813-200q-23 0-39-7.5T747-226L643-330H317L213-226q-11 11-27 18.5t-39 7.5Zm553-240q16 0 28-12t12-28q0-16-12-28t-28-12q-16 0-28 12t-12 28q0 16 12 28t28 12Zm-85-130q16 0 28-12t12-28q0-16-12-28t-28-12q-16 0-28 12t-12 28q0 16 12 28t28 12Zm-315 50v50q0 11 7 18t18 7q11 0 18-7t7-18v-50h50q11 0 18-7t7-18q0-11-7-18t-18-7h-50v-50q0-11-7-18t-18-7q-11 0-18 7t-7 18v50h-50q-11 0-18 7t-7 18q0 11 7 18t18 7h50Z"/></symbol><symbol id="i-download" viewBox="0 -960 960 960"><path d="M479.87-325q-5.87 0-10.87-2-5-2-10-7L308-485q-9-9.27-8.5-21.64.5-12.36 9.11-21.36 9.39-9 21.89-9t21.5 9l98 99v-341q0-12.75 8.68-21.38 8.67-8.62 21.5-8.62 12.82 0 21.32 8.62 8.5 8.63 8.5 21.38v341l99-99q8.8-9 20.9-8.5 12.1.5 21.49 9.5 8.61 9 8.61 21.5t-9 21.5L501-334q-5 5-10.13 7-5.14 2-11 2ZM220-160q-24 0-42-18t-18-42v-113q0-12.75 8.68-21.38 8.67-8.62 21.5-8.62 12.82 0 21.32 8.62 8.5 8.63 8.5 21.38v113h520v-113q0-12.75 8.68-21.38 8.67-8.62 21.5-8.62 12.82 0 21.32 8.62 8.5 8.63 8.5 21.38v113q0 24-18 42t-42 18H220Z"/></symbol><symbol id="i-terminal" viewBox="0 -960 960 960"><path d="M140-160q-24 0-42-18t-18-42v-520q0-24 18-42t42-18h680q24 0 42 18t18 42v520q0 24-18 42t-42 18H140Zm0-60h680v-436H140v436Zm221-218-83-83q-9-9-8.5-21t9.5-21q9-9 21-9t21 9l104 104q9 9 9 21t-9 21L321-313q-9 9-21 9t-21-9q-9-9-9-21t9-21l82-83Zm159 150q-13 0-21.5-8.5T490-318q0-13 8.5-21.5T520-348h160q13 0 21.5 8.5T710-318q0 13-8.5 21.5T680-288H520Z"/></symbol><symbol id="i-package" viewBox="0 -960 960 960"><path d="M450-85v-378L120-654v344q0 16 8 30t22 22L450-85Zm60 0 300-173q14-8 22-22t8-30v-345L510-463v378Zm164-542 133-77-297-171q-14-8-30-8t-30 8l-104 60 328 188ZM480-514l133-78-328-188-132 77 327 189Z"/></symbol><symbol id="i-chevron" viewBox="0 -960 960 960"><path d="M530-481 353-658q-9-9-8.5-21t9.5-21q9-9 21.5-9t21.5 9l198 198q5 5 7 10t2 11q0 6-2 11t-7 10L396-261q-9 9-21 8.5t-21-9.5q-9-9-9-21.5t9-21.5l176-176Z"/></symbol><symbol id="i-rocket" viewBox="0 -960 960 960"><path d="M263-465q26-69 64.5-130.5T415-712l-77-15q-20-4-39.5 2T265-705L129-568q-11 11-8 26.5t17 21.5l125 55Zm580-398q-109-8-206.5 37.5T461-702q-50 50-88.5 106.5T309-473q-4 10-4 20t8 18l135 135q8 8 18 8t20-4q66-24 122.5-63T715-448q78-78 124-175.5T877-830q-1-6-3.5-11.5T866-852q-5-5-10.5-7.5T843-863ZM586-573q-20-20-20-49.5t20-49.5q20-20 49.5-20t49.5 20q20 20 20 49.5T685-573q-20 20-49.5 20T586-573ZM479-250l54 125q6 15 22 17.5t27-8.5l136-136q14-14 20-33.5t2-39.5l-14-77q-55 49-116.5 87.5T479-250Zm-317-68q35-35 85-35.5t85 34.5q35 35 35 85t-35 85q-48 48-113.5 57T87-74q9-66 18.5-131.5T162-318Z"/></symbol><symbol id="i-doctor" viewBox="0 -960 960 960"><path d="M140-160q-24 0-42-18t-18-42v-200q0-13 8.5-21.5T110-450h191l72 144q4 8 11.5 12t15.5 4q8 0 15.5-4t11.5-12l133-266 53 106q4 8 11.5 12t15.5 4h210q13 0 21.5 8.5T880-420v200q0 24-18 42t-42 18H140ZM80-740q0-24 18-42t42-18h680q24 0 42 18t18 42v200q0 13-8.5 21.5T850-510H659l-72-143q-4-8-11.5-11.5T560-668q-8 0-15.5 3.5T533-653L400-388l-53-106q-4-8-11.5-12t-15.5-4H110q-13 0-21.5-8.5T80-540v-200Z"/></symbol><symbol id="i-disk" viewBox="0 -960 960 960"><path d="M680-330q20 0 35-14.5t15-35.5q0-20-15-35t-35-15q-21 0-35.5 15T630-380q0 21 14.5 35.5T680-330ZM80-570l142-172q8-9 19-13.5t23-4.5h431q12 0 23 4.5t19 13.5l143 172H80Zm60 370q-26 0-43-17t-17-43v-250h800v250q0 26-17.5 43T820-200H140Z"/></symbol><symbol id="i-window" viewBox="0 -960 960 960"><path d="M140-80q-24 0-42-18t-18-42v-387q0-24 18-42t42-18h115v-233q0-24 18-42t42-18h505q24 0 42 18t18 42v387q0 24-18 42t-42 18H706v233q0 24-18 42t-42 18H140Zm0-60h506v-327H140v327Zm566-293h114v-327H315v173h317q32 0 53 21t21 53v80Z"/></symbol><symbol id="i-keyboard" viewBox="0 -960 960 960"><path d="M140-200q-24 0-42-18.5T80-260v-440q0-24 18-42t42-18h680q24 0 42 18t18 42v440q0 23-18 41.5T820-200H140Zm190-125h300q12.75 0 21.38-8.68 8.62-8.67 8.62-21.5 0-12.82-8.62-21.32-8.63-8.5-21.38-8.5H330q-12.75 0-21.37 8.68-8.63 8.67-8.63 21.5 0 12.82 8.63 21.32 8.62 8.5 21.37 8.5Zm-96.82-250q12.82 0 21.32-8.68 8.5-8.67 8.5-21.5 0-12.82-8.68-21.32-8.67-8.5-21.5-8.5-12.82 0-21.32 8.68-8.5 8.67-8.5 21.5 0 12.82 8.68 21.32 8.67 8.5 21.5 8.5Zm124 0q12.82 0 21.32-8.68 8.5-8.67 8.5-21.5 0-12.82-8.68-21.32-8.67-8.5-21.5-8.5-12.82 0-21.32 8.68-8.5 8.67-8.5 21.5 0 12.82 8.68 21.32 8.67 8.5 21.5 8.5Zm123 0q12.82 0 21.32-8.68 8.5-8.67 8.5-21.5 0-12.82-8.68-21.32-8.67-8.5-21.5-8.5-12.82 0-21.32 8.68-8.5 8.67-8.5 21.5 0 12.82 8.68 21.32 8.67 8.5 21.5 8.5Zm124 0q12.82 0 21.32-8.68 8.5-8.67 8.5-21.5 0-12.82-8.68-21.32-8.67-8.5-21.5-8.5-12.82 0-21.32 8.68-8.5 8.67-8.5 21.5 0 12.82 8.68 21.32 8.67 8.5 21.5 8.5Zm123 0q12.82 0 21.32-8.68 8.5-8.67 8.5-21.5 0-12.82-8.68-21.32-8.67-8.5-21.5-8.5-12.82 0-21.32 8.68-8.5 8.67-8.5 21.5 0 12.82 8.68 21.32 8.67 8.5 21.5 8.5Zm-494 125q12.82 0 21.32-8.68 8.5-8.67 8.5-21.5 0-12.82-8.68-21.32-8.67-8.5-21.5-8.5-12.82 0-21.32 8.68-8.5 8.67-8.5 21.5 0 12.82 8.68 21.32 8.67 8.5 21.5 8.5Zm124 0q12.82 0 21.32-8.68 8.5-8.67 8.5-21.5 0-12.82-8.68-21.32-8.67-8.5-21.5-8.5-12.82 0-21.32 8.68-8.5 8.67-8.5 21.5 0 12.82 8.68 21.32 8.67 8.5 21.5 8.5Zm123 0q12.82 0 21.32-8.68 8.5-8.67 8.5-21.5 0-12.82-8.68-21.32-8.67-8.5-21.5-8.5-12.82 0-21.32 8.68-8.5 8.67-8.5 21.5 0 12.82 8.68 21.32 8.67 8.5 21.5 8.5Zm124 0q12.82 0 21.32-8.68 8.5-8.67 8.5-21.5 0-12.82-8.68-21.32-8.67-8.5-21.5-8.5-12.82 0-21.32 8.68-8.5 8.67-8.5 21.5 0 12.82 8.68 21.32 8.67 8.5 21.5 8.5Zm123 0q12.82 0 21.32-8.68 8.5-8.67 8.5-21.5 0-12.82-8.68-21.32-8.67-8.5-21.5-8.5-12.82 0-21.32 8.68-8.5 8.67-8.5 21.5 0 12.82 8.68 21.32 8.67 8.5 21.5 8.5Z"/></symbol><symbol id="i-settings" viewBox="0 -960 960 960"><path d="M421-80q-14 0-25-9t-13-23l-15-94q-19-7-40-19t-37-25l-86 40q-14 6-28 1.5T155-226L97-330q-8-13-4.5-27t15.5-23l80-59q-2-9-2.5-20.5T185-480q0-9 .5-20.5T188-521l-80-59q-12-9-15.5-23t4.5-27l58-104q8-13 22-17.5t28 1.5l86 40q16-13 37-25t40-18l15-95q2-14 13-23t25-9h118q14 0 25 9t13 23l15 94q19 7 40.5 18.5T669-710l86-40q14-6 27.5-1.5T804-734l59 104q8 13 4.5 27.5T852-580l-80 57q2 10 2.5 21.5t.5 21.5q0 10-.5 21t-2.5 21l80 58q12 8 15.5 22.5T863-330l-58 104q-8 13-22 17.5t-28-1.5l-86-40q-16 13-36.5 25.5T592-206l-15 94q-2 14-13 23t-25 9H421Zm59-270q54 0 92-38t38-92q0-54-38-92t-92-38q-54 0-92 38t-38 92q0 54 38 92t92 38Z"/></symbol><symbol id="i-music" viewBox="0 -960 960 960"><path d="M393-120q-63 0-106.5-43.5T243-270q0-63 43.5-106.5T393-420q28 0 50.5 8t39.5 22v-420q0-13 8.5-21.5T513-840h174q13 0 21.5 8.5T717-810v75q0 13-8.5 21.5T687-705H543v435q0 63-43.5 106.5T393-120Z"/></symbol><symbol id="i-monitor" viewBox="0 -960 960 960"><path d="M140-240q-24 0-42-18t-18-42v-480q0-24 18-42t42-18h680q24 0 42 18t18 42v480q0 24-18 42t-42 18H652l39 38q5 5 7 10.5t2 11.5v30q0 13-8.5 21.5T670-120H290q-13 0-21.5-8.5T260-150v-31q0-6 2-11t7-10l38-38H140Z"/></symbol><symbol id="i-battery" viewBox="0 -960 960 960"><path d="M130-240q-37.5 0-63.75-26.25T40-330v-300q0-37.5 26.25-63.75T130-720h620q37.5 0 63.75 26.25T840-630v300q0 37.5-26.25 63.75T750-240H130Zm740-147v-186h20q12 0 21 9t9 21v126q0 12-9 21t-21 9h-20Z"/></symbol><symbol id="i-night" viewBox="0 -960 960 960"><path d="M484-80q-84 0-157.5-32t-128-86.5Q144-253 112-326.5T80-484q0-132 77.5-238T361-868q17-5 31 5t12 27q-7 88 23.5 169.5T521-522q63 63 145 94t170 24q17-2 26.5 13t4.5 32q-40 125-145.5 202T484-80Z"/></symbol><symbol id="i-coffee" viewBox="0 -960 960 960"><path d="M442-242q-116 0-199-80t-83-195v-263q0-25 17.5-42.5T220-840h529q54 0 92.5 37t38.5 91q0 60-37 106t-94 46h-25v43q0 115-83 195t-199 80ZM220-620h444v-160H220v160Zm504 0h25q33 0 52-28.5t19-63.5q0-29-21-48.5T749-780h-25v160ZM190-120q-13 0-21.5-8.5T160-150q0-13 8.5-21.5T190-180h580q13 0 21.5 8.5T800-150q0 13-8.5 21.5T770-120H190Z"/></symbol><symbol id="i-schedule" viewBox="0 -960 960 960"><path d="M513-492v-171q0-13-8.5-21.5T483-693q-13 0-21.5 8.5T453-663v183q0 6 2 11t6 10l144 149q9 10 22.5 9.5T650-310q9-9 9-22t-9-22L513-492ZM480-80q-82 0-155-31.5t-127.5-86Q143-252 111.5-325T80-480q0-82 31.5-155t86-127.5Q252-817 325-848.5T480-880q82 0 155 31.5t127.5 86Q817-708 848.5-635T880-480q0 82-31.5 155t-86 127.5Q708-143 635-111.5T480-80Z"/></symbol><symbol id="i-grid" viewBox="0 -960 960 960"><path d="M180-510q-24.75 0-42.37-17.63Q120-545.25 120-570v-210q0-24.75 17.63-42.38Q155.25-840 180-840h210q24.75 0 42.38 17.62Q450-804.75 450-780v210q0 24.75-17.62 42.37Q414.75-510 390-510H180Zm0 390q-24.75 0-42.37-17.63Q120-155.25 120-180v-210q0-24.75 17.63-42.38Q155.25-450 180-450h210q24.75 0 42.38 17.62Q450-414.75 450-390v210q0 24.75-17.62 42.37Q414.75-120 390-120H180Zm390-390q-24.75 0-42.37-17.63Q510-545.25 510-570v-210q0-24.75 17.63-42.38Q545.25-840 570-840h210q24.75 0 42.38 17.62Q840-804.75 840-780v210q0 24.75-17.62 42.37Q804.75-510 780-510H570Zm0 390q-24.75 0-42.37-17.63Q510-155.25 510-180v-210q0-24.75 17.63-42.38Q545.25-450 570-450h210q24.75 0 42.38 17.62Q840-414.75 840-390v210q0 24.75-17.62 42.37Q804.75-120 780-120H570Z"/></symbol><symbol id="i-tune" viewBox="0 -960 960 960"><path d="M456.82-120q-12.82 0-21.32-8.63-8.5-8.62-8.5-21.37v-165q0-12.75 8.68-21.38 8.67-8.62 21.5-8.62 12.82 0 21.32 8.62 8.5 8.63 8.5 21.38v53h323q12.75 0 21.38 8.68 8.62 8.67 8.62 21.5 0 12.82-8.62 21.32-8.63 8.5-21.38 8.5H487v52q0 12.75-8.68 21.37-8.67 8.63-21.5 8.63ZM150-202q-12.75 0-21.37-8.68-8.63-8.67-8.63-21.5 0-12.82 8.63-21.32 8.62-8.5 21.37-8.5h187q12.75 0 21.38 8.68 8.62 8.67 8.62 21.5 0 12.82-8.62 21.32-8.63 8.5-21.38 8.5H150Zm186.82-166q-12.82 0-21.32-8.63-8.5-8.62-8.5-21.37v-52H150q-12.75 0-21.37-8.68-8.63-8.67-8.63-21.5 0-12.82 8.63-21.32 8.62-8.5 21.37-8.5h157v-54q0-12.75 8.68-21.38 8.67-8.62 21.5-8.62 12.82 0 21.32 8.62 8.5 8.63 8.5 21.38v166q0 12.75-8.68 21.37-8.67 8.63-21.5 8.63ZM457-450q-12.75 0-21.37-8.68-8.63-8.67-8.63-21.5 0-12.82 8.63-21.32 8.62-8.5 21.37-8.5h353q12.75 0 21.38 8.68 8.62 8.67 8.62 21.5 0 12.82-8.62 21.32-8.63 8.5-21.38 8.5H457Zm165.82-165q-12.82 0-21.32-8.63-8.5-8.62-8.5-21.37v-165q0-12.75 8.68-21.38 8.67-8.62 21.5-8.62 12.82 0 21.32 8.62 8.5 8.63 8.5 21.38v52h157q12.75 0 21.38 8.68 8.62 8.67 8.62 21.5 0 12.82-8.62 21.32-8.63 8.5-21.38 8.5H653v53q0 12.75-8.68 21.37-8.67 8.63-21.5 8.63ZM150-698q-12.75 0-21.37-8.68-8.63-8.67-8.63-21.5 0-12.82 8.63-21.32 8.62-8.5 21.37-8.5h353q12.75 0 21.38 8.68 8.62 8.67 8.62 21.5 0 12.82-8.62 21.32-8.63 8.5-21.38 8.5H150Z"/></symbol><symbol id="i-shield" viewBox="0 -960 960 960"><path d="M220-80q-24.75 0-42.37-17.63Q160-115.25 160-140v-434q0-24.75 17.63-42.38Q195.25-634 220-634h70v-96q0-78.85 55.61-134.42Q401.21-920 480.11-920q78.89 0 134.39 55.58Q670-808.85 670-730v96h70q24.75 0 42.38 17.62Q800-598.75 800-574v434q0 24.75-17.62 42.37Q764.75-80 740-80H220Zm260.17-200q31.83 0 54.33-22.03T557-355q0-30-22.67-54.5t-54.5-24.5q-31.83 0-54.33 24.5t-22.5 55q0 30.5 22.67 52.5t54.5 22ZM350-634h260v-96q0-54.17-37.88-92.08-37.88-37.92-92-37.92T388-822.08q-38 37.91-38 92.08v96Z"/></symbol><symbol id="i-notifications" viewBox="0 -960 960 960"><path d="M190-200q-13 0-21.5-8.5T160-230q0-13 8.5-21.5T190-260h50v-304q0-84 49.5-150.5T420-798v-22q0-25 17.5-42.5T480-880q25 0 42.5 17.5T540-820v22q81 17 130.5 83.5T720-564v304h50q13 0 21.5 8.5T800-230q0 13-8.5 21.5T770-200H190ZM480-80q-33 0-56.5-23.5T400-160h160q0 33-23.5 56.5T480-80Z"/></symbol><symbol id="i-memory" viewBox="0 -960 960 960"><path d="M377-407v-145q0-12.75 8.63-21.38Q394.25-582 407-582h145q12.75 0 21.38 8.62Q582-564.75 582-552v145q0 12.75-8.62 21.37Q564.75-377 552-377H407q-12.75 0-21.37-8.63Q377-394.25 377-407Zm-17 257v-50H260q-24 0-42-18t-18-42v-100h-50q-12.75 0-21.37-8.68-8.63-8.67-8.63-21.5 0-12.82 8.63-21.32 8.62-8.5 21.37-8.5h50v-124h-50q-12.75 0-21.37-8.68-8.63-8.67-8.63-21.5 0-12.82 8.63-21.32 8.62-8.5 21.37-8.5h50v-100q0-24 18-42t42-18h100v-46q0-12.75 8.68-21.38 8.67-8.62 21.5-8.62 12.82 0 21.32 8.62 8.5 8.63 8.5 21.38v46h124v-46q0-12.75 8.68-21.38 8.67-8.62 21.5-8.62 12.82 0 21.32 8.62 8.5 8.63 8.5 21.38v46h100q24 0 42 18t18 42v100h46q12.75 0 21.38 8.68 8.62 8.67 8.62 21.5 0 12.82-8.62 21.32-8.63 8.5-21.38 8.5h-46v124h46q12.75 0 21.38 8.68 8.62 8.67 8.62 21.5 0 12.82-8.62 21.32-8.63 8.5-21.38 8.5h-46v100q0 24-18 42t-42 18H604v50q0 12.75-8.68 21.37-8.67 8.63-21.5 8.63-12.82 0-21.32-8.63-8.5-8.62-8.5-21.37v-50H420v50q0 12.75-8.68 21.37-8.67 8.63-21.5 8.63-12.82 0-21.32-8.63-8.5-8.62-8.5-21.37Zm344-110v-444H260v444h444Z"/></symbol><symbol id="i-toggle" viewBox="0 -960 960 960"><path d="M280-240q-100 0-170-70T40-480q0-100 70-170t170-70h400q100 0 170 70t70 170q0 100-70 170t-170 70H280Zm400.94-139q42.06 0 71.56-29.44t29.5-71.5q0-42.06-29.44-71.56t-71.5-29.5q-42.06 0-71.56 29.44t-29.5 71.5q0 42.06 29.44 71.56t71.5 29.5Z"/></symbol></svg>
-
-<header class="bar">
-  <div class="wrap bar-row">
-    <a class="brand" href="#top"><svg class="logo" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" fill-rule="evenodd" d="M12.79 11.4L13.97 10.96L14.92 10.55L15.79 10.12L16.57 9.68L16.88 9.05L16.82 8.75L16.79 8.45L16.78 8.15L16.81 7.85L16.85 7.55L16.92 7.26L17.02 6.97L17.14 6.7L17.28 6.44L17.45 6.19L17.66 5.93L17.86 5.71L18.09 5.51L18.33 5.34L18.59 5.18L18.86 5.04L20.16 2.43L16.16 2.43zM6.69 12.72L8.05 12.57L9.18 12.38L10.35 12.12L11.45 11.83L7.26 2.43L1.08 2.43zM22.55 8.18L22.5 7.74L22.36 7.32L22.14 6.93L21.85 6.6L21.5 6.32L21.1 6.12L20.67 6L20.22 5.97L19.78 6.02L19.36 6.16L18.97 6.38L18.64 6.67L18.36 7.03L18.16 7.42L18.04 7.85L18.01 8.3L18.06 8.74L18.2 9.16L18.42 9.55L18.71 9.88L19.07 10.16L19.46 10.36L19.89 10.48L20.34 10.51L20.78 10.46L21.2 10.32L21.59 10.1L21.92 9.81L22.2 9.45L22.4 9.06L22.52 8.63zM3.06 13.46L3.08 13.5L0.65 14.24L0.75 14.52L0.89 14.78L1.1 15.07L1.3 15.28L1.56 15.51L1.85 15.7L2.15 15.86L2.52 16.01L2.92 16.14L3.34 16.24L3.77 16.32L4.23 16.37L4.78 16.41L5.88 16.41L7.15 16.31L7.92 16.21L8.7 16.08L9.49 15.92L10.4 15.7L11.22 15.49L12.13 15.21L12.93 14.95L13.82 14.62L14.69 14.27L15.44 13.94L16.25 13.55L16.93 13.19L17.66 12.77L18.25 12.39L18.81 12L19.32 11.6L18.83 11.42L18.37 11.17L17.96 10.85L17.59 10.48L16.86 10.93L15.99 11.39L15.03 11.84L13.99 12.27L12.9 12.66L11.87 12.98L10.83 13.27L9.7 13.53L8.59 13.73L7.52 13.88L6.52 13.96L5.6 13.98L4.79 13.94L4.06 13.84L3.48 13.69L3.23 13.58zM13.4 16.08L11.97 16.54L11.02 16.81L10.07 17.05L9.15 17.24L11.07 20.77z"/></svg><span>Vyntaris</span></a>
-    <span class="ws" aria-hidden="true">2</span>
-    <div class="bar-end">
-      <span class="tray hide-s" aria-hidden="true"><svg class="ic"><use href="#i-wifi"/></svg><svg class="ic"><use href="#i-battery"/></svg>100</span>
-      <a class="hide-s" href="#hood">Under the hood</a>
-      <a href="#install">Install</a>
-    </div>
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="/"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" fill-rule="evenodd" d="M12.79 11.4L13.97 10.96L14.92 10.55L15.79 10.12L16.57 9.68L16.88 9.05L16.82 8.75L16.79 8.45L16.78 8.15L16.81 7.85L16.85 7.55L16.92 7.26L17.02 6.97L17.14 6.7L17.28 6.44L17.45 6.19L17.66 5.93L17.86 5.71L18.09 5.51L18.33 5.34L18.59 5.18L18.86 5.04L20.16 2.43L16.16 2.43zM6.69 12.72L8.05 12.57L9.18 12.38L10.35 12.12L11.45 11.83L7.26 2.43L1.08 2.43zM22.55 8.18L22.5 7.74L22.36 7.32L22.14 6.93L21.85 6.6L21.5 6.32L21.1 6.12L20.67 6L20.22 5.97L19.78 6.02L19.36 6.16L18.97 6.38L18.64 6.67L18.36 7.03L18.16 7.42L18.04 7.85L18.01 8.3L18.06 8.74L18.2 9.16L18.42 9.55L18.71 9.88L19.07 10.16L19.46 10.36L19.89 10.48L20.34 10.51L20.78 10.46L21.2 10.32L21.59 10.1L21.92 9.81L22.2 9.45L22.4 9.06L22.52 8.63zM3.06 13.46L3.08 13.5L0.65 14.24L0.75 14.52L0.89 14.78L1.1 15.07L1.3 15.28L1.56 15.51L1.85 15.7L2.15 15.86L2.52 16.01L2.92 16.14L3.34 16.24L3.77 16.32L4.23 16.37L4.78 16.41L5.88 16.41L7.15 16.31L7.92 16.21L8.7 16.08L9.49 15.92L10.4 15.7L11.22 15.49L12.13 15.21L12.93 14.95L13.82 14.62L14.69 14.27L15.44 13.94L16.25 13.55L16.93 13.19L17.66 12.77L18.25 12.39L18.81 12L19.32 11.6L18.83 11.42L18.37 11.17L17.96 10.85L17.59 10.48L16.86 10.93L15.99 11.39L15.03 11.84L13.99 12.27L12.9 12.66L11.87 12.98L10.83 13.27L9.7 13.53L8.59 13.73L7.52 13.88L6.52 13.96L5.6 13.98L4.79 13.94L4.06 13.84L3.48 13.69L3.23 13.58zM13.4 16.08L11.97 16.54L11.02 16.81L10.07 17.05L9.15 17.24L11.07 20.77z"/></svg>Vyntaris</a>
+    <nav class="nav" aria-label="Sections">
+      <a href="#island">The island</a>
+      <a href="#details">Details</a>
+      <a href="#apps">Apps</a>
+      <a href="#hood">Under the hood</a>
+    </nav>
+    <a class="btn btn-primary btn-small" href="#download">Download</a>
   </div>
-  <nav class="island" aria-label="Sections">
-    <a href="#island">The island</a>
-    <a href="#features">Features</a>
-    <a href="#apps">Apps</a>
-  </nav>
 </header>
 
-<main id="top">
+<main id="main">
   <div class="wrap hero">
-    <p class="caps eyebrow">Arch Linux · Hyprland · Quickshell · 1.0.0</p>
-    <h1>Everything starts at the <em>island</em>.</h1>
-    <p class="lead">Vyntaris is a desktop operating system built on Arch Linux. The island in the middle of the bar grows into whatever you need: the launcher, the control center, your sound, your music, your updates. One accent colour runs through all of it, from the bar to Firefox to the lock screen.</p>
-    <div class="actions">
-      <a class="btn primary" href="#install"><svg class="ic"><use href="#i-download"/></svg>Get Vyntaris</a>
-      <a class="btn" href="#island"><svg class="ic"><use href="#i-eye"/></svg>See the island</a>
+    <div class="hero-text">
+      <p class="eyebrow">Arch Linux · Hyprland · Quickshell</p>
+      <h1>Everything starts at the island.</h1>
+      <p class="lead">Vyntaris is a desktop operating system built on Arch Linux. The island in the middle of the bar
+        grows into whatever you need: the launcher, the control center, your sound, your music, your updates. One accent
+        colour runs through all of it, from the bar to Firefox to the lock screen.</p>
+      <div class="actions">
+        <a class="btn btn-primary" href="#download"><svg viewBox="0 -960 960 960" aria-hidden="true"><path fill="currentColor" d="M480-325q-6 0-11-2t-10-7L308-485q-9-9-8.5-21.5T309-528q9-9 21.5-9t21.5 9l98 99v-341q0-13 8.5-21.5T480-800q13 0 21.5 8.5T510-770v341l99-99q9-9 21-8.5t21 9.5q9 9 9 21.5t-9 21.5L501-334q-5 5-10 7t-11 2ZM220-160q-24 0-42-18t-18-42v-113q0-13 8.5-21.5T190-363q13 0 21.5 8.5T220-333v113h520v-113q0-13 8.5-21.5T770-363q13 0 21.5 8.5T800-333v113q0 24-18 42t-42 18H220Z"/></svg>Download Vyntaris</a>
+        <a class="btn btn-plain" href="#island">See the island</a>
+      </div>
+      <p class="meta">Free. For 64-bit PCs with UEFI. Updates itself from Arch Linux.</p>
     </div>
-    <div class="tiles">
-      <a class="tile" href="#hood"><span class="disc on"><svg class="ic"><use href="#i-history"/></svg></span><span><span class="t">Safe updates</span><br><span class="s">Undo themselves</span></span><span class="more"><svg class="ic"><use href="#i-chevron"/></svg></span></a>
-      <a class="tile" href="#hood"><span class="disc on"><svg class="ic"><use href="#i-drivers"/></svg></span><span><span class="t">Drivers</span><br><span class="s">Installed by themselves</span></span><span class="more"><svg class="ic"><use href="#i-chevron"/></svg></span></a>
-      <a class="tile" href="#hood"><span class="disc on"><svg class="ic"><use href="#i-refresh"/></svg></span><span><span class="t">Rolling</span><br><span class="s">Straight from Arch</span></span><span class="more"><svg class="ic"><use href="#i-chevron"/></svg></span></a>
-      <a class="tile" href="#install"><span class="disc on"><svg class="ic"><use href="#i-check"/></svg></span><span><span class="t">No setup questions</span><br><span class="s">Ready in minutes</span></span><span class="more"><svg class="ic"><use href="#i-chevron"/></svg></span></a>
-    </div>
-    <figure class="shot" style="margin:0"><img src="shots/control.webp" width="1920" height="1080" alt="The Vyntaris desktop with the control center open under the island: quick tiles, volume, system gauges, a calendar with the weather"></figure>
+    <figure class="shot">
+      <picture><source media="(max-width: 600px)" srcset="/shots/control-panel.webp" width="540" height="900">
+      <img src="/shots/control.webp" alt="The Vyntaris desktop with the island open as the control center: Wi-Fi, Bluetooth, night light and the microphone as tiles, volume and brightness, the processor and memory, and this month's calendar with the weather." width="1920" height="1080" decoding="async"></picture>
+    </figure>
+    <ul class="facts">
+      <li><strong>Updates that undo themselves</strong><span>A snapshot before every upgrade, and the way back if one fails.</span></li>
+      <li><strong>Drivers by themselves</strong><span>Graphics, Wi-Fi, sound and printers, found and installed.</span></li>
+      <li><strong>Rolling, straight from Arch</strong><span>Plain Arch underneath, always current.</span></li>
+      <li><strong>No setup questions</strong><span>Who you are and which disk. Ready in minutes.</span></li>
+    </ul>
   </div>
 
-  <section class="xp" id="inside" aria-labelledby="xp-h">
-    <div class="xp-pin">
-      <div class="wrap xp-head">
-        <p class="caps eyebrow"><svg class="ic"><use href="#i-tune"/></svg>Take it apart</p>
-        <h2 id="xp-h">Every layer, made to fit.</h2>
-        <p class="lead">Scroll, and the laptop opens and comes apart: what you see on the screen, and what runs beneath it.</p>
+  <section id="island" aria-labelledby="island-h">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">The island</p>
+        <h2 id="island-h">One place at the top of the screen, every panel you need.</h2>
+        <p class="lead">Tap SUPER and the island becomes the control center; start typing and it becomes the search.
+          Each panel opens from the island and goes back into it.</p>
       </div>
-      <div class="xp-scene" aria-hidden="true"></div>
-      <div class="wrap xp-fallback"><div class="shot"><img src="shots/control.webp" width="1920" height="1080" alt="The Vyntaris desktop with the control center open"></div><p class="xp-status"></p></div>
-      <svg class="xp-lines" aria-hidden="true"></svg>
-      <div class="xp-cap" aria-live="polite">
-        <div><span class="caps">Its own apps</span><h3>Dr. Help</h3><p>Looks the system over the way the Arch Wiki asks, and puts right what it can, with one password.</p></div>
-        <div><span class="caps">Its own apps</span><h3>Store</h3><p>Every app Arch describes, and the AUR's, installed with a click. No terminal.</p></div>
-        <div><span class="caps">Vyntaris Office</span><h3>VSheet, VDoc, VSlide</h3><p>Word, Excel and PowerPoint files, password-protected ones too.</p></div>
-        <div><span class="caps">Settings</span><h3>One place for all of it</h3><p>Every setting in one file, and Ctrl+F finds any of them.</p></div>
+      <div class="panels">
+        <figure><img src="/shots/launcher-panel.webp" alt="The launcher: apps, settings, windows and files found as you type." width="680" height="720" loading="lazy" decoding="async">
+          <figcaption><h3>Launcher</h3><p>Apps, settings, open windows and files. Plain words work as commands: “volume 40”, “100 eur to rsd”.</p></figcaption></figure>
+        <figure><img src="/shots/sound-panel.webp" alt="The sound panel: the output and input in use, their volume, and every other device." width="540" height="560" loading="lazy" decoding="async">
+          <figcaption><h3>Sound</h3><p>Speakers, headphones, HDMI and Bluetooth in one list, and noise suppression for the microphone.</p></figcaption></figure>
+        <figure><img src="/shots/wallpapers-panel.webp" alt="The wallpaper picker: wallpapers in a row under the bar." width="900" height="330" loading="lazy" decoding="async">
+          <figcaption><h3>Wallpapers</h3><p>Under the bar, ← and → to browse, Enter to set. Vyntaris's own are drawn in your accent.</p></figcaption></figure>
+        <figure><img src="/shots/gamemode-panel.webp" alt="Game mode: on, with notifications silenced and the FPS shown." width="560" height="300" loading="lazy" decoding="async">
+          <figcaption><h3>Game mode</h3><p>Starts with a game: notifications quiet, the FPS and temperatures in the island.</p></figcaption></figure>
+        <figure><img src="/shots/nightlight-panel.webp" alt="Night light: warmer screen colours, on now or on a schedule." width="560" height="220" loading="lazy" decoding="async">
+          <figcaption><h3>Night light</h3><p>Warmer colours in the evening, by hand or on a schedule.</p></figcaption></figure>
       </div>
-      <ol class="xp-labels">
-        <li data-k="island" data-phase="s" data-side="r"><span class="caps">Quickshell</span><h3>The island</h3><p>The control center, the launcher, sound, media and the power menu all grow out of the clock. One panel at a time.</p></li>
-        <li data-k="bar" data-phase="s" data-side="r"><span class="caps">Quickshell</span><h3>The bar</h3><p>Workspaces with live previews, the tray, the privacy dot, Wi-Fi and the battery.</p></li>
-        <li data-k="win" data-phase="s" data-side="r"><span class="caps">Hyprland</span><h3>The windows</h3><p>Tiling that places windows by itself, animated, set from the same settings file as everything else.</p></li>
-        <li data-k="wall" data-phase="s" data-side="r"><span class="caps">Colour</span><h3>The wallpaper</h3><p>Drawn again in your accent. GTK and Qt apps, Firefox, VS Code, the icons and the login screen follow it.</p></li>
-        <li data-k="deck" data-phase="b" data-side="l"><span class="caps">Keys</span><h3>One key to start</h3><p>Tap SUPER for the control center and type to search. The first letter is never lost.</p></li>
-        <li data-k="wifi" data-phase="b" data-side="l"><span class="caps">NetworkManager · BlueZ</span><h3>Wi-Fi, Bluetooth, the phone</h3><p>Networks and devices in the island, the password asked there. The phone link speaks KDE Connect's protocol, written for Vyntaris.</p></li>
-        <li data-k="board" data-phase="b" data-side="l"><span class="caps">Arch Linux</span><h3>Underneath</h3><p>The kernel, systemd and pacman, straight from Arch. Drivers for what's inside install by themselves.</p></li>
-        <li data-k="battery" data-phase="b" data-side="l"><span class="caps">Power</span><h3>The battery</h3><p>The power saver comes on by itself at 20 %, the charge stops at 80 % where the laptop allows it, and Dr. Help tells its wear.</p></li>
-        <li data-k="ssd" data-phase="b" data-side="r"><span class="caps">Btrfs</span><h3>The disk</h3><p>Btrfs with zstd, trimmed every week and read through for damage every month. Dr. Help watches it for errors.</p></li>
-        <li data-k="fans" data-phase="b" data-side="r"><span class="caps">Game mode</span><h3>Cool, and quick when it counts</h3><p>Dr. Help warns at 90 °C. Game mode starts with a game: the performance profile, quiet notifications, the FPS in the island.</p></li>
-        <li data-k="speakers" data-phase="b" data-side="r"><span class="caps">PipeWire</span><h3>Sound</h3><p>Every output and input in one panel, and noise suppression for the microphone in four steps.</p></li>
-        <li data-k="snap" data-phase="t" data-side="r"><span class="caps">Timeshift</span><h3>A snapshot before every upgrade</h3><p>Btrfs snapshots of the system, never of your files: the last three kept, and the one from the install always.</p></li>
-        <li data-k="guard" data-phase="t" data-side="l"><span class="caps">update-guard</span><h3>Updates that undo themselves</h3><p>An update gets three tries to start. If it can't, the boot menu's "Undo the update" puts the snapshot back by itself.</p></li>
-        <li class="pill" data-k="g1" data-phase="t">Before upgrade · today</li>
-        <li class="pill" data-k="g2" data-phase="t">Before upgrade · 4 days ago</li>
-        <li class="pill" data-k="g3" data-phase="t">Installed · 3 weeks ago</li>
+    </div>
+  </section>
+
+  <section id="details" aria-labelledby="details-h">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Made to be lived in</p>
+        <h2 id="details-h">The small things, already done.</h2>
+      </div>
+      <div class="points">
+        <div><p class="eyebrow">Today</p><h3>Calendar, weather and the weeks ahead</h3>
+          <p>The control center keeps the month beside today's date, the weather where you are, and a quiet line of the weeks you have left.</p></div>
+        <div><p class="eyebrow">Live activities</p><h3>The island shows what's going on</h3>
+          <p>Downloads, timers, a stopwatch, packages installing, backups. Click an install and the island shows its terminal, progress bars and all.</p></div>
+        <div><p class="eyebrow">Privacy</p><h3>A dot while something listens</h3>
+          <p>When an app uses the microphone, the camera or the screen, a dot lights up in the bar. Its panel says which app, with a button to close it.</p></div>
+        <div><p class="eyebrow">Backups</p><h3>Your folders on your Google Drive</h3>
+          <p>Once a day, at every start or every hour. What you change or delete keeps its last copy there. It sees only what it put there.</p></div>
+        <div><p class="eyebrow">Phone</p><h3>Your phone, paired with KDE Connect</h3>
+          <p>Its battery in the bar, its notifications on the desktop, a shared clipboard, files both ways, and the phone as a touchpad.</p></div>
+        <div><p class="eyebrow">Quick Look</p><h3>Space to look at a file</h3>
+          <p>In the file manager, Space shows pictures, PDFs, videos, music and Office files without opening an app.</p></div>
+      </div>
+      <fieldset class="accents" id="accent">
+        <legend>One colour, everywhere. Pick an accent and this page follows it too:</legend>
+      <input type="radio" name="accent" id="a-rosewater" value="rosewater" data-dark="#f5e0dc" data-light="#dc8a78"><label for="a-rosewater" style="--c: #f5e0dc"><i aria-hidden="true"></i>Rosewater</label>
+      <input type="radio" name="accent" id="a-flamingo" value="flamingo" data-dark="#f2cdcd" data-light="#dd7878"><label for="a-flamingo" style="--c: #f2cdcd"><i aria-hidden="true"></i>Flamingo</label>
+      <input type="radio" name="accent" id="a-pink" value="pink" data-dark="#f5c2e7" data-light="#ea76cb"><label for="a-pink" style="--c: #f5c2e7"><i aria-hidden="true"></i>Pink</label>
+      <input type="radio" name="accent" id="a-mauve" value="mauve" data-dark="#cba6f7" data-light="#8839ef"><label for="a-mauve" style="--c: #cba6f7"><i aria-hidden="true"></i>Mauve</label>
+      <input type="radio" name="accent" id="a-red" value="red" data-dark="#f38ba8" data-light="#d20f39"><label for="a-red" style="--c: #f38ba8"><i aria-hidden="true"></i>Red</label>
+      <input type="radio" name="accent" id="a-maroon" value="maroon" data-dark="#eba0ac" data-light="#e64553"><label for="a-maroon" style="--c: #eba0ac"><i aria-hidden="true"></i>Maroon</label>
+      <input type="radio" name="accent" id="a-peach" value="peach" data-dark="#fab387" data-light="#fe640b"><label for="a-peach" style="--c: #fab387"><i aria-hidden="true"></i>Peach</label>
+      <input type="radio" name="accent" id="a-yellow" value="yellow" data-dark="#f9e2af" data-light="#df8e1d"><label for="a-yellow" style="--c: #f9e2af"><i aria-hidden="true"></i>Yellow</label>
+      <input type="radio" name="accent" id="a-green" value="green" data-dark="#a6e3a1" data-light="#40a02b"><label for="a-green" style="--c: #a6e3a1"><i aria-hidden="true"></i>Green</label>
+      <input type="radio" name="accent" id="a-teal" value="teal" data-dark="#94e2d5" data-light="#179299"><label for="a-teal" style="--c: #94e2d5"><i aria-hidden="true"></i>Teal</label>
+      <input type="radio" name="accent" id="a-sky" value="sky" data-dark="#89dceb" data-light="#04a5e5"><label for="a-sky" style="--c: #89dceb"><i aria-hidden="true"></i>Sky</label>
+      <input type="radio" name="accent" id="a-sapphire" value="sapphire" data-dark="#74c7ec" data-light="#209fb5"><label for="a-sapphire" style="--c: #74c7ec"><i aria-hidden="true"></i>Sapphire</label>
+      <input type="radio" name="accent" id="a-blue" value="blue" checked data-dark="#89b4fa" data-light="#1e66f5"><label for="a-blue" style="--c: #89b4fa"><i aria-hidden="true"></i>Blue</label>
+      <input type="radio" name="accent" id="a-lavender" value="lavender" data-dark="#b4befe" data-light="#7287fd"><label for="a-lavender" style="--c: #b4befe"><i aria-hidden="true"></i>Lavender</label>
+      </fieldset>
+    </div>
+  </section>
+
+  <section id="apps" aria-labelledby="apps-h">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Apps of its own</p>
+        <h2 id="apps-h">The tools a desktop should come with.</h2>
+      </div>
+      <div class="feature">
+        <figure><img src="/shots/store-960.webp" alt="The Store: popular apps in a list, each with an Install button." width="960" height="540" loading="lazy" decoding="async"></figure>
+        <div class="feature-text"><p class="eyebrow">Store</p><h3>Every app Arch has, one click away</h3>
+          <p>The Store lists every app Arch's repositories describe, in sections, searched as you type, installed and removed with a click. With the AUR on, community recipes are built and installed the same way, no terminal.</p></div>
+      </div>
+      <div class="feature flip">
+        <figure><img src="/shots/doctor-960.webp" alt="Dr. Help: a check-up of the system, each finding with a fix button." width="960" height="540" loading="lazy" decoding="async"></figure>
+        <div class="feature-text"><p class="eyebrow">Dr. Help</p><h3>A check-up, in plain words</h3>
+          <p>Dr. Help looks the system over the way the Arch Wiki's System maintenance asks: failed services, errors in the log, leftover packages, mirrors, firmware, disk health. What it can fix has a button; all of them at once is one password.</p></div>
+      </div>
+      <div class="feature">
+        <figure><img src="/shots/office-960.webp" alt="VSheet, Vyntaris Office's spreadsheet, with an empty workbook open." width="960" height="540" loading="lazy" decoding="async"></figure>
+        <div class="feature-text"><p class="eyebrow">Vyntaris Office</p><h3>Documents, spreadsheets and slides</h3>
+          <p>VDoc, VSheet and VSlide open and save Word, Excel and PowerPoint files, password-protected ones too. VSheet computes old workbooks the way Excel does.</p></div>
+      </div>
+      <div class="feature flip">
+        <figure><img src="/shots/settings-960.webp" alt="Settings on its Appearance page: accent, mode, glass and animations." width="960" height="540" loading="lazy" decoding="async"></figure>
+        <div class="feature-text"><p class="eyebrow">Settings</p><h3>One place for all of it</h3>
+          <p>Every setting in one file, every one found from the launcher by its name. The look, the bar, power, backups, drivers, users and the language.</p></div>
+      </div>
+      <div class="gallery" style="margin-top: var(--s12)">
+        <figure><img src="/shots/tiling-960.webp" alt="Two windows tiled side by side: a terminal and VDoc." width="960" height="540" loading="lazy" decoding="async"><figcaption>Hyprland tiling: windows place themselves.</figcaption></figure>
+        <figure><img src="/shots/lock-960.webp" alt="The lock screen: the blurred wallpaper behind a large clock, music controls under it." width="960" height="540" loading="lazy" decoding="async"><figcaption>The lock screen, with your music under the clock.</figcaption></figure>
+        <figure><img src="/shots/welcome-960.webp" alt="The welcome screen on its Look step: dark or light, accent and wallpaper." width="960" height="540" loading="lazy" decoding="async"><figcaption>Welcome: look, keyboard, time and the internet, done.</figcaption></figure>
+      </div>
+    </div>
+  </section>
+
+  <section id="hood" aria-labelledby="hood-h">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Under the hood</p>
+        <h2 id="hood-h">Arch Linux, looked after.</h2>
+        <p class="lead">Vyntaris is a package from its own pacman repository. Underneath it is plain Arch, updated with
+          <code>pacman -Syu</code> or one click in the island.</p>
+      </div>
+      <div class="points">
+        <div><p class="eyebrow">update-guard</p><h3>Updates that undo themselves</h3>
+          <p>A Timeshift snapshot before every upgrade, and a boot entry that goes back to it. If the new system fails to start three times, the old one comes back on its own.</p></div>
+        <div><p class="eyebrow">Drivers</p><h3>Drivers by themselves</h3>
+          <p>Graphics, Wi-Fi, sound, printers and scanners install after each start and when a printer is plugged in. Only the firmware for the hardware you have.</p></div>
+        <div><p class="eyebrow">Upkeep</p><h3>Upkeep on a schedule</h3>
+          <p>The package cache trimmed weekly, SSDs trimmed, Btrfs scrubbed monthly, mirrors kept fast, firmware from fwupd.</p></div>
+        <div><p class="eyebrow">Fast</p><h3>Fast where it matters</h3>
+          <p>Hyprland and Quickshell, the desktop's own tools written in Rust, zram instead of a swap file, the wallpaper drawn without the GPU.</p></div>
+        <div><p class="eyebrow">Security</p><h3>Safe by default</h3>
+          <p>An nftables firewall, signed packages only, and uBlock Origin, Bitwarden and Privacy Badger in Firefox from the start.</p></div>
+        <div><p class="eyebrow">Games</p><h3>Ready for games</h3>
+          <p>Steam with Proton, Lutris, GameMode and MangoHud, set up by typing “set up games” in the launcher.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="download" aria-labelledby="download-h">
+    <div class="wrap download">
+      <div class="get">
+        <p class="eyebrow">Download</p>
+        <h2 id="download-h">Install Vyntaris.</h2>
+        <p class="lead">One image for every PC with a 64-bit processor and UEFI. It updates itself from then on.</p>
+        <a class="btn btn-primary" href="https://dl.vyntarisos.com/vyntaris-x86_64.iso" download><svg viewBox="0 -960 960 960" aria-hidden="true"><path fill="currentColor" d="M480-325q-6 0-11-2t-10-7L308-485q-9-9-8.5-21.5T309-528q9-9 21.5-9t21.5 9l98 99v-341q0-13 8.5-21.5T480-800q13 0 21.5 8.5T510-770v341l99-99q9-9 21-8.5t21 9.5q9 9 9 21.5t-9 21.5L501-334q-5 5-10 7t-11 2ZM220-160q-24 0-42-18t-18-42v-113q0-13 8.5-21.5T190-363q13 0 21.5 8.5T220-333v113h520v-113q0-13 8.5-21.5T770-363q13 0 21.5 8.5T800-333v113q0 24-18 42t-42 18H220Z"/></svg>Download the ISO</a>
+        <dl>
+          <dt>File</dt><dd><code>vyntaris-x86_64.iso</code>, the latest release</dd>
+          <dt>Checksum</dt><dd><a href="https://dl.vyntarisos.com/SHA256SUMS">SHA256SUMS</a></dd>
+          <dt>Needs</dt><dd>a 64-bit PC with UEFI, and a USB stick of 4 GB or more</dd>
+        </dl>
+      </div>
+      <ol class="steps">
+        <li><div><h3>Download the ISO</h3><p>It has the installer and the whole desktop, so installing works without the internet.</p></div></li>
+        <li><div><h3>Put it on a USB stick</h3><p>Copy it to a Ventoy stick, or write it to the stick directly (this erases the stick; <code>sdX</code> is the stick):</p>
+          <div class="cmd"><pre id="dd">sudo dd if=vyntaris-x86_64.iso of=/dev/sdX bs=4M status=progress</pre><button type="button" data-copy="dd">Copy</button></div></div></li>
+        <li><div><h3>Boot it and install</h3><p>The installer asks who you are and which disk to use, nothing more. Firefox, the file manager, VS Code and the everyday tools come with it.</p></div></li>
       </ol>
-    </div>
-  </section>
-
-  <section id="island">
-    <div class="wrap">
-      <div class="head">
-        <p class="caps eyebrow"><svg class="ic"><use href="#i-grid"/></svg>The island</p>
-        <h2>One place at the top of the screen, every panel you need.</h2>
-        <p class="lead">Tap SUPER and the island becomes the control center; start typing and it becomes the search. Each panel opens from the island and goes back into it.</p>
-      </div>
-      <div class="tabs" role="tablist" aria-label="Island panels">
-        <button role="tab" id="t-control" aria-selected="true" aria-controls="island-stage"><svg class="ic"><use href="#i-grid"/></svg>Control center</button>
-        <button role="tab" id="t-launcher" aria-selected="false" aria-controls="island-stage"><svg class="ic"><use href="#i-search"/></svg>Launcher</button>
-        <button role="tab" id="t-sound" aria-selected="false" aria-controls="island-stage"><svg class="ic"><use href="#i-volume"/></svg>Sound</button>
-        <button role="tab" id="t-wallpapers" aria-selected="false" aria-controls="island-stage"><svg class="ic"><use href="#i-palette"/></svg>Wallpapers</button>
-        <button role="tab" id="t-gamemode" aria-selected="false" aria-controls="island-stage"><svg class="ic"><use href="#i-game"/></svg>Game mode</button>
-        <button role="tab" id="t-nightlight" aria-selected="false" aria-controls="island-stage"><svg class="ic"><use href="#i-night"/></svg>Night light</button>
-      </div>
-      <div class="stage" id="island-stage" role="tabpanel">
-        <div class="view"><img id="stage-img" src="shots/control-panel.webp" alt=""></div>
-        <div class="say">
-          <h3 id="stage-title"></h3>
-          <p id="stage-text" class="lead" style="font-size:16px"></p>
-          <ul id="stage-list"></ul>
-          <div class="keys" id="stage-keys"></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section id="features">
-    <div class="wrap">
-      <div class="head">
-        <p class="caps eyebrow"><svg class="ic"><use href="#i-toggle"/></svg>Made to be lived in</p>
-        <h2>The small things, already done.</h2>
-      </div>
-      <div class="grid">
-        <div class="panel card"><p class="phead"><svg class="ic"><use href="#i-calendar"/></svg>Today</p><h3>Calendar, weather and the weeks ahead</h3><p>The control center keeps the month beside today's date, the weather where you are (any city, found as you type), and a quiet line of the weeks you have left. Memento mori.</p><div class="widget"><div class="meter thin" aria-hidden="true"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on top"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><p class="mono" style="font-size:12px;color:var(--subtext);margin-top:6px">2,164 weeks left</p></div></div>
-        <div class="panel card"><p class="phead"><svg class="ic"><use href="#i-bolt"/></svg>Live activities</p><h3>The island shows what's going on</h3><p>Downloads, timers, a stopwatch, packages installing. Click an install and the island shows its terminal, progress bars and all, whatever terminal it runs in.</p><div class="widget"><div class="capsule"><svg class="ic"><use href="#i-download"/></svg><span>Installing</span><span class="mono">12 of 40</span></div><div style="margin-top:10px"><div class="meter thin" aria-hidden="true"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on top"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div></div></div>
-        <div class="panel card"><p class="phead"><svg class="ic"><use href="#i-mic"/></svg>Privacy</p><h3>A dot while something listens</h3><p>When an app uses the microphone, the camera or the screen, a dot lights up in the bar. Its panel says which app, with a button to close it.</p><div class="widget"><div class="privacy"><span class="pdot"></span><svg class="ic"><use href="#i-mic"/></svg><span>Firefox · microphone</span><span class="chip">Close</span></div></div></div>
-        <div class="panel card"><p class="phead"><svg class="ic"><use href="#i-search"/></svg>Plain words</p><h3>A launcher that understands you</h3><p>Type <span class="mono">volume 40</span>, <span class="mono">turn bluetooth off</span>, <span class="mono">100 eur to rsd</span> or <span class="mono">check my system</span>. It finds apps, settings, files by name and by what's inside them.</p><div class="widget"><div class="search"><span class="disc on sm"><svg class="ic"><use href="#i-search"/></svg></span>volume 40<i class="caret"></i></div></div></div>
-        <div class="panel card"><p class="phead"><svg class="ic"><use href="#i-palette"/></svg>Accent</p><h3>One colour, everywhere</h3><p>Fourteen accents, in dark and light. The bar, GTK and Qt apps, Firefox, VS Code, the terminal, the icons and the login screen all follow it. Pick one here: this page follows it too.</p><div class="widget"><div class="swatches" role="group" aria-label="Accent"><button type="button" data-accent="rosewater" data-dark="#f5e0dc" data-light="#dc8a78" style="--c:#f5e0dc" aria-label="Rosewater" title="Rosewater"></button><button type="button" data-accent="flamingo" data-dark="#f2cdcd" data-light="#dd7878" style="--c:#f2cdcd" aria-label="Flamingo" title="Flamingo"></button><button type="button" data-accent="pink" data-dark="#f5c2e7" data-light="#ea76cb" style="--c:#f5c2e7" aria-label="Pink" title="Pink"></button><button type="button" data-accent="mauve" data-dark="#cba6f7" data-light="#8839ef" style="--c:#cba6f7" aria-label="Mauve" title="Mauve"></button><button type="button" data-accent="red" data-dark="#f38ba8" data-light="#d20f39" style="--c:#f38ba8" aria-label="Red" title="Red"></button><button type="button" data-accent="maroon" data-dark="#eba0ac" data-light="#e64553" style="--c:#eba0ac" aria-label="Maroon" title="Maroon"></button><button type="button" data-accent="peach" data-dark="#fab387" data-light="#fe640b" style="--c:#fab387" aria-label="Peach" title="Peach"></button><button type="button" data-accent="yellow" data-dark="#f9e2af" data-light="#df8e1d" style="--c:#f9e2af" aria-label="Yellow" title="Yellow"></button><button type="button" data-accent="green" data-dark="#a6e3a1" data-light="#40a02b" style="--c:#a6e3a1" aria-label="Green" title="Green"></button><button type="button" data-accent="teal" data-dark="#94e2d5" data-light="#179299" style="--c:#94e2d5" aria-label="Teal" title="Teal"></button><button type="button" data-accent="sky" data-dark="#89dceb" data-light="#04a5e5" style="--c:#89dceb" aria-label="Sky" title="Sky"></button><button type="button" data-accent="sapphire" data-dark="#74c7ec" data-light="#209fb5" style="--c:#74c7ec" aria-label="Sapphire" title="Sapphire"></button><button type="button" data-accent="blue" data-dark="#89b4fa" data-light="#1e66f5" style="--c:#89b4fa" aria-label="Blue" title="Blue"></button><button type="button" data-accent="lavender" data-dark="#b4befe" data-light="#7287fd" style="--c:#b4befe" aria-label="Lavender" title="Lavender"></button></div></div></div>
-        <div class="panel card"><p class="phead"><svg class="ic"><use href="#i-volume"/></svg>Sound</p><h3>Every output, and a quieter microphone</h3><p>Speakers, headphones, HDMI and Bluetooth in one list, the cards' profiles switched for you. Noise suppression for the microphone in four steps, RNNoise underneath.</p><div class="widget"><div class="level"><svg class="ic"><use href="#i-volume"/></svg><div class="meter" aria-hidden="true"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on top"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><span class="n">66</span></div><div class="level" style="margin-top:8px"><svg class="ic"><use href="#i-mic"/></svg><div class="meter" aria-hidden="true"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on top"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><span class="n">41</span></div></div></div>
-        <div class="panel card"><p class="phead"><svg class="ic"><use href="#i-phone"/></svg>Phone</p><h3>Your phone, paired with the KDE Connect app</h3><p>Its battery in the bar, its notifications on the desktop, a shared clipboard, files both ways, and the phone as a touchpad and keyboard. Vyntaris's own implementation of the protocol.</p><div class="widget"><div class="level"><svg class="ic"><use href="#i-phone"/></svg><div class="meter" aria-hidden="true"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on top"></i><i></i><i></i><i></i><i></i></div><span class="n">78</span></div></div></div>
-        <div class="panel card"><p class="phead"><svg class="ic"><use href="#i-eye"/></svg>Quick Look</p><h3>Space to look at a file</h3><p>In the file manager, Space shows pictures, PDFs, videos, music, Word, Excel and PowerPoint files without opening an app. Arrow keys go through the folder.</p><div class="widget"><div class="keys"><kbd>Space</kbd><kbd>←</kbd><kbd>→</kbd></div></div></div>
-      </div>
-    </div>
-  </section>
-
-  <section>
-    <div class="wrap">
-      <div class="head">
-        <p class="caps eyebrow"><svg class="ic"><use href="#i-monitor"/></svg>On screen</p>
-        <h2>Tiling windows, a lock screen, a setup that takes a minute.</h2>
-      </div>
-      <div class="screens">
-        <figure><div class="shot"><img src="shots/tiling-960.webp" width="960" height="540" alt="Two tiled windows: a terminal with fastfetch and the VDoc word processor" loading="lazy"></div><figcaption><b>Hyprland tiling.</b> Windows place themselves; the terminal and VDoc side by side.</figcaption></figure>
-        <figure><div class="shot"><img src="shots/lock-960.webp" width="960" height="540" alt="The Vyntaris lock screen with a large clock and the password card" loading="lazy"></div><figcaption><b>Lock screen.</b> The wallpaper blurred behind a large clock, music controls under it.</figcaption></figure>
-        <figure><div class="shot"><img src="shots/welcome-960.webp" width="960" height="540" alt="The Vyntaris setup window on its Look step: mode, accent and wallpaper" loading="lazy"></div><figcaption><b>Welcome.</b> Look, keyboard and time, the weather's city, the internet, done.</figcaption></figure>
-        <figure><div class="shot"><img src="shots/settings-960.webp" width="960" height="540" alt="The Settings window on its Appearance page" loading="lazy"></div><figcaption><b>Settings.</b> Every setting is also found from the launcher, by its name.</figcaption></figure>
-      </div>
-    </div>
-  </section>
-
-  <section id="apps">
-    <div class="wrap">
-      <div class="head">
-        <p class="caps eyebrow"><svg class="ic"><use href="#i-package"/></svg>Apps of its own</p>
-        <h2>The tools a desktop should come with.</h2>
-      </div>
-      <div class="apps">
-        <article class="panel app"><div class="text"><p class="phead"><svg class="ic"><use href="#i-doctor"/></svg>Dr. Help</p><h3>A check-up, in plain words</h3><p>Dr. Help looks the system over the way the Arch Wiki's System maintenance asks: failed services, errors in the log, Arch's news, leftover packages, mirrors, firmware, disk health, the package cache, SSD trimming, Btrfs scrubs. What it can fix has a button; all of them at once is one password. Its Report files a problem on GitHub with personal details taken out.</p></div><div class="shot"><img src="shots/doctor-960.webp" width="960" height="540" alt="Dr. Help listing what it found, worst first, with fixes" loading="lazy"></div></article>
-        <article class="panel app"><div class="text"><p class="phead"><svg class="ic"><use href="#i-package"/></svg>Store</p><h3>Every app Arch has, one click away</h3><p>The Store lists every app Arch's repositories describe, in sections, searched as you type, installed and removed with a click. With the AUR on, community recipes are built and installed the same way, no terminal.</p></div><div class="shot"><img src="shots/store-960.webp" width="960" height="540" alt="The Store showing popular apps with Install buttons" loading="lazy"></div></article>
-        <article class="panel app"><div class="text"><p class="phead"><svg class="ic"><use href="#i-window"/></svg>Vyntaris Office</p><h3>Documents, spreadsheets and slides</h3><p>VDoc, VSheet and VSlide open and save Word, Excel and PowerPoint files, password-protected ones too. VSheet computes old workbooks the way Excel does. They come from the Vyntaris repository.</p></div><div class="shot"><img src="shots/office-960.webp" width="960" height="540" alt="VSheet with the ribbon and an empty workbook" loading="lazy"></div></article>
-      </div>
-    </div>
-  </section>
-
-  <section id="hood">
-    <div class="wrap">
-      <div class="head">
-        <p class="caps eyebrow"><svg class="ic"><use href="#i-terminal"/></svg>Under the hood</p>
-        <h2>Arch Linux, looked after.</h2>
-        <p class="lead">Vyntaris is a package from its own pacman repository. Underneath it is plain Arch, updated with <span class="mono">pacman -Syu</span> or one click in the island.</p>
-      </div>
-      <div class="hood">
-        <div class="panel"><div class="top"><span class="disc on"><svg class="ic"><use href="#i-history"/></svg></span><p class="phead">update-guard</p></div><h3>Updates that undo themselves</h3><p>A Timeshift snapshot before every upgrade, and a boot entry that goes back to it. If the new system fails to start three times, the old one comes back on its own and the desktop tells you.</p><div class="level" style="margin-top:auto"><svg class="ic"><use href="#i-refresh"/></svg><div class="meter" aria-hidden="true"><i class="on"></i><i class="on"></i><i class="on top"></i></div><span class="n" style="min-width:auto">3 tries</span></div></div>
-        <div class="panel"><div class="top"><span class="disc on"><svg class="ic"><use href="#i-drivers"/></svg></span><p class="phead">Drivers</p></div><h3>Drivers by themselves</h3><p>Graphics, Wi-Fi, sound, printers and scanners install after each start and when a printer is plugged in. Only the firmware for the hardware you have.</p><div class="chips" style="margin-top:auto"><span class="chip on">NVIDIA</span><span class="chip on">AMD</span><span class="chip on">Intel</span><span class="chip">Printers</span><span class="chip">Wi-Fi</span></div></div>
-        <div class="panel"><div class="top"><span class="disc on"><svg class="ic"><use href="#i-schedule"/></svg></span><p class="phead">Upkeep</p></div><h3>Upkeep on a schedule</h3><p>The package cache trimmed weekly, SSDs trimmed (<code>fstrim.timer</code>), Btrfs scrubbed monthly, mirrors kept fast with reflector, firmware from fwupd.</p><div class="chips" style="margin-top:auto"><span class="chip on"><svg class="ic"><use href="#i-schedule"/></svg>Weekly</span><span class="chip on"><svg class="ic"><use href="#i-calendar"/></svg>Monthly</span><span class="chip"><svg class="ic"><use href="#i-refresh"/></svg>Daily</span></div></div>
-        <div class="panel"><div class="top"><span class="disc on"><svg class="ic"><use href="#i-speed"/></svg></span><p class="phead">Fast</p></div><h3>Fast where it matters</h3><p>Hyprland and Quickshell, the desktop's tools written in Rust, zram instead of a swap file, the wallpaper drawn without the GPU.</p><div class="rings" style="margin-top:auto"><div class="ring" style="--v:4"><svg viewBox="0 0 58 58"><path class="track" d="M14.15 43.85 A21 21 0 1 1 43.85 43.85"/><path class="fill" d="M14.15 43.85 A21 21 0 1 1 43.85 43.85" pathLength="100" style="stroke-dasharray:4.0 100"/></svg><b>4<small>CPU</small></b></div><div class="ring" style="--v:46"><svg viewBox="0 0 58 58"><path class="track" d="M14.15 43.85 A21 21 0 1 1 43.85 43.85"/><path class="fill" d="M14.15 43.85 A21 21 0 1 1 43.85 43.85" pathLength="100" style="stroke-dasharray:45.5 100"/></svg><b>46<small>RAM</small></b></div><div class="ring" style="--v:63"><svg viewBox="0 0 58 58"><path class="track" d="M14.15 43.85 A21 21 0 1 1 43.85 43.85"/><path class="fill" d="M14.15 43.85 A21 21 0 1 1 43.85 43.85" pathLength="100" style="stroke-dasharray:62.4 100"/></svg><b>63<small>°C</small></b></div><div class="ring" style="--v:100"><svg viewBox="0 0 58 58"><path class="track" d="M14.15 43.85 A21 21 0 1 1 43.85 43.85"/><path class="fill" d="M14.15 43.85 A21 21 0 1 1 43.85 43.85" pathLength="100" style="stroke-dasharray:99.0 100"/></svg><b>100<small>CHG</small></b></div></div></div>
-        <div class="panel"><div class="top"><span class="disc on"><svg class="ic"><use href="#i-lock"/></svg></span><p class="phead">Security</p></div><h3>Safe by default</h3><p>An nftables firewall, signed packages only from trusted repositories, uBlock Origin, Bitwarden, SponsorBlock and Privacy Badger in Firefox from the start.</p><div class="chips" style="margin-top:auto"><span class="chip on">Firewall</span><span class="chip on">Signed</span><span class="chip">uBlock Origin</span><span class="chip">Bitwarden</span></div></div>
-        <div class="panel"><div class="top"><span class="disc on"><svg class="ic"><use href="#i-game"/></svg></span><p class="phead">Games</p></div><h3>Ready for games</h3><p>Steam with Proton, Lutris, GameMode and MangoHud, set up by typing <span class="mono">set up games</span> in the launcher; game mode quiets notifications and shows the FPS in the island.</p><div class="tile" style="margin-top:auto"><span class="disc on"><svg class="ic"><use href="#i-game"/></svg></span><span><span class="t">Game mode</span><br><span class="s">Starts with games</span></span><span class="more"><svg class="ic"><use href="#i-chevron"/></svg></span></div></div>
-      </div>
-    </div>
-  </section>
-
-  <section id="install">
-    <div class="wrap">
-      <div class="head">
-        <p class="caps eyebrow"><svg class="ic"><use href="#i-download"/></svg>Install</p>
-        <h2>Three steps, no questions you don't need.</h2>
-      </div>
-      <div class="steps">
-        <div class="panel step"><h3>Download the ISO</h3><p>One image for every PC with a 64-bit processor and UEFI.</p><a class="btn primary" href="https://vyntaris.github.io/vyntaris-packages"><svg class="ic"><use href="#i-download"/></svg>Download Vyntaris 1.0.0</a></div>
-        <div class="panel step"><h3>Put it on a USB stick</h3><p>Copy it to a Ventoy stick, or write it directly:</p><pre>sudo dd if=vyntaris-1.0.0-x86_64.iso of=/dev/sdX bs=4M status=progress</pre></div>
-        <div class="panel step"><h3>Boot and install</h3><p>The installer asks who you are and which disk to use, nothing more. Everyday apps come with it: Firefox, the file manager, VS Code, a calculator, an image viewer, a text editor, disk and system tools.</p></div>
-      </div>
     </div>
   </section>
 </main>
 
-<footer>
+<footer class="foot">
   <div class="wrap">
-    <a class="brand" href="#top"><svg class="logo" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" fill-rule="evenodd" d="M12.79 11.4L13.97 10.96L14.92 10.55L15.79 10.12L16.57 9.68L16.88 9.05L16.82 8.75L16.79 8.45L16.78 8.15L16.81 7.85L16.85 7.55L16.92 7.26L17.02 6.97L17.14 6.7L17.28 6.44L17.45 6.19L17.66 5.93L17.86 5.71L18.09 5.51L18.33 5.34L18.59 5.18L18.86 5.04L20.16 2.43L16.16 2.43zM6.69 12.72L8.05 12.57L9.18 12.38L10.35 12.12L11.45 11.83L7.26 2.43L1.08 2.43zM22.55 8.18L22.5 7.74L22.36 7.32L22.14 6.93L21.85 6.6L21.5 6.32L21.1 6.12L20.67 6L20.22 5.97L19.78 6.02L19.36 6.16L18.97 6.38L18.64 6.67L18.36 7.03L18.16 7.42L18.04 7.85L18.01 8.3L18.06 8.74L18.2 9.16L18.42 9.55L18.71 9.88L19.07 10.16L19.46 10.36L19.89 10.48L20.34 10.51L20.78 10.46L21.2 10.32L21.59 10.1L21.92 9.81L22.2 9.45L22.4 9.06L22.52 8.63zM3.06 13.46L3.08 13.5L0.65 14.24L0.75 14.52L0.89 14.78L1.1 15.07L1.3 15.28L1.56 15.51L1.85 15.7L2.15 15.86L2.52 16.01L2.92 16.14L3.34 16.24L3.77 16.32L4.23 16.37L4.78 16.41L5.88 16.41L7.15 16.31L7.92 16.21L8.7 16.08L9.49 15.92L10.4 15.7L11.22 15.49L12.13 15.21L12.93 14.95L13.82 14.62L14.69 14.27L15.44 13.94L16.25 13.55L16.93 13.19L17.66 12.77L18.25 12.39L18.81 12L19.32 11.6L18.83 11.42L18.37 11.17L17.96 10.85L17.59 10.48L16.86 10.93L15.99 11.39L15.03 11.84L13.99 12.27L12.9 12.66L11.87 12.98L10.83 13.27L9.7 13.53L8.59 13.73L7.52 13.88L6.52 13.96L5.6 13.98L4.79 13.94L4.06 13.84L3.48 13.69L3.23 13.58zM13.4 16.08L11.97 16.54L11.02 16.81L10.07 17.05L9.15 17.24L11.07 20.77z"/></svg><span>Vyntaris 1.0.0</span></a>
-    <span class="ws" aria-hidden="true">2</span>
+    <a class="brand" href="/"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" fill-rule="evenodd" d="M12.79 11.4L13.97 10.96L14.92 10.55L15.79 10.12L16.57 9.68L16.88 9.05L16.82 8.75L16.79 8.45L16.78 8.15L16.81 7.85L16.85 7.55L16.92 7.26L17.02 6.97L17.14 6.7L17.28 6.44L17.45 6.19L17.66 5.93L17.86 5.71L18.09 5.51L18.33 5.34L18.59 5.18L18.86 5.04L20.16 2.43L16.16 2.43zM6.69 12.72L8.05 12.57L9.18 12.38L10.35 12.12L11.45 11.83L7.26 2.43L1.08 2.43zM22.55 8.18L22.5 7.74L22.36 7.32L22.14 6.93L21.85 6.6L21.5 6.32L21.1 6.12L20.67 6L20.22 5.97L19.78 6.02L19.36 6.16L18.97 6.38L18.64 6.67L18.36 7.03L18.16 7.42L18.04 7.85L18.01 8.3L18.06 8.74L18.2 9.16L18.42 9.55L18.71 9.88L19.07 10.16L19.46 10.36L19.89 10.48L20.34 10.51L20.78 10.46L21.2 10.32L21.59 10.1L21.92 9.81L22.2 9.45L22.4 9.06L22.52 8.63zM3.06 13.46L3.08 13.5L0.65 14.24L0.75 14.52L0.89 14.78L1.1 15.07L1.3 15.28L1.56 15.51L1.85 15.7L2.15 15.86L2.52 16.01L2.92 16.14L3.34 16.24L3.77 16.32L4.23 16.37L4.78 16.41L5.88 16.41L7.15 16.31L7.92 16.21L8.7 16.08L9.49 15.92L10.4 15.7L11.22 15.49L12.13 15.21L12.93 14.95L13.82 14.62L14.69 14.27L15.44 13.94L16.25 13.55L16.93 13.19L17.66 12.77L18.25 12.39L18.81 12L19.32 11.6L18.83 11.42L18.37 11.17L17.96 10.85L17.59 10.48L16.86 10.93L15.99 11.39L15.03 11.84L13.99 12.27L12.9 12.66L11.87 12.98L10.83 13.27L9.7 13.53L8.59 13.73L7.52 13.88L6.52 13.96L5.6 13.98L4.79 13.94L4.06 13.84L3.48 13.69L3.23 13.58zM13.4 16.08L11.97 16.54L11.02 16.81L10.07 17.05L9.15 17.24L11.07 20.77z"/></svg>Vyntaris</a>
     <span>Built on Arch Linux, Hyprland and Quickshell. Colours by Catppuccin.</span>
-    <a href="/policy/" style="margin-left:auto">Privacy</a>
-    <a href="/tos/">Terms</a>
-    <a href="https://vyntaris.github.io/vyntaris-packages">Package repository</a>
+    <nav aria-label="More">
+      <a href="/policy/">Privacy</a>
+      <a href="/tos/">Terms</a>
+      <a href="https://pkg.vyntarisos.com/">Package repository</a>
+    </nav>
   </div>
 </footer>
+<p class="visually-hidden" aria-live="polite" id="status"></p>
 
 <script>
+// The accent picker (the page in the accent picked, remembered here) and the copy button. The page works
+// without this: the accent stays blue, the command can be selected by hand.
 (() => {
-  const panels = {
-    control: { img: "control-panel", title: "Control center", text: "Tap SUPER. Wi-Fi, Bluetooth, night light, keep awake, the microphone and game mode as tiles, each with an arrow to its panel. The volume and brightness, the processor, memory and temperature, the month and the weather, then your notifications.", list: ["Type while it's open and it turns into the search", "Every tile's arrow opens its own panel in the island", "Memento mori: the weeks ahead, as a line of markers"], keys: ["SUPER"] },
-    launcher: { img: "launcher-panel", title: "Launcher", text: "Apps, settings, open windows and files, sorted by what you mean. Plain words work as commands, sums and currencies are worked out as you type.", list: ["“volume 40”, “turn bluetooth off”, “display settings”", "“100 eur to rsd”, “12 * 7”, “5 km to mi”", "Files by name, and by what's inside documents"], keys: ["SUPER", "type"] },
-    sound: { img: "sound-panel", title: "Sound", text: "The output and input in use, how loud, and everything else you could switch to. Picking HDMI turns the graphics card's sound on for you.", list: ["Speakers, headphones, HDMI, Bluetooth, USB", "Noise suppression for the microphone in four steps", "Opens from the volume's arrow, or by typing “sound”"], keys: ["SUPER", "SHIFT", "A"] },
-    wallpapers: { img: "wallpapers-panel", title: "Wallpapers", text: "Arrow through the wallpapers right under the bar. Enter sets one and closes the picker. The Vyntaris wallpapers are drawn in your accent.", list: ["22 wallpapers, light and dark versions", "Accent wallpapers redrawn when the accent changes", "Or take the accent from your wallpaper"], keys: ["SUPER", "W"] },
-    gamemode: { img: "gamemode-panel", title: "Game mode", text: "Turns on by itself when a game starts. It silences notifications, switches to performance mode and shows the FPS and temperatures in the island.", list: ["Starts with games, or by hand", "FPS from MangoHud for Steam and Lutris games", "Performance power profile while you play"], keys: [] },
-    nightlight: { img: "nightlight-panel", title: "Night light", text: "Warmer colours for the evening, now or on a schedule, as warm as you like.", list: ["From and until, or right now", "Warmth from 6500 K down to 2500 K"], keys: [] },
-  };
-  const img = document.getElementById("stage-img"), title = document.getElementById("stage-title"),
-        text = document.getElementById("stage-text"), list = document.getElementById("stage-list"), keys = document.getElementById("stage-keys");
-  function show(id) {
-    const p = panels[id];
-    img.src = "shots/" + p.img + ".webp"; img.alt = p.title + " panel of the island";
-    title.textContent = p.title; text.textContent = p.text;
-    list.replaceChildren(...p.list.map(t => { const li = document.createElement("li"); li.textContent = t; return li; }));
-    keys.replaceChildren(...p.keys.map(k => { const e = document.createElement("kbd"); e.textContent = k; return e; }));
-    document.querySelectorAll('.tabs [role="tab"]').forEach(b => b.setAttribute("aria-selected", String(b.id === "t-" + id)));
-    try { localStorage.setItem("vyntaris-tab", id); } catch (e) {}
-  }
-  document.querySelectorAll('.tabs [role="tab"]').forEach(b => b.addEventListener("click", () => show(b.id.slice(2))));
-  let first = "control";
-  try { const t = localStorage.getItem("vyntaris-tab"); if (t && panels[t]) first = t; } catch (e) {}
-  show(first);
-  // the accent, picked from the swatches: the page takes it (its light or dark shade), and remembers it
-  const root = document.documentElement, swatches = [...document.querySelectorAll(".swatches button")];
-  const lightNow = () => root.dataset.theme === "light" || (root.dataset.theme !== "dark" && matchMedia("(prefers-color-scheme: light)").matches);
-  let picked = "";
-  try { picked = localStorage.getItem("vyntaris-accent") || ""; } catch (e) {}
-  function accent(name) {
-    const b = swatches.find(x => x.dataset.accent === name);
-    swatches.forEach(x => {
-      x.style.setProperty("--c", lightNow() ? x.dataset.light : x.dataset.dark);
-      x.setAttribute("aria-pressed", String(x === b || (!b && x.dataset.accent === "blue")));
+  const root = document.documentElement, light = matchMedia("(prefers-color-scheme: light)");
+  const store = { get() { try { return localStorage.getItem("accent"); } catch (e) { return null; } },
+                  set(v) { try { localStorage.setItem("accent", v); } catch (e) {} } };
+  const apply = () => {
+    const on = document.querySelector('#accent input:checked');
+    if (on) root.style.setProperty("--accent", light.matches ? on.dataset.light : on.dataset.dark);
+    document.querySelectorAll('#accent label').forEach(l => {
+      const i = document.getElementById(l.htmlFor);
+      l.style.setProperty("--c", light.matches ? i.dataset.light : i.dataset.dark);
     });
-    if (b) root.style.setProperty("--accent", lightNow() ? b.dataset.light : b.dataset.dark);
-    else root.style.removeProperty("--accent");
-    dispatchEvent(new Event("vyntaris-accent"));
-  }
-  swatches.forEach(b => b.addEventListener("click", () => {
-    picked = b.dataset.accent;
-    try { localStorage.setItem("vyntaris-accent", picked); } catch (e) {}
-    accent(picked);
+  };
+  const saved = store.get(), pick = saved && document.getElementById("a-" + saved);
+  if (pick) pick.checked = true;
+  document.getElementById("accent").addEventListener("change", e => { store.set(e.target.value); apply(); });
+  light.addEventListener("change", apply);
+  apply();
+
+  const status = document.getElementById("status");
+  document.querySelectorAll("[data-copy]").forEach(b => b.addEventListener("click", async () => {
+    const text = document.getElementById(b.dataset.copy).textContent;
+    try { await navigator.clipboard.writeText(text); b.textContent = "Copied"; status.textContent = "Command copied"; }
+    catch (e) { b.textContent = "Select it"; }
+    setTimeout(() => { b.textContent = "Copy"; }, 2000);
   }));
-  matchMedia("(prefers-color-scheme: light)").addEventListener("change", () => accent(picked));
-  accent(picked);
-})();
-</script>
-<script>
-  // the laptop needs three.js from its CDN: without it after a few seconds, the picture and the list instead
-  setTimeout(() => {
-    const sec = document.getElementById("inside");
-    if (window.__xpReady || !sec) return;
-    sec.classList.add("nogl");
-    const say = sec.querySelector(".xp-status");
-    if (say && !say.textContent) say.textContent = "The 3D view couldn't start here: three.js didn't load.";
-  }, 8000);
-</script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.0/three.min.js"></script>
-<script>
-// Take it apart, in WebGL: a laptop whose screen is the desktop's real screenshots, as textures at their
-// full size (mipmapped, filtered for the angle), so they stay sharp however it turns. The section is tall
-// and its view pinned; how far it has scrolled, followed smoothly, opens the lid and takes the laptop apart
-// three times, the labels following what they speak of: the screen into its layers, the base into its parts
-// (the keys, the board, the disk, Wi-Fi, the fans, the speakers, the battery), then the system's snapshots
-// coming out of it, back in time. Then it comes up close. What happens on the screen (unlocking, each app
-// opening) plays out in time, not with the scroll.
-(() => {
-const THREE = window.THREE;
-const sec = document.getElementById("inside");
-const fail = err => {
-  console.error(err);
-  sec.classList.remove("live");
-  sec.classList.add("nogl");
-  const say = sec.querySelector(".xp-status");
-  if (say) say.textContent = "The 3D view couldn't start here: " + (err?.message || err);
-};
-if (sec) try {
-  if (!THREE) throw new Error("three.js didn't load");
-  main();
-} catch (err) { fail(err); }
 
-// A box rounded in plan (its corners, r), as tall as h: the deck, the lid, the keys
-function RoundedBoxGeometry(w, h, d, _segments, r) {
-  r = Math.min(r * 4, w / 2, d / 2);
-  const s = new THREE.Shape(), x = -w / 2, y = -d / 2;
-  s.moveTo(x + r, y);
-  s.lineTo(x + w - r, y); s.quadraticCurveTo(x + w, y, x + w, y + r);
-  s.lineTo(x + w, y + d - r); s.quadraticCurveTo(x + w, y + d, x + w - r, y + d);
-  s.lineTo(x + r, y + d); s.quadraticCurveTo(x, y + d, x, y + d - r);
-  s.lineTo(x, y + r); s.quadraticCurveTo(x, y, x + r, y);
-  const g = new THREE.ExtrudeGeometry(s, { depth: h, bevelEnabled: false, curveSegments: 6 });
-  g.rotateX(-Math.PI / 2);
-  g.translate(0, -h / 2, 0);
-  g.computeVertexNormals();
-  return g;
-}
-
-function main() {
-  const pin = sec.querySelector(".xp-pin"), host = sec.querySelector(".xp-scene"), lines = sec.querySelector(".xp-lines");
-  const head = sec.querySelector(".xp-head");
-  const labels = [...sec.querySelectorAll(".xp-labels li")], caps = [...sec.querySelectorAll(".xp-cap div")];
-  const still = matchMedia("(prefers-reduced-motion: reduce)");
-  let renderer;
-  try {
-    renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: "high-performance" });
-    if (!renderer.getContext()) throw new Error("no WebGL");
-  } catch (e) {
-    fail(e);
-    return;
-  }
-  renderer.domElement.addEventListener("webglcontextlost", ev => { ev.preventDefault(); running = false; fail("the graphics card's context was lost"); });
-  renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 2));
-  renderer.outputColorSpace = THREE.SRGBColorSpace;
-  renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 1.05;
-  host.appendChild(renderer.domElement);
-
-  const clamp = v => Math.min(1, Math.max(0, v));
-  const ease = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-  const out = t => 1 - Math.pow(1 - t, 3);
-  const lerp = (a, b, t) => a + (b - a) * t;
-  const css = name => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
-
-  const scene = new THREE.Scene();
-  const pmrem = new THREE.PMREMGenerator(renderer);
-  // what the metal reflects: a light studio, bright above and dark below, with two soft lights
-  {
-    const c = document.createElement("canvas");
-    c.width = 512; c.height = 256;
-    const g = c.getContext("2d"), sky = g.createLinearGradient(0, 0, 0, 256);
-    sky.addColorStop(0, "#f4f6ff"); sky.addColorStop(.45, "#8a8fa8"); sky.addColorStop(.55, "#3a3c4e"); sky.addColorStop(1, "#0c0c12");
-    g.fillStyle = sky; g.fillRect(0, 0, 512, 256);
-    for (const [x, y, rad] of [[150, 60, 60], [380, 80, 45]]) {
-      const l = g.createRadialGradient(x, y, 0, x, y, rad);
-      l.addColorStop(0, "rgba(255,255,255,1)"); l.addColorStop(1, "rgba(255,255,255,0)");
-      g.fillStyle = l; g.fillRect(x - rad, y - rad, rad * 2, rad * 2);
-    }
-    const t = new THREE.CanvasTexture(c);
-    t.mapping = THREE.EquirectangularReflectionMapping;
-    t.colorSpace = THREE.SRGBColorSpace;
-    scene.environment = pmrem.fromEquirectangular(t).texture;
-    t.dispose();
-  }
-  const camera = new THREE.PerspectiveCamera(30, 1, .1, 100);
-  const key = new THREE.DirectionalLight(0xffffff, 1.4);
-  key.position.set(3, 6, 5);
-  scene.add(key, new THREE.HemisphereLight(0xc8d0ff, 0x101018, .5));
-
-  // --- textures: sharp at any angle --------------------------------------------------------------------
-  const maxAniso = renderer.capabilities.getMaxAnisotropy();
-  const loader = new THREE.TextureLoader();
-  const sharp = t => {
-    t.colorSpace = THREE.SRGBColorSpace;
-    t.anisotropy = maxAniso;
-    t.minFilter = THREE.LinearMipmapLinearFilter;
-    t.generateMipmaps = true;
-    return t;
-  };
-  // (a copy of the page may carry the pictures in itself, window.__xpImg: no request WebGL could refuse)
-  const image = url => sharp(loader.load(window.__xpImg?.[url] || url, () => { dirty = true; }));
-  const canvas = (w, h, draw) => {
-    const c = document.createElement("canvas");
-    c.width = w; c.height = h;
-    draw(c.getContext("2d"), w, h);
-    return sharp(new THREE.CanvasTexture(c));
-  };
-  // a rounded rectangle's shape as an alpha map (r: the corners' share of the width; top: round the top too)
-  const rounded = (aspect, r, top = true) => {
-    const t = canvas(512, Math.round(512 / aspect), (g, w, h) => {
-      g.fillStyle = "#000"; g.fillRect(0, 0, w, h); g.fillStyle = "#fff";
-      const rr = r * w;
-      g.beginPath();
-      g.roundRect(0, 0, w, h, top ? rr : [0, 0, rr, rr]);
-      g.fill();
-    });
-    t.colorSpace = THREE.NoColorSpace;
-    return t;
-  };
-
-  // --- the laptop ----------------------------------------------------------------------------------------
-  // in its own units: 3.2 wide; the screen 16:9 inside a bezel; the base as deep as the lid is tall
-  const W = 3.2, BZ = .06, SW = W - 2 * BZ, SH = SW * 9 / 16, LH = SH + 2 * BZ + .04, D = LH, GAP = .028, LT = .035;
-  const laptop = new THREE.Group();
-  scene.add(laptop);
-  const body = new THREE.MeshStandardMaterial({ metalness: .65, roughness: .34 });
-  const dark = new THREE.MeshStandardMaterial({ color: 0x15151d, metalness: .2, roughness: .75 });
-  const padMat = new THREE.MeshStandardMaterial({ metalness: .5, roughness: .22 });
-  // the deck's own: see-through while the base is apart, so what's under it shows
-  const deckMat = new THREE.MeshStandardMaterial({ metalness: .65, roughness: .34 });
-  const keyMat = new THREE.MeshStandardMaterial({ color: 0x15151d, metalness: .2, roughness: .75 });
-  const accentGlow = new THREE.MeshBasicMaterial({ toneMapped: false });
-  const outlineMat = () => new THREE.LineBasicMaterial({ transparent: true, opacity: 0, depthWrite: false });
-  const outlines = [];
-  const outline = (w, h, rot) => {
-    const g = new THREE.BufferGeometry().setFromPoints([[-1, -1], [1, -1], [1, 1], [-1, 1]].map(([x, y]) => new THREE.Vector3(x * w / 2, y * h / 2, 0)));
-    const l = new THREE.LineLoop(g, outlineMat());
-    if (rot) l.rotation.x = rot;
-    outlines.push(l);
-    return l;
-  };
-
-  // the base: the deck (keys and trackpad), the board, the case; each comes apart from the others
-  const parts = {};
-  const plate = (k, h, y, inset, top) => {
-    const g = new THREE.Group();
-    const m = new THREE.Mesh(new RoundedBoxGeometry(W * inset, h, D * inset, 4, Math.min(.03, h * .45)), k === "board" ? dark : k === "deck" ? deckMat : body);
-    m.position.y = -h / 2;
-    g.add(m);
-    if (top) {
-      const t = new THREE.Mesh(new THREE.PlaneGeometry(W * inset * .97, D * inset * .96), top);
-      t.rotation.x = -Math.PI / 2; t.position.y = .0012;
-      g.add(t);
-    }
-    const o = outline(W * inset, D * inset, -Math.PI / 2);
-    o.position.y = .002;
-    g.add(o);
-    g.position.y = y;
-    g.userData = { y, h, inset };
-    laptop.add(g);
-    parts[k] = g;
-    return g;
-  };
-  const boardTop = new THREE.MeshStandardMaterial({ metalness: .3, roughness: .55 });
-  const caseTop = new THREE.MeshStandardMaterial({ metalness: .3, roughness: .6 });
-  plate("case", .045, -.055, 1, caseTop);
-  plate("board", .02, -.035, .96, boardTop);
-  const deck = plate("deck", .035, 0, 1, null);
-  // keys: five rows of fourteen, the bottom one ctrl, fn, SUPER, alt, space, alt, ctrl and the arrows
-  {
-    const span = W * .86, gap = .018, cols = 14, kw = (span - gap * (cols - 1)) / cols, kh = kw * .92;
-    const keyGeo = new RoundedBoxGeometry(1, .02, 1, 2, .006);
-    const rows = [[...Array(14)].map(() => 1), [...Array(14)].map(() => 1), [...Array(14)].map(() => 1), [...Array(14)].map(() => 1), [1, 1, 1, 1, 6, 1, 1, 1, 1]];
-    const all = [];
-    rows.forEach((row, r) => {
-      let c = 0;
-      row.forEach((n, i) => {
-        all.push({ x: -span / 2 + c * (kw + gap) + (n * kw + (n - 1) * gap) / 2, z: -D / 2 + .16 + r * (kh + gap) + kh / 2, w: n * kw + (n - 1) * gap, super: r === 4 && i === 2 });
-        c += n;
-      });
-    });
-    const keys = new THREE.InstancedMesh(keyGeo, keyMat, all.length);
-    const m = new THREE.Matrix4();
-    all.forEach((k, i) => keys.setMatrixAt(i, m.compose(new THREE.Vector3(k.x, .01, k.z), new THREE.Quaternion(), new THREE.Vector3(k.w, 1, kh))));
-    deck.add(keys);
-    const s = all.find(k => k.super);
-    const sk = new THREE.Mesh(keyGeo, accentGlow);
-    sk.position.set(s.x, .0105, s.z); sk.scale.set(s.w, 1, kh);
-    deck.add(sk);
-    const pad = new THREE.Mesh(new RoundedBoxGeometry(W * .36, .004, D * .27, 2, .002), padMat);
-    pad.position.set(0, .001, D / 2 - .12 - D * .135);
-    deck.add(pad);
-  }
-
-  // what's inside: on the board the disk, the Wi-Fi card and the fans; on the case the speakers and the
-  // battery. Each rises from where it sits as the base comes apart; at: where its label points (its own units)
-  const comps = {};
-  const faces = [];
-  const face = (w, d, draw) => {
-    const m = new THREE.MeshStandardMaterial({ metalness: .25, roughness: .55 });
-    faces.push([m, (a, light) => canvas(1024, Math.max(64, Math.round(1024 * d / w)), (g, cw, ch) => draw(g, cw, ch, a, light))]);
-    return m;
-  };
-  const comp = (k, on, x, z, w, h, d, top, at, mat = dark) => {
-    const g = new THREE.Group();
-    const m = new THREE.Mesh(new RoundedBoxGeometry(w, h, d, 2, Math.min(.01, h * .4)), mat);
-    m.position.y = h / 2;
-    g.add(m);
-    if (top) {
-      const t = new THREE.Mesh(new THREE.PlaneGeometry(w * .94, d * .9), top);
-      t.rotation.x = -Math.PI / 2; t.position.y = h + .0012;
-      g.add(t);
-    }
-    g.position.set(x, 0, z);
-    g.userData = { at: new THREE.Vector3(...at), base: new THREE.Vector3(x, 0, z) };
-    on.add(g);
-    comps[k] = g;
-    return g;
-  };
-  const label = (g, text, sub, a, light, x, y, size = 96) => {
-    g.textAlign = "center"; g.textBaseline = "middle";
-    g.fillStyle = a; g.font = `700 ${size}px "JetBrains Mono", monospace`; g.fillText(text, x, y);
-    if (sub) { g.fillStyle = light ? "#4c4f69" : "#a6adc8"; g.font = `600 ${size * .55}px "JetBrains Mono", monospace`; g.fillText(sub, x, y + size * .95); }
-  };
-  comp("ssd", parts.board, .86, .3, .66, .014, .17, face(.66, .17, (g, w, h, a, light) => {
-    g.fillStyle = "#1b1b26"; g.fillRect(0, 0, w, h);
-    g.fillStyle = a; g.fillRect(0, 0, 18, h);
-    for (let i = 0; i < 3; i++) { g.fillStyle = "#2b2c3c"; g.fillRect(w * .52 + i * w * .155, h * .18, w * .13, h * .64); }
-    label(g, "NVMe", "Btrfs · zstd", a, false, w * .25, h * .38, 70);
-  }), [.33, .014, 0]);
-  comp("wifi", parts.board, -.92, .34, .26, .01, .2, face(.26, .2, (g, w, h, a) => {
-    g.fillStyle = "#16261e"; g.fillRect(0, 0, w, h);
-    g.fillStyle = "#c9cdd8"; g.fillRect(w * .2, h * .22, w * .6, h * .36);
-    label(g, "Wi-Fi 6E", "· Bluetooth ·", a, false, w / 2, h * .74, 70);
-  }), [-.13, .01, .1]);
-  // the fans: a housing and blades that turn while they're out
-  const blades = [];
-  for (const side of [-1, 1]) {
-    const k = side < 0 ? "fanL" : "fans";
-    const g = comp(k, parts.board, side * .78, -.43, .58, .03, .58, null, [side * .29, .03, -.1]);
-    g.children[0].visible = false;
-    const housing = new THREE.Mesh(new THREE.CylinderGeometry(.27, .27, .03, 48, 1, true), dark);
-    housing.position.y = .015;
-    g.add(housing);
-    const bladeMat = face(.54, .54, (c, w, h, a) => {
-      c.clearRect(0, 0, w, h);
-      c.translate(w / 2, h / 2);
-      c.strokeStyle = a; c.lineWidth = 10; c.beginPath(); c.arc(0, 0, w * .48, 0, 7); c.stroke();
-      c.fillStyle = "#3a3c52";
-      for (let i = 0; i < 11; i++) {
-        c.rotate(Math.PI * 2 / 11);
-        c.beginPath(); c.moveTo(w * .08, 0); c.quadraticCurveTo(w * .3, -w * .12, w * .45, -w * .02); c.quadraticCurveTo(w * .3, w * .05, w * .08, w * .04); c.fill();
-      }
-      c.fillStyle = "#24253a"; c.beginPath(); c.arc(0, 0, w * .1, 0, 7); c.fill();
-      c.fillStyle = a; c.beginPath(); c.arc(0, 0, w * .04, 0, 7); c.fill();
-    });
-    bladeMat.transparent = true;
-    const b = new THREE.Mesh(new THREE.CircleGeometry(.265, 48), bladeMat);
-    b.rotation.x = -Math.PI / 2; b.position.y = .02;
-    g.add(b);
-    blades.push(b);
-  }
-  const grille = (w, d) => face(w, d, (g, cw, ch) => {
-    g.fillStyle = "#1b1b26"; g.fillRect(0, 0, cw, ch);
-    g.fillStyle = "#4a4c62";
-    for (let y = 20; y < ch - 10; y += 26) for (let x = 20; x < cw - 10; x += 26) { g.beginPath(); g.arc(x, y, 7, 0, 7); g.fill(); }
-  });
-  for (const side of [-1, 1]) comp(side < 0 ? "spkL" : "speakers", parts.case, side * 1.36, .02, .2, .03, .95, grille(.2, .95), [side * .1, .03, -.3]);
-  comp("battery", parts.case, 0, .36, 2.2, .03, .62, face(2.2, .62, (g, w, h, a, light) => {
-    g.fillStyle = "#1d1e2c"; g.fillRect(0, 0, w, h);
-    g.strokeStyle = a; g.lineWidth = 5;
-    for (let i = 0; i < 4; i++) { g.fillStyle = "#26283a"; g.beginPath(); g.roundRect(30 + i * (w - 60) / 4 + 8, 30, (w - 60) / 4 - 16, h - 60, 18); g.fill(); g.stroke(); }
-    label(g, "BATTERY", "charge limit 80 %", a, light, w / 2, h * .42, 64);
-  }), [-1.1, .03, .2]);
-
-  // the snapshots: the system as it was, copies coming out of it back in time
-  const ghostMat = new THREE.MeshBasicMaterial({ transparent: true, opacity: 0, depthWrite: false, toneMapped: false });
-  const ghostEdge = new THREE.LineBasicMaterial({ transparent: true, opacity: 0, depthWrite: false });
-  const ghosts = [1, 2, 3].map(i => {
-    const g = new THREE.Group();
-    const slab = new THREE.Mesh(new THREE.BoxGeometry(W, .1, D), ghostMat);
-    slab.position.y = -.05;
-    const slabEdge = new THREE.LineSegments(new THREE.EdgesGeometry(slab.geometry), ghostEdge);
-    slabEdge.position.y = -.05;
-    const hinge = new THREE.Group();
-    hinge.position.set(0, 0, -D / 2);
-    hinge.rotation.x = -THREE.MathUtils.degToRad(104);
-    const lidBox = new THREE.BoxGeometry(W, LT, LH);
-    const gl = new THREE.Mesh(lidBox, ghostMat), ge = new THREE.LineSegments(new THREE.EdgesGeometry(lidBox), ghostEdge);
-    gl.position.set(0, GAP + LT / 2, LH / 2); ge.position.copy(gl.position);
-    hinge.add(gl, ge);
-    g.add(slab, slabEdge, hinge);
-    g.userData = { i, top: new THREE.Vector3(0, GAP + LT, LH), hinge };
-    g.visible = false;
-    laptop.add(g);
-    return g;
-  });
-
-  // the lid, hinged at the back of the deck: its body and the logo on its back; the screen on its face
-  const lid = new THREE.Group();
-  lid.position.set(0, 0, -D / 2);
-  laptop.add(lid);
-  const lidBody = new THREE.Mesh(new RoundedBoxGeometry(W, LT, LH, 4, LT * .45), body);
-  lidBody.position.set(0, GAP + LT / 2, LH / 2);
-  lid.add(lidBody);
-  const logoMat = new THREE.MeshBasicMaterial({ transparent: true, toneMapped: false, depthWrite: false });
-  const logo = new THREE.Mesh(new THREE.PlaneGeometry(.62, .62), logoMat);
-  logo.rotation.x = -Math.PI / 2;
-  logo.position.set(0, GAP + LT + .0015, LH / 2);
-  lid.add(logo);
-  const bezel = new THREE.Mesh(new THREE.PlaneGeometry(W - .03, LH - .03), new THREE.MeshStandardMaterial({ color: 0x07070b, metalness: .1, roughness: .35 }));
-  bezel.rotation.x = Math.PI / 2;
-  bezel.position.set(0, GAP - .0006, LH / 2);
-  lid.add(bezel);
-  // the screen: its local +z is out of the glass, +y up the lid
-  const screen = new THREE.Group();
-  screen.rotation.x = Math.PI / 2;
-  screen.position.set(0, GAP - .0012, .04 + BZ + SH / 2 - .01);
-  lid.add(screen);
-
-  // a picture on the screen at its place in the 1920x1080 screenshot
-  const shot = (url, [x, y, w, h], alpha, order) => {
-    const mat = new THREE.MeshBasicMaterial({ map: image(url), transparent: true, toneMapped: false, alphaMap: alpha || null });
-    const m = new THREE.Mesh(new THREE.PlaneGeometry(w / 1920 * SW, h / 1080 * SH), mat);
-    m.position.set(((x + w / 2) / 1920 - .5) * SW, (.5 - (y + h / 2) / 1080) * SH, 0);
-    m.renderOrder = order;
-    return m;
-  };
-  const layers = {};
-  const layer = (k, order, ...shots) => {
-    const g = new THREE.Group();
-    shots.forEach(s => g.add(s));
-    g.add(outline(SW, SH));
-    g.userData.order = order;
-    screen.add(g);
-    layers[k] = g;
-  };
-  const FULL = [0, 0, 1920, 1080];
-  const win = rounded(948 / 1026, .012);
-  layer("wall", 1, shot("shots/xp-wall.webp", FULL, null, 1));
-  layer("win", 2, shot("shots/xp-term.webp", [8, 47, 948, 1026], win, 2), shot("shots/xp-doc.webp", [965, 47, 948, 1026], win, 2));
-  layer("bar", 3, shot("shots/xp-bar.webp", [0, 0, 1920, 30], null, 3));
-  layer("island", 4, shot("shots/xp-island.webp", [719, 0, 483, 749], rounded(483 / 749, .062, false), 4));
-  // what covers the layers: the lock screen as the lid opens, then the apps, each over the one before
-  const lock = shot("shots/xp-lock.webp", FULL, null, 10);
-  screen.add(lock);
-  const apps = ["doctor", "store", "office", "settings"].map((n, i) => {
-    const m = shot(`shots/xp-${n}.webp`, FULL, null, 11 + i);
-    m.material.opacity = 0; m.visible = false;
-    screen.add(m);
-    return m;
-  });
-  // a soft shadow under it all
-  const shadow = new THREE.Mesh(new THREE.PlaneGeometry(W * 1.9, D * 1.9), new THREE.MeshBasicMaterial({
-    transparent: true, depthWrite: false, toneMapped: false,
-    map: canvas(256, 256, (g, w, h) => {
-      const r = g.createRadialGradient(w / 2, h / 2, 0, w / 2, h / 2, w / 2);
-      r.addColorStop(0, "rgba(0,0,0,.55)"); r.addColorStop(.55, "rgba(0,0,0,.25)"); r.addColorStop(1, "rgba(0,0,0,0)");
-      g.fillStyle = r; g.fillRect(0, 0, w, h);
-    }),
-  }));
-  shadow.rotation.x = -Math.PI / 2;
-  laptop.add(shadow);
-
-  // --- the colours, from the page's palette (light or dark, the accent) --------------------------------------
-  const logoPath = document.querySelector(".brand svg path")?.getAttribute("d") || "";
-  let accent = "";
-  function paint() {
-    const a = css("--accent") || "#89b4fa", light = css("color-scheme") === "light" || css("--crust").toLowerCase() === "#dce0e8";
-    const sig = a + light;
-    if (sig === accent) return;
-    accent = sig;
-    body.color.set(light ? 0xc9cdd8 : 0x3b3d52);
-    deckMat.color.copy(body.color);
-    padMat.color.set(light ? 0xb3b7c4 : 0x2f3145);
-    accentGlow.color.set(a);
-    outlines.forEach(l => l.material.color.set(a));
-    ghostMat.color.set(a); ghostEdge.color.set(a);
-    shadow.material.opacity = light ? .45 : .9;
-    logoMat.map?.dispose();
-    logoMat.map = canvas(512, 512, (g, w) => {
-      g.translate(w * .14, w * .14); g.scale(w * .72 / 24, w * .72 / 24);
-      g.shadowColor = a; g.shadowBlur = 14; g.fillStyle = a;
-      g.fill(new Path2D(logoPath), "evenodd");
-      g.shadowBlur = 0; g.fill(new Path2D(logoPath), "evenodd");
-    });
-    logoMat.needsUpdate = true;
-    // the board: traces, and the chips of what runs underneath
-    boardTop.map?.dispose();
-    boardTop.map = canvas(2048, Math.round(2048 * D / W), (g, w, h) => {
-      g.fillStyle = "#12121a"; g.fillRect(0, 0, w, h);
-      g.strokeStyle = a; g.globalAlpha = .16; g.lineWidth = 3;
-      for (let x = 40; x < w; x += 64) { g.beginPath(); g.moveTo(x, 0); g.lineTo(x, h); g.stroke(); }
-      for (let y = 40; y < h; y += 80) { g.beginPath(); g.moveTo(0, y); g.lineTo(w, y); g.stroke(); }
-      g.globalAlpha = 1;
-      const chips = [["linux", 520, 300, 1], ["systemd", 380, 170], ["pacman", 380, 170], ["PipeWire", 380, 170], ["NetworkManager", 520, 170], ["BlueZ", 300, 170], ["Mesa", 300, 170], ["fwupd", 300, 170]];
-      let x = 150, y = 170, rowH = 0;
-      g.textAlign = "center"; g.textBaseline = "middle";
-      for (const [name, cw, ch, main] of chips) {
-        if (x + cw > w - 150) { x = 150; y += rowH + 60; rowH = 0; }
-        g.fillStyle = "#1e1e2e"; g.strokeStyle = a; g.lineWidth = main ? 6 : 4;
-        g.beginPath(); g.roundRect(x, y, cw, ch, 18); g.fill(); g.stroke();
-        g.fillStyle = main ? a : "#cdd6f4";
-        g.font = `600 ${main ? 92 : 62}px "JetBrains Mono", monospace`;
-        g.fillText(name, x + cw / 2, y + ch / 2);
-        x += cw + 60; rowH = Math.max(rowH, ch);
-      }
-    });
-    boardTop.needsUpdate = true;
-    // the case: its screws and its name
-    caseTop.map?.dispose();
-    caseTop.map = canvas(2048, Math.round(2048 * D / W), (g, w, h) => {
-      g.fillStyle = light ? "#b9bdca" : "#202131"; g.fillRect(0, 0, w, h);
-      g.fillStyle = light ? "#8d91a0" : "#3a3c52";
-      for (const [x, y] of [[90, 90], [w - 90, 90], [90, h - 90], [w - 90, h - 90], [w / 2, 90], [w / 2, h - 90]]) { g.beginPath(); g.arc(x, y, 22, 0, 7); g.fill(); }
-      g.fillStyle = light ? "#4c4f69" : "#6c7086"; g.textAlign = "center"; g.textBaseline = "middle";
-      g.font = `600 64px "JetBrains Mono", monospace`;
-      g.fillText("V Y N T A R I S", w / 2, h / 2);
-    });
-    caseTop.needsUpdate = true;
-    // the parts' faces
-    for (const [m, draw] of faces) {
-      m.map?.dispose();
-      m.map = draw(a, light);
-      m.needsUpdate = true;
-    }
-    dirty = true;
-  }
-
-  // --- labels: each points at a spot of its layer ---------------------------------------------------------
-  // (a share of the layer's width and height from its top left; the base's parts: their front left corner)
-  const point = { island: [.62, .3], bar: [.985, .014], win: [.985, .6], wall: [.995, .93] };
-  const anchor = k => {
-    if (point[k]) {
-      const [fx, fy] = point[k];
-      return layers[k].localToWorld(new THREE.Vector3((fx - .5) * SW, (.5 - fy) * SH, 0));
-    }
-    if (comps[k]) return comps[k].localToWorld(comps[k].userData.at.clone());
-    if (/^g\d$/.test(k)) { const g = ghosts[+k[1] - 1]; return g.userData.hinge.localToWorld(new THREE.Vector3(0, GAP + LT, LH)); }
-    // the snapshots' label: the nearest copy's front right; update-guard's: the laptop's own lid, top left
-    if (k === "snap") return ghosts[0].localToWorld(new THREE.Vector3(W / 2, 0, D / 2));
-    if (k === "guard") return lid.localToWorld(new THREE.Vector3(-W / 2, GAP + LT, LH));
-    const g = parts[k];
-    return g.localToWorld(new THREE.Vector3(-W * g.userData.inset * .47, .002, D * g.userData.inset * .45));
-  };
-  const ns = "http://www.w3.org/2000/svg";
-  const marks = labels.map((li, i) => {
-    li.style.setProperty("--i", i);
-    const g = document.createElementNS(ns, "g"), path = document.createElementNS(ns, "path"), dot = document.createElementNS(ns, "circle");
-    dot.setAttribute("r", "3"); g.append(path, dot); lines.appendChild(g);
-    return { g, path, dot };
-  });
-
-  // --- what plays out in time: unlocking, each app opening ------------------------------------------------
-  const tween = v => ({ v, from: v, to: v, start: 0 });
-  const unlocked = tween(0), shown = apps.map(() => tween(0));
-  const DUR = { unlock: 700, app: 650 };
-  const aim = (t, to, now) => { if (t.to !== to) { t.from = t.v; t.to = to; t.start = now; } };
-  const step = (t, now, dur) => {
-    const k = still.matches ? 1 : clamp((now - t.start) / dur);
-    t.v = lerp(t.from, t.to, out(k));
-    return k < 1;
-  };
-
-  // --- sizes ----------------------------------------------------------------------------------------------
-  let vw = 1, vh = 1, narrow = false, dirty = true, headBottom = 0, labelRoom = 0, pillRoom = 0, capRoom = 0;
-  function size() {
-    sec.classList.toggle("still", still.matches);
-    vw = pin.clientWidth; vh = pin.clientHeight;
-    narrow = vw < 1080;
-    sec.classList.toggle("narrow", narrow);
-    renderer.setSize(vw, vh, false);
-    camera.aspect = vw / vh;
-    camera.fov = narrow ? 34 : 30;
-    camera.updateProjectionMatrix();
-    lines.setAttribute("viewBox", `0 0 ${vw} ${vh}`);
-    // where the section's title ends: while it shows, the laptop keeps below it
-    headBottom = head.offsetTop + head.offsetHeight + 16;
-    // narrow: the room the label at the bottom takes (the tallest of them), kept free of the laptop
-    // the apps' words at the bottom, up close: the room they take (the tallest), kept free of the laptop
-    capRoom = Math.max(0, ...caps.map(c => c.offsetHeight)) + 28 + 20;
-    // narrow: the snapshots' dates, stacked over their copies, take some room at the top
-    const pill = labels.find(li => li.classList.contains("pill"));
-    pillRoom = narrow && pill ? 3 * (pill.offsetHeight + 6) + 12 : 0;
-    labelRoom = narrow ? Math.max(0, ...labels.filter(li => !li.classList.contains("pill")).map(li => li.offsetHeight)) + 32 : 0;
-    dirty = true;
-  }
-  // how far the camera stands for a w-by-h box to take the share fw of the width and fh of the height
-  const fit = (w, h, fw, fh) => {
-    const t = Math.tan(THREE.MathUtils.degToRad(camera.fov / 2));
-    return Math.max(w / (2 * t * camera.aspect * fw), h / (2 * t * fh));
-  };
-
-  // --- each frame -----------------------------------------------------------------------------------------
-  let p = still.matches ? .45 : 0, last = performance.now(), running = false;
-  const target = () => {
-    if (still.matches) return .45;
-    const top = parseFloat(getComputedStyle(pin).top) || 0;
-    return clamp((top - sec.getBoundingClientRect().top) / Math.max(1, sec.offsetHeight - pin.offsetHeight));
-  };
-  const tgt = new THREE.Vector3(), tmp = new THREE.Vector3();
-  function frame(now) {
-    if (!running) return;
-    requestAnimationFrame(frame);
-    try {
-      draw(now);
-    } catch (err) {
-      running = false;
-      fail(err);
-    }
-  }
-  function draw(now) {
-    const dt = Math.min(.1, (now - last) / 1000);
-    last = now;
-    const goal = target();
-    const before = p;
-    // followed smoothly: a wheel's steps become one motion
-    p = still.matches ? goal : p + (goal - p) * (1 - Math.exp(-dt * 7));
-    if (Math.abs(goal - p) < 1e-4) p = goal;
-    const moving = p !== before;
-
-    // open; apart three times (the screen, the base, the snapshots), each back together before the next;
-    // up close, and which app (-1: none yet)
-    const span = (a, up, b, down) => ease(clamp((p - a) / up)) * (1 - ease(clamp((p - b) / down)));
-    const o = ease(clamp(p / .08));
-    const eS = span(.11, .08, .30, .05), eB = span(.33, .08, .52, .05), eT = span(.55, .08, .72, .05);
-    const e = Math.max(eS, eB, eT);
-    const z = ease(clamp((p - .77) / .05));
-    const app = p < .82 ? -1 : Math.min(apps.length - 1, Math.floor((p - .82) / .18 * apps.length));
-    aim(unlocked, p >= .095 ? 1 : 0, now);
-    shown.forEach((t, i) => aim(t, i <= app ? 1 : 0, now));
-    let playing = step(unlocked, now, DUR.unlock) || eB > .01;
-    shown.forEach(t => { playing = step(t, now, DUR.app) || playing; });
-    if (!moving && !playing && !dirty) return;
-    dirty = false;
-
-    const headShown = 1 - clamp((p - .1) / .04);
-    head.style.opacity = headShown;
-    // the title's room at the top, while it shows: the view below it, the laptop fitted to what's left
-    const room = Math.min(headBottom, vh * .55) * headShown + pillRoom * eT;
-    const below = Math.max(Math.min(labelRoom, vh * .45) * Math.max(eS, eB, eT), Math.min(capRoom, vh * .45) * z);
-    lid.rotation.x = -THREE.MathUtils.degToRad(lerp(0, 104, o));
-    // the layers apart along the screen's depth; the base's parts up and down
-    const spread = { wall: 0, win: .36, bar: .62, island: .88 };
-    for (const k in spread) layers[k].position.z = .0008 * layers[k].userData.order + spread[k] * eS;
-    parts.deck.position.set(0, parts.deck.userData.y + 1.05 * eB, .25 * eB);
-    // the lid goes up with the deck it's hinged to: nothing passes through the screen
-    lid.position.set(0, 1.05 * eB, -D / 2 + .25 * eB);
-    parts.board.position.y = parts.board.userData.y - .1 * eB;
-    parts.case.position.y = parts.case.userData.y - .8 * eB;
-    shadow.position.y = parts.case.position.y - .05;
-    // the parts rise from where they sit; the speakers out to the sides; the fans turn
-    for (const m of [deckMat, keyMat, padMat]) {
-      m.transparent = eB > .001;
-      m.opacity = 1 - .68 * eB;
-      m.depthWrite = eB < .5;
-    }
-    const rise = { ssd: .48, wifi: .44, fans: .58, fanL: .58, speakers: .36, spkL: .36, battery: .36 };
-    for (const k in rise) {
-      const g = comps[k], b = g.userData.base;
-      g.position.set(b.x + (k === "speakers" ? .5 : k === "spkL" ? -.5 : 0) * eB, rise[k] * eB, b.z);
-    }
-    blades.forEach((b, i) => { b.rotation.z += dt * (i ? 5 : -5) * eB; });
-    for (const k in layers) layers[k].children.find(c => c.isLineLoop).material.opacity = eS * .75;
-    for (const k in parts) parts[k].children.find(c => c.isLineLoop).material.opacity = eB * .75;
-    // the snapshots out of the laptop, each further back in time, fainter
-    ghosts.forEach(g => {
-      const i = g.userData.i;
-      g.visible = eT > .01;
-      g.position.set(-1.45 * i * eT, .06 * i * eT, -1.3 * i * eT);
-    });
-    ghostMat.opacity = .14 * eT; ghostEdge.opacity = .6 * eT;
-    // unlocking: the lock screen fades as the desktop's layers settle in from a little smaller
-    lock.material.opacity = 1 - unlocked.v;
-    lock.visible = unlocked.v < 1;
-    lock.position.z = .012;
-    for (const k of ["win", "bar", "island"]) layers[k].scale.setScalar(lerp(.94, 1, unlocked.v));
-    // each app opening over the one before: in from a little smaller and lower
-    apps.forEach((m, i) => {
-      const v = shown[i].v, covered = i < app && shown[i + 1].v >= 1;
-      m.visible = v > 0 && !covered;
-      m.material.opacity = v;
-      m.scale.setScalar(.9 + .1 * v);
-      m.position.y = -.08 * (1 - v);
-      m.position.z = .016 + .002 * i;
-    });
-    caps.forEach((c, i) => c.classList.toggle("on", i === app));
-
-    // the camera: from above, turning to the side as it comes apart, then in front, close
-    const el = lerp(lerp(44, 16, o) + 10 * eS + 14 * eB + 4 * eT, 4, z), az = (lerp(-8, 0, o) + 34 * eS + 24 * eB + 30 * eT) * (1 - z);
-    laptop.updateMatrixWorld(true);
-    const screenAt = screen.getWorldPosition(tmp.set(0, 0, 0)).clone();
-    tgt.set((narrow ? -.12 : -.42) * eS - .1 * eB - 2.1 * eT, lerp(0, LH * .4, o) - .22 * eS + .42 * eB + .1 * eT, lerp(.2, 0, o) + .1 * eB - 1.7 * eT);
-    tgt.lerp(screenAt.add(new THREE.Vector3(0, -.12, 0)), z);
-    const far = fit(W * (1 + .35 * eS + .3 * eB + 1.25 * eT), lerp(D * .9, LH * 1.35, o) + .7 * eS + 2.1 * eB + .4 * eT, narrow ? .9 : .4, (narrow ? .74 : .66) * (vh - room - below) / vh);
-    const near = fit(W * 1.12, LH * 1.4, narrow ? .9 : .5, .86 * (vh - Math.min(capRoom, vh * .45)) / vh);
-    const dist = lerp(far, near, z);
-    const elr = THREE.MathUtils.degToRad(el), azr = THREE.MathUtils.degToRad(az);
-    camera.position.set(tgt.x + dist * Math.cos(elr) * Math.sin(azr), tgt.y + dist * Math.sin(elr), tgt.z + dist * Math.cos(elr) * Math.cos(azr));
-    camera.lookAt(tgt);
-    if (room > 1 || below > 1) camera.setViewOffset(vw, vh, 0, (below - room) / 2, vw, vh); else camera.clearViewOffset();
-    camera.updateMatrixWorld();
-    renderer.render(scene, camera);
-    // drawn: the laptop takes the picture's place (and the fallback's, had it come first)
-    if (!window.__xpReady) { window.__xpReady = true; sec.classList.remove("nogl"); sec.classList.add("live"); }
-    place(p, { s: eS, b: eB, t: eT });
-  }
-
-  // the labels of the part taken apart: beside what they speak of (wide), or one at a time at the bottom
-  // with it outlined (narrow); a snapshot's date as a pill on it
-  const WINDOW = { s: [.19, .30], b: [.41, .52], t: [.63, .72] };
-  function place(p, ph) {
-    const active = ["s", "b", "t"].find(k => ph[k] > .9) || null;
-    const group = labels.filter(li => li.dataset.phase === active);
-    const cards = group.filter(li => !li.classList.contains("pill"));
-    const [w0, w1] = WINDOW[active] || [0, 1];
-    const stepNo = Math.min(cards.length - 1, Math.floor(clamp((p - w0) / (w1 - w0)) * cards.length));
-    labels.forEach((li, i) => {
-      if (li.dataset.phase !== active) { li.classList.remove("on"); marks[i].g.classList.remove("on"); }
-    });
-    if (!active) return;
-    const spots = group.map(li => {
-      const v = anchor(li.dataset.k).project(camera);
-      return { li, k: li.dataset.k, x: (v.x + 1) / 2 * vw, y: (1 - v.y) / 2 * vh, side: li.dataset.side, pill: li.classList.contains("pill") };
-    });
-    if (!narrow) {
-      for (const side of ["r", "l"]) {
-        const col = spots.filter(s => !s.pill && s.side === side).sort((a, b) => a.y - b.y);
-        if (!col.length) continue;
-        let end = -Infinity;
-        for (const s of col) { s.ly = Math.max(s.y - 40, end + 12, 16); end = s.ly + s.li.offsetHeight; }
-        const over = end - (vh - 16);
-        if (over > 0) col.forEach(s => s.ly -= over);
-        const xs = col.map(s => s.x);
-        const lx = side === "r" ? Math.min(vw - 266, Math.max(...xs) + 56) : Math.max(16, Math.min(...xs) - 56 - 250);
-        col.forEach(s => s.lx = lx);
-      }
-    }
-    // the snapshots' dates over their copies, moved apart where they'd overlap, and kept on the screen
-    const pills = spots.filter(s => s.pill).sort((a, b) => b.y - a.y);
-    let floor = Infinity;
-    for (const s of pills) {
-      const h = s.li.offsetHeight, w = s.li.offsetWidth;
-      s.py = Math.min(s.y - h - 12, floor - h - 6);
-      s.px = Math.max(8, Math.min(vw - w - 8, s.x - w / 2));
-      floor = s.py;
-    }
-    // the highest one on the screen still: the stack comes down as a whole
-    const top = pills.length ? Math.min(...pills.map(s => s.py)) : 0;
-    if (top < 8) pills.forEach(s => s.py += 8 - top);
-    spots.forEach(s => {
-      const i = labels.indexOf(s.li), m = marks[i];
-      if (s.pill) {
-        s.li.classList.add("on");
-        s.li.style.transform = `translate(${s.px}px, ${s.py}px)`;
-        return;
-      }
-      const lit = narrow ? cards.indexOf(s.li) === stepNo : true;
-      s.li.classList.toggle("on", lit);
-      m.g.classList.toggle("on", !narrow && lit);
-      if (!narrow) {
-        s.li.style.transform = `translate(${s.lx}px, ${s.ly}px)`;
-        const ex = s.side === "r" ? s.lx : s.lx + 250, ey = s.ly + 22;
-        m.path.setAttribute("d", `M${s.x},${s.y} L${(s.x + ex) / 2},${ey} L${ex},${ey}`);
-        m.dot.setAttribute("cx", s.x); m.dot.setAttribute("cy", s.y);
-      } else {
-        s.li.style.transform = "";
-      }
-    });
-    // narrow: what the label speaks of, outlined brighter
-    if (narrow) {
-      const k = cards[stepNo]?.dataset.k;
-      for (const [n, g] of Object.entries(active === "s" ? layers : active === "b" ? parts : {})) {
-        const l = g.children.find(c => c.isLineLoop);
-        if (l) l.material.opacity = n === k ? 1 : .35;
-      }
-    }
-  }
-
-  // runs only while the section is on the screen
-  const go = () => { if (!running) { running = true; last = performance.now(); dirty = true; requestAnimationFrame(frame); } };
-  new IntersectionObserver(([en]) => { if (en.isIntersecting) go(); else running = false; }).observe(sec);
-  addEventListener("resize", size);
-  still.addEventListener("change", () => { size(); dirty = true; });
-  const themed = () => { paint(); dirty = true; };
-  matchMedia("(prefers-color-scheme: dark)").addEventListener("change", themed);
-  addEventListener("vyntaris-accent", themed);
-  new MutationObserver(themed).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
-  size();
-  paint();
-  // the chips' and the case's words wait for the font
-  document.fonts?.load('600 64px "JetBrains Mono"').then(() => { accent = ""; paint(); });
-}
+  // where you are, in the header
+  const links = [...document.querySelectorAll(".nav a")];
+  const seen = new IntersectionObserver(es => es.forEach(e => {
+    if (!e.isIntersecting) return;
+    links.forEach(a => a.toggleAttribute("aria-current", a.hash === "#" + e.target.id));
+  }), { rootMargin: "-45% 0px -50% 0px" });
+  links.forEach(a => { const s = document.querySelector(a.hash); if (s) seen.observe(s); });
 })();
 </script>
 </body>
