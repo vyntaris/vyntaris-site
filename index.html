@@ -40,9 +40,24 @@
       </div>
       <p class="meta">Free. For 64-bit PCs with UEFI. Updates itself from Arch Linux.</p>
     </div>
-    <figure class="shot">
-      <picture><source media="(max-width: 600px)" srcset="/shots/control-panel.webp" width="540" height="900">
-      <img src="/shots/control.webp" alt="The Vyntaris desktop with the island open as the control center: Wi-Fi, Bluetooth, night light and the microphone as tiles, volume and brightness, the processor and memory, and this month's calendar with the weather." width="1920" height="1080" decoding="async"></picture>
+    <figure class="shot stage-wrap">
+      <div class="island-pick" role="group" aria-label="Show the island as" hidden>
+        <button type="button" data-panel="control" aria-pressed="true">Control center</button>
+        <button type="button" data-panel="launcher" aria-pressed="false">Launcher</button>
+        <button type="button" data-panel="sound" aria-pressed="false">Sound</button>
+        <button type="button" data-panel="wallpapers" aria-pressed="false">Wallpapers</button>
+        <button type="button" data-panel="gamemode" aria-pressed="false">Game mode</button>
+      </div>
+      <div class="stage" id="stage">
+        <img class="stage-wall" src="/shots/xp-wall.webp" alt="" width="1920" height="1080" fetchpriority="high">
+        <img class="stage-bar" src="/shots/xp-bar.webp" alt="" width="1920" height="30">
+        <img class="stage-panel" data-panel="control" src="/shots/control-panel.webp" alt="The island as the control center: Wi-Fi, Bluetooth, night light and the microphone as tiles, volume and brightness, the processor and memory, and the month with the weather." width="540" height="900" style="--x: 35.938%; --w: 28.125%">
+        <img class="stage-panel" data-panel="launcher" src="/shots/launcher-panel.webp" alt="The island as the launcher: apps, settings, windows and files found as you type." width="680" height="720" style="--x: 32.292%; --w: 35.417%" hidden>
+        <img class="stage-panel" data-panel="sound" src="/shots/sound-panel.webp" alt="The island as the sound panel: the output and input in use, their volume, every other device and noise suppression." width="540" height="560" style="--x: 35.938%; --w: 28.125%" hidden>
+        <img class="stage-panel" data-panel="wallpapers" src="/shots/wallpapers-panel.webp" alt="The island as the wallpaper picker: wallpapers in a row under the bar." width="900" height="330" style="--x: 26.562%; --w: 46.875%" hidden>
+        <img class="stage-panel" data-panel="gamemode" src="/shots/gamemode-panel.webp" alt="The island as game mode: notifications silenced, the FPS and temperatures shown." width="560" height="300" style="--x: 35.417%; --w: 29.167%" hidden>
+      </div>
+      <figcaption>The island at the top of the screen, grown into the panel picked. Every panel opens from it and goes back into it.</figcaption>
     </figure>
     <ul class="facts">
       <li><strong>Updates that undo themselves</strong><span>A snapshot before every upgrade, and the way back if one fails.</span></li>
@@ -51,6 +66,43 @@
       <li><strong>No setup questions</strong><span>Who you are and which disk. Ready in minutes.</span></li>
     </ul>
   </div>
+
+<section class="xp" id="inside" aria-labelledby="xp-h">
+    <div class="xp-pin">
+      <div class="wrap xp-head">
+        <p class="caps eyebrow">Take it apart</p>
+        <h2 id="xp-h">Every layer, made to fit.</h2>
+        <p class="lead">Scroll, and the laptop opens and comes apart: what you see on the screen, and what runs beneath it.</p>
+      </div>
+      <div class="xp-scene" aria-hidden="true"></div>
+      <div class="wrap xp-fallback"><div class="shot"><img src="/shots/control.webp" loading="lazy" width="1920" height="1080" alt="The Vyntaris desktop with the control center open"></div><p class="xp-status"></p></div>
+      <svg class="xp-lines" aria-hidden="true"></svg>
+      <div class="xp-cap" aria-live="polite">
+        <div><span class="caps">Its own apps</span><h3>Dr. Help</h3><p>Looks the system over the way the Arch Wiki asks, and puts right what it can, with one password.</p></div>
+        <div><span class="caps">Its own apps</span><h3>Store</h3><p>Every app Arch describes, and the AUR's, installed with a click. No terminal.</p></div>
+        <div><span class="caps">Vyntaris Office</span><h3>VSheet, VDoc, VSlide</h3><p>Word, Excel and PowerPoint files, password-protected ones too.</p></div>
+        <div><span class="caps">Settings</span><h3>One place for all of it</h3><p>Every setting in one file, and Ctrl+F finds any of them.</p></div>
+      </div>
+      <ol class="xp-labels">
+        <li data-k="island" data-phase="s" data-side="r"><span class="caps">Quickshell</span><h3>The island</h3><p>The control center, the launcher, sound, media and the power menu all grow out of the clock. One panel at a time.</p></li>
+        <li data-k="bar" data-phase="s" data-side="r"><span class="caps">Quickshell</span><h3>The bar</h3><p>Workspaces with live previews, the tray, the privacy dot, Wi-Fi and the battery.</p></li>
+        <li data-k="win" data-phase="s" data-side="r"><span class="caps">Hyprland</span><h3>The windows</h3><p>Tiling that places windows by itself, animated, set from the same settings file as everything else.</p></li>
+        <li data-k="wall" data-phase="s" data-side="r"><span class="caps">Colour</span><h3>The wallpaper</h3><p>Drawn again in your accent. GTK and Qt apps, Firefox, VS Code, the icons and the login screen follow it.</p></li>
+        <li data-k="deck" data-phase="b" data-side="l"><span class="caps">Keys</span><h3>One key to start</h3><p>Tap SUPER for the control center and type to search. The first letter is never lost.</p></li>
+        <li data-k="wifi" data-phase="b" data-side="l"><span class="caps">NetworkManager · BlueZ</span><h3>Wi-Fi, Bluetooth, the phone</h3><p>Networks and devices in the island, the password asked there. The phone link speaks KDE Connect's protocol, written for Vyntaris.</p></li>
+        <li data-k="board" data-phase="b" data-side="l"><span class="caps">Arch Linux</span><h3>Underneath</h3><p>The kernel, systemd and pacman, straight from Arch. Drivers for what's inside install by themselves.</p></li>
+        <li data-k="battery" data-phase="b" data-side="l"><span class="caps">Power</span><h3>The battery</h3><p>The power saver comes on by itself at 20 %, the charge stops at 80 % where the laptop allows it, and Dr. Help tells its wear.</p></li>
+        <li data-k="ssd" data-phase="b" data-side="r"><span class="caps">Btrfs</span><h3>The disk</h3><p>Btrfs with zstd, trimmed every week and read through for damage every month. Dr. Help watches it for errors.</p></li>
+        <li data-k="fans" data-phase="b" data-side="r"><span class="caps">Game mode</span><h3>Cool, and quick when it counts</h3><p>Dr. Help warns at 90 °C. Game mode starts with a game: the performance profile, quiet notifications, the FPS in the island.</p></li>
+        <li data-k="speakers" data-phase="b" data-side="r"><span class="caps">PipeWire</span><h3>Sound</h3><p>Every output and input in one panel, and noise suppression for the microphone in four steps.</p></li>
+        <li data-k="snap" data-phase="t" data-side="r"><span class="caps">Timeshift</span><h3>A snapshot before every upgrade</h3><p>Btrfs snapshots of the system, never of your files: the last three kept, and the one from the install always.</p></li>
+        <li data-k="guard" data-phase="t" data-side="l"><span class="caps">update-guard</span><h3>Updates that undo themselves</h3><p>An update gets three tries to start. If it can't, the boot menu's "Undo the update" puts the snapshot back by itself.</p></li>
+        <li class="pill" data-k="g1" data-phase="t">Before upgrade · today</li>
+        <li class="pill" data-k="g2" data-phase="t">Before upgrade · 4 days ago</li>
+        <li class="pill" data-k="g3" data-phase="t">Installed · 3 weeks ago</li>
+      </ol>
+    </div>
+  </section>
 
   <section id="island" aria-labelledby="island-h">
     <div class="wrap">
@@ -246,6 +298,41 @@
     catch (e) { b.textContent = "Select it"; }
     setTimeout(() => { b.textContent = "Copy"; }, 2000);
   }));
+
+  // the hero's island: the panel picked shown, the others hidden (without this, the control center alone)
+  const picker = document.querySelector(".island-pick");
+  if (picker) {
+    picker.hidden = false;
+    picker.addEventListener("click", e => {
+      const b = e.target.closest("button[data-panel]");
+      if (!b) return;
+      picker.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
+      document.querySelectorAll(".stage-panel").forEach(img => { img.hidden = img.dataset.panel !== b.dataset.panel; });
+    });
+  }
+
+  // the laptop: three.js and its scene loaded only as it comes near; with less motion asked for, or no
+  // WebGL, its picture and its labels as a list instead
+  const xp = document.getElementById("inside");
+  if (xp) {
+    const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const gl = (() => { try { const c = document.createElement("canvas"); return !!(c.getContext("webgl2") || c.getContext("webgl")); } catch (e) { return false; } })();
+    const still = () => {
+      xp.classList.add("nogl");
+      const lead = xp.querySelector(".xp-head .lead");
+      if (lead) lead.textContent = "What you see on the screen, and what runs beneath it, layer by layer.";
+    };
+    if (reduce || !gl) still();
+    else {
+      const load = src => new Promise((ok, no) => { const el = document.createElement("script"); el.src = src; el.onload = ok; el.onerror = no; document.head.append(el); });
+      const near = new IntersectionObserver(es => {
+        if (!es.some(e => e.isIntersecting)) return;
+        near.disconnect();
+        load("/js/three.min.js").then(() => load("/js/laptop.js")).catch(still);
+      }, { rootMargin: "800px 0px" });
+      near.observe(xp);
+    }
+  }
 
   // where you are, in the header
   const links = [...document.querySelectorAll(".nav a")];

@@ -167,3 +167,99 @@ figure { margin: 0; }
 @supports (color: AccentColor) {
   :root:not([data-picked]) { --accent: var(--system); }
 }
+
+/* ---- take it apart (shorter than it was: four screens of scrolling, not thirteen): a laptop (WebGL) that opens on the lock screen as you scroll, comes apart into the
+   system's layers, goes back together and comes up close as its screen goes through the apps ---- */
+.xp { position: relative; height: 400vh; padding: 0; }
+.xp-pin { position: sticky; top: 64px; height: calc(100svh - 64px); overflow: hidden; }
+.xp-head { position: absolute; left: 0; right: 0; top: 0; padding-top: 40px; display: grid; gap: 10px; z-index: 2; }
+.xp-head .lead { font-size: 16px; }
+.xp-scene { position: absolute; inset: 0; }
+.xp-scene canvas { display: block; width: 100%; height: 100%; }
+.xp-fallback { display: none; }
+/* until the scene has drawn once: the desktop as a picture where the laptop will be, never an empty view */
+.xp:not(.live):not(.nogl) .xp-fallback { display: block; position: absolute; left: 50%; top: 56%; transform: translate(-50%, -50%); width: min(760px, 86%); padding: 0; }
+.xp-status { display: none; color: var(--muted); font-size: 13px; margin-top: 10px; }
+.xp.nogl .xp-status:not(:empty) { display: block; }
+.xp-lines { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; overflow: visible; }
+.xp-lines path { fill: none; stroke: var(--accent); stroke-width: 1; }
+.xp-lines circle { fill: var(--accent); }
+.xp-lines g { opacity: 0; transition: opacity .35s ease; }
+.xp-lines g.on { opacity: 1; }
+.xp-labels { list-style: none; margin: 0; padding: 0; position: absolute; inset: 0; pointer-events: none; z-index: 2; }
+.xp-labels li { position: absolute; left: 0; top: 0; width: 250px; display: grid; gap: 3px; opacity: 0; transition: opacity .35s ease;
+  background: color-mix(in srgb, var(--base) 86%, transparent); border: 1px solid var(--line); border-radius: 14px; padding: 10px 14px;
+  -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
+.xp-labels li.on { opacity: 1; transition-delay: calc(var(--i, 0) * 60ms); }
+@media (max-height: 780px) and (min-width: 1080px) { .xp-labels p { display: none; } }
+.xp-labels .caps { color: var(--accent); font-size: 11px; }
+/* a snapshot's date, on the copy itself */
+.xp-labels li.pill { width: auto; white-space: nowrap; padding: 4px 11px; border-radius: 999px; font: 600 12px var(--mono); color: var(--accent);
+  border-color: color-mix(in srgb, var(--accent) 45%, transparent); }
+.xp.nogl .xp-labels li.pill { display: none; }
+.xp-labels li.pill.on { transition-delay: .15s; }
+.xp-labels h3 { font-size: 15px; }
+.xp-labels p { color: var(--subtext); font-size: 13px; line-height: 1.45; }
+.xp.narrow .xp-labels li:not(.pill) { left: 16px; right: 16px; top: auto; bottom: 16px; width: auto; transform: translateY(8px) !important; transition: opacity .35s ease, transform .35s ease; }
+.xp.narrow .xp-labels li:not(.pill).on { transform: none !important; transition-delay: 0s; }
+.xp.narrow .xp-lines { display: none; }
+.xp-cap { position: absolute; left: 0; right: 0; bottom: 28px; display: grid; justify-items: center; pointer-events: none; z-index: 2; }
+.xp-cap div { grid-area: 1 / 1; opacity: 0; transform: translateY(10px); transition: opacity .4s ease, transform .4s ease;
+  text-align: center; display: grid; gap: 4px; max-width: 520px; padding: 0 16px; }
+.xp-cap div.on { opacity: 1; transform: none; transition-delay: .15s; }
+.xp-cap .caps { color: var(--accent); }
+.xp-cap h3 { font-size: 22px; }
+.xp-cap p { color: var(--subtext); font-size: 15px; }
+.xp.still { height: auto; }
+.xp.still .xp-pin { position: relative; top: 0; height: min(860px, 100svh); }
+/* without WebGL: the desktop as a picture, the labels as a list under it */
+.xp.nogl { height: auto; }
+.xp.nogl .xp-pin { position: relative; top: 0; height: auto; overflow: visible; padding-bottom: 48px; }
+.xp.nogl .xp-head { position: relative; }
+.xp.nogl .xp-scene, .xp.nogl .xp-lines, .xp.nogl .xp-cap { display: none; }
+.xp.nogl .xp-fallback { display: block; margin-top: 28px; }
+.xp.nogl .xp-labels { position: relative; inset: auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr)); gap: 12px; max-width: 1160px; margin: 20px auto 0; padding: 0 16px; }
+.xp.nogl .xp-labels li { position: relative; width: auto; opacity: 1; }
+
+
+.caps { font-size: 12px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; }
+.xp { border-top: 1px solid var(--line); }
+.xp .xp-head .eyebrow { color: var(--ink); }
+.xp .ic { display: none; }
+
+/* ---- the header as the desktop's bar: the sections in an island hanging from its middle, its sides
+   curving out of the bar's line as the shell's do (a phone has no room for it: the sections are below) */
+@media (min-width: 761px) {
+  .top { border-bottom-color: var(--ink); }
+  .top .nav { position: absolute; left: 50%; top: 100%; transform: translateX(-50%); margin: -1px 0 0;
+    padding: 4px var(--s3) 10px; gap: var(--s3); background: var(--mantle);
+    border: 1px solid var(--ink); border-top: 0; border-radius: 0 0 18px 18px; }
+  .top .nav::before, .top .nav::after { content: ""; position: absolute; top: 0; width: 18px; height: 18px; }
+  .top .nav::before { right: 100%; background: radial-gradient(circle at 0 100%, transparent 17px, var(--ink) 17px 18px, var(--mantle) 18px); }
+  .top .nav::after { left: 100%; background: radial-gradient(circle at 100% 100%, transparent 17px, var(--ink) 17px 18px, var(--mantle) 18px); }
+  .top .nav a { font-size: 14px; padding-block: 6px; }
+  .top .btn { margin-inline-start: auto; }
+  html { scroll-padding-top: 116px; }
+  .hero { padding-top: var(--s12); }
+}
+
+/* ---- the hero's island: the wallpaper and the bar, the panel picked laid where it opens */
+.island-pick { display: flex; flex-wrap: wrap; gap: var(--s1); margin-bottom: var(--s2); }
+.island-pick[hidden] { display: none; }
+.island-pick button { min-height: 40px; padding: 0 var(--s2); border-radius: 999px; border: 1px solid var(--line);
+  background: transparent; color: var(--subtext); font: 500 15px var(--font); cursor: pointer; transition: border-color .15s, color .15s; }
+.island-pick button:hover { color: var(--text); border-color: var(--ink); }
+.island-pick button[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: var(--on-ink); font-weight: 600; }
+.stage { position: relative; aspect-ratio: 16 / 9; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--line); background: var(--crust); }
+.stage img { border: 0; border-radius: 0; }
+.stage-wall { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.stage-bar { position: absolute; left: 0; top: 0; width: 100%; height: auto; }
+.stage-panel { position: absolute; top: 0; left: var(--x); width: var(--w); height: auto; animation: grow .25s ease-out; transform-origin: top center; }
+.stage-panel[hidden] { display: none; }
+@keyframes grow { from { opacity: 0; transform: scale(.96); } to { opacity: 1; transform: none; } }
+/* a phone: the panel alone, as large as it fits (the whole screen would be too small to read) */
+@media (max-width: 600px) {
+  .stage { aspect-ratio: auto; background: transparent; border: 0; }
+  .stage-wall, .stage-bar { display: none; }
+  .stage-panel { position: static; width: min(100%, 420px); margin-inline: auto; border-radius: var(--radius); border: 1px solid var(--line); }
+}
