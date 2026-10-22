@@ -4,83 +4,160 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Vyntaris: a computer you'll want to come back to</title>
-<meta name="description" content="Vyntaris is a desktop operating system built on Arch Linux: calm, quick and entirely yours. One island for everything, your colour everywhere, and updates that fix themselves if they go wrong.">
+<meta name="description" content="Vyntaris is a free desktop operating system built on Arch Linux. One island at the top of the screen for everything, one colour of yours through all of it, and updates that undo themselves if they go wrong.">
 <meta property="og:title" content="Vyntaris">
 <meta property="og:description" content="A computer you'll want to come back to.">
 <meta property="og:image" content="https://vyntarisos.com/shots/control.webp">
-<link rel="preload" href="/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/literata.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/site.css">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
-<header class="top">
-  <div class="wrap">
-    <a class="brand" href="/"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" fill-rule="evenodd" d="M12.79 11.4L13.97 10.96L14.92 10.55L15.79 10.12L16.57 9.68L16.88 9.05L16.82 8.75L16.79 8.45L16.78 8.15L16.81 7.85L16.85 7.55L16.92 7.26L17.02 6.97L17.14 6.7L17.28 6.44L17.45 6.19L17.66 5.93L17.86 5.71L18.09 5.51L18.33 5.34L18.59 5.18L18.86 5.04L20.16 2.43L16.16 2.43zM6.69 12.72L8.05 12.57L9.18 12.38L10.35 12.12L11.45 11.83L7.26 2.43L1.08 2.43zM22.55 8.18L22.5 7.74L22.36 7.32L22.14 6.93L21.85 6.6L21.5 6.32L21.1 6.12L20.67 6L20.22 5.97L19.78 6.02L19.36 6.16L18.97 6.38L18.64 6.67L18.36 7.03L18.16 7.42L18.04 7.85L18.01 8.3L18.06 8.74L18.2 9.16L18.42 9.55L18.71 9.88L19.07 10.16L19.46 10.36L19.89 10.48L20.34 10.51L20.78 10.46L21.2 10.32L21.59 10.1L21.92 9.81L22.2 9.45L22.4 9.06L22.52 8.63zM3.06 13.46L3.08 13.5L0.65 14.24L0.75 14.52L0.89 14.78L1.1 15.07L1.3 15.28L1.56 15.51L1.85 15.7L2.15 15.86L2.52 16.01L2.92 16.14L3.34 16.24L3.77 16.32L4.23 16.37L4.78 16.41L5.88 16.41L7.15 16.31L7.92 16.21L8.7 16.08L9.49 15.92L10.4 15.7L11.22 15.49L12.13 15.21L12.93 14.95L13.82 14.62L14.69 14.27L15.44 13.94L16.25 13.55L16.93 13.19L17.66 12.77L18.25 12.39L18.81 12L19.32 11.6L18.83 11.42L18.37 11.17L17.96 10.85L17.59 10.48L16.86 10.93L15.99 11.39L15.03 11.84L13.99 12.27L12.9 12.66L11.87 12.98L10.83 13.27L9.7 13.53L8.59 13.73L7.52 13.88L6.52 13.96L5.6 13.98L4.79 13.94L4.06 13.84L3.48 13.69L3.23 13.58zM13.4 16.08L11.97 16.54L11.02 16.81L10.07 17.05L9.15 17.24L11.07 20.77z"/></svg>Vyntaris</a>
+
+<!-- The header is the desktop's own bar: the mark on the left, the sections in an island hanging from the
+     middle, the one action on the right -->
+<header class="top" data-ui>
+  <div class="bar">
+    <a class="brand" href="/" aria-label="Vyntaris, home"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" fill-rule="evenodd" d="M12.79 11.4L13.97 10.96L14.92 10.55L15.79 10.12L16.57 9.68L16.88 9.05L16.82 8.75L16.79 8.45L16.78 8.15L16.81 7.85L16.85 7.55L16.92 7.26L17.02 6.97L17.14 6.7L17.28 6.44L17.45 6.19L17.66 5.93L17.86 5.71L18.09 5.51L18.33 5.34L18.59 5.18L18.86 5.04L20.16 2.43L16.16 2.43zM6.69 12.72L8.05 12.57L9.18 12.38L10.35 12.12L11.45 11.83L7.26 2.43L1.08 2.43zM22.55 8.18L22.5 7.74L22.36 7.32L22.14 6.93L21.85 6.6L21.5 6.32L21.1 6.12L20.67 6L20.22 5.97L19.78 6.02L19.36 6.16L18.97 6.38L18.64 6.67L18.36 7.03L18.16 7.42L18.04 7.85L18.01 8.3L18.06 8.74L18.2 9.16L18.42 9.55L18.71 9.88L19.07 10.16L19.46 10.36L19.89 10.48L20.34 10.51L20.78 10.46L21.2 10.32L21.59 10.1L21.92 9.81L22.2 9.45L22.4 9.06L22.52 8.63zM3.06 13.46L3.08 13.5L0.65 14.24L0.75 14.52L0.89 14.78L1.1 15.07L1.3 15.28L1.56 15.51L1.85 15.7L2.15 15.86L2.52 16.01L2.92 16.14L3.34 16.24L3.77 16.32L4.23 16.37L4.78 16.41L5.88 16.41L7.15 16.31L7.92 16.21L8.7 16.08L9.49 15.92L10.4 15.7L11.22 15.49L12.13 15.21L12.93 14.95L13.82 14.62L14.69 14.27L15.44 13.94L16.25 13.55L16.93 13.19L17.66 12.77L18.25 12.39L18.81 12L19.32 11.6L18.83 11.42L18.37 11.17L17.96 10.85L17.59 10.48L16.86 10.93L15.99 11.39L15.03 11.84L13.99 12.27L12.9 12.66L11.87 12.98L10.83 13.27L9.7 13.53L8.59 13.73L7.52 13.88L6.52 13.96L5.6 13.98L4.79 13.94L4.06 13.84L3.48 13.69L3.23 13.58zM13.4 16.08L11.97 16.54L11.02 16.81L10.07 17.05L9.15 17.24L11.07 20.77z"/></svg></a>
     <nav class="nav" aria-label="Sections">
       <a href="#island">The island</a>
-      <a href="#details">Details</a>
+      <a href="#colour">Colour</a>
+      <a href="#updates">Updates</a>
       <a href="#apps">Apps</a>
-      <a href="#hood">Under the hood</a>
+      <a href="#questions">Questions</a>
     </nav>
-    <a class="btn btn-primary btn-small" href="#download">Download</a>
+    <a class="btn" href="#download">Download</a>
   </div>
 </header>
 
 <main id="main">
-  <div class="wrap hero">
-    <div class="hero-text">
-      <p class="eyebrow">Arch Linux · Yours</p>
-      <h1>A computer you'll want to come back&nbsp;to.</h1>
-      <p class="lead">Calm, quick and entirely yours. One island for everything, your colour everywhere, and updates
-        that fix themselves if they go wrong.</p>
-      <div class="actions">
-        <a class="btn btn-primary" href="#download"><svg viewBox="0 -960 960 960" aria-hidden="true"><path fill="currentColor" d="M480-325q-6 0-11-2t-10-7L308-485q-9-9-8.5-21.5T309-528q9-9 21.5-9t21.5 9l98 99v-341q0-13 8.5-21.5T480-800q13 0 21.5 8.5T510-770v341l99-99q9-9 21-8.5t21 9.5q9 9 9 21.5t-9 21.5L501-334q-5 5-10 7t-11 2ZM220-160q-24 0-42-18t-18-42v-113q0-13 8.5-21.5T190-363q13 0 21.5 8.5T220-333v113h520v-113q0-13 8.5-21.5T770-363q13 0 21.5 8.5T800-333v113q0 24-18 42t-42 18H220Z"/></svg>Download Vyntaris</a>
-        <a class="btn btn-plain" href="#island">See the island</a>
+  <!-- The split: a Vyntaris screen that never moves on the left, the reading column on the right. The
+       screen's island opens into whatever the column is talking about; its wallpaper is drawn live in
+       the accent picked below -->
+  <div class="split">
+    <figure class="stage" id="stage" data-ui aria-label="A Vyntaris screen, its island open">
+      <div class="screen">
+        <canvas class="wall" width="1920" height="1080" aria-hidden="true"></canvas>
+        <img class="wall-still" src="/shots/xp-wall.webp" alt="" width="1920" height="1080" fetchpriority="high">
+        <img class="sbar" src="/shots/xp-bar.webp" alt="" width="1920" height="30">
+        <img class="panel" data-panel="control" src="/shots/control-panel.webp" width="540" height="900" style="--x:35.938%;--w:28.125%;--clip:inset(0 5.37% 7.33% 5.37% round 0 0 3.70% 3.70%)"
+             alt="The island as the control center: Wi-Fi, Bluetooth, night light and the microphone as tiles, volume and brightness, the processor and memory, and the month with the weather.">
+        <img class="panel" data-panel="launcher" src="/shots/launcher-panel.webp" width="680" height="720" style="--x:32.292%;--w:35.417%;--clip:inset(0 1.32% 16.11% 1.32% round 0 0 2.94% 2.94%)" hidden
+             alt="The island as the launcher: apps, settings, windows and files found as you type." loading="lazy">
+        <img class="panel" data-panel="sound" src="/shots/sound-panel.webp" width="540" height="560" style="--x:35.938%;--w:28.125%;--clip:inset(0 7.22% 17.32% 7.41% round 0 0 3.70% 3.70%)" hidden
+             alt="The island as the sound panel: the output and input in use, their volume and every other device." loading="lazy">
+        <img class="panel" data-panel="wallpapers" src="/shots/wallpapers-panel.webp" width="900" height="330" style="--x:26.562%;--w:46.875%;--clip:inset(0 4.33% 18.48% 4.33% round 0 0 2.22% 2.22%)" hidden
+             alt="The island as the wallpaper picker: wallpapers in a row under the bar." loading="lazy">
+        <img class="panel" data-panel="gamemode" src="/shots/gamemode-panel.webp" width="560" height="300" style="--x:35.417%;--w:29.167%;--clip:inset(0 8.75% 12.33% 8.75% round 0 0 3.57% 3.57%)" hidden
+             alt="The island as game mode: notifications silenced, the FPS and temperatures shown." loading="lazy">
       </div>
-      <p class="meta">Free. For 64-bit PCs with UEFI. Updates itself from Arch Linux.</p>
-    </div>
-    <figure class="shot stage-wrap">
-      <div class="island-pick" role="group" aria-label="Show the island as" hidden>
-        <button type="button" data-panel="control" aria-pressed="true">Control center</button>
-        <button type="button" data-panel="launcher" aria-pressed="false">Launcher</button>
-        <button type="button" data-panel="sound" aria-pressed="false">Sound</button>
-        <button type="button" data-panel="wallpapers" aria-pressed="false">Wallpapers</button>
-        <button type="button" data-panel="gamemode" aria-pressed="false">Game mode</button>
-      </div>
-      <div class="stage" id="stage">
-        <img class="stage-wall" src="/shots/xp-wall.webp" alt="" width="1920" height="1080" fetchpriority="high">
-        <img class="stage-bar" src="/shots/xp-bar.webp" alt="" width="1920" height="30">
-        <img class="stage-panel" data-panel="control" src="/shots/control-panel.webp" alt="The island as the control center: Wi-Fi, Bluetooth, night light and the microphone as tiles, volume and brightness, the processor and memory, and the month with the weather." width="540" height="900" style="--x: 35.938%; --w: 28.125%">
-        <img class="stage-panel" data-panel="launcher" src="/shots/launcher-panel.webp" alt="The island as the launcher: apps, settings, windows and files found as you type." width="680" height="720" style="--x: 32.292%; --w: 35.417%" hidden>
-        <img class="stage-panel" data-panel="sound" src="/shots/sound-panel.webp" alt="The island as the sound panel: the output and input in use, their volume, every other device and noise suppression." width="540" height="560" style="--x: 35.938%; --w: 28.125%" hidden>
-        <img class="stage-panel" data-panel="wallpapers" src="/shots/wallpapers-panel.webp" alt="The island as the wallpaper picker: wallpapers in a row under the bar." width="900" height="330" style="--x: 26.562%; --w: 46.875%" hidden>
-        <img class="stage-panel" data-panel="gamemode" src="/shots/gamemode-panel.webp" alt="The island as game mode: notifications silenced, the FPS and temperatures shown." width="560" height="300" style="--x: 35.417%; --w: 29.167%" hidden>
-      </div>
-      <figcaption>The island at the top of the screen, grown into the panel picked. Every panel opens from it and goes back into it.</figcaption>
     </figure>
-    <ul class="facts">
-      <li><strong>Updates that undo themselves</strong><span>A snapshot before every upgrade, and the way back if one fails.</span></li>
-      <li><strong>Drivers by themselves</strong><span>Graphics, Wi-Fi, sound and printers, found and installed.</span></li>
-      <li><strong>Rolling, straight from Arch</strong><span>Plain Arch underneath, always current.</span></li>
-      <li><strong>No setup questions</strong><span>Who you are and which disk. Ready in minutes.</span></li>
-    </ul>
+
+    <div class="column">
+      <section class="hero" aria-labelledby="name">
+        <p class="hero-line">A computer you'll want to come back to.</p>
+        <p class="hero-what">Vyntaris is a free desktop operating system built on Arch Linux, for 64-bit PCs with UEFI.</p>
+      </section>
+
+      <section class="island" id="island" aria-labelledby="island-h">
+        <h2 id="island-h">Everything grows out of the island</h2>
+        <p>The clock at the top of the screen is the island. Tap the Super key and it opens; start typing and it
+          searches. Each panel grows out of it and goes back into it. Pick one:</p>
+        <div class="index" role="group" aria-label="Open the island as">
+          <button type="button" data-panel="control" aria-pressed="true">Control center</button>
+          <button type="button" data-panel="launcher" aria-pressed="false">Launcher</button>
+          <button type="button" data-panel="sound" aria-pressed="false">Sound</button>
+          <button type="button" data-panel="wallpapers" aria-pressed="false">Wallpapers</button>
+          <button type="button" data-panel="gamemode" aria-pressed="false">Game mode</button>
+        </div>
+        <p class="index-note" aria-live="polite" id="panel-note">Wi-Fi, Bluetooth and the microphone as tiles, volume and brightness, the month and the weather where you are.</p>
+      </section>
+
+      <section class="menu" id="details" aria-labelledby="details-h">
+        <div class="sheet">
+          <h2 id="details-h">Already done</h2>
+          <table>
+            <caption>Every day</caption>
+            <tbody>
+              <tr><th scope="row">Calendar and weather<span>The month beside today, and the weather where you are.</span></th><td>Control center</td></tr>
+              <tr><th scope="row">Live activities<span>Downloads, timers, installs and backups, as they run.</span></th><td>In the island</td></tr>
+              <tr><th scope="row">Quick Look<span>Pictures, PDFs, videos and Office files, without an app.</span></th><td><kbd>Space</kbd></td></tr>
+              <tr><th scope="row">Your phone<span>Its battery, its notifications, files both ways.</span></th><td>KDE Connect</td></tr>
+            </tbody>
+          </table>
+          <table>
+            <caption>Looked after</caption>
+            <tbody>
+              <tr><th scope="row">Privacy dot<span>Lit while an app uses the microphone, camera or screen.</span></th><td>In the bar</td></tr>
+              <tr><th scope="row">Backups<span>Your folders, at every start, at shutdown or by hand.</span></th><td>Google Drive</td></tr>
+              <tr><th scope="row">Night light<span>Warmer colours in the evening, by hand or on a schedule.</span></th><td>At sunset</td></tr>
+              <tr><th scope="row">Game mode<span>Notifications quiet, the FPS and temperatures in the island.</span></th><td>With a game</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="colour" id="colour" aria-labelledby="colour-h">
+        <h2 id="colour-h">One colour, everywhere</h2>
+        <p>The bar, the island, the wallpaper, Firefox, the apps and the login screen wear one accent. This page wears
+          your system's; pick another and watch the screen beside you draw its wallpaper again.</p>
+        <fieldset class="accents" id="accent">
+          <legend>Accent</legend>
+          <input type="radio" name="accent" id="a-system" value="system" checked><label for="a-system" style="--c: AccentColor"><i aria-hidden="true"></i>System</label>
+          <input type="radio" name="accent" id="a-rosewater" value="rosewater" data-dark="#f5e0dc" data-light="#dc8a78"><label for="a-rosewater"><i aria-hidden="true"></i>Rosewater</label>
+          <input type="radio" name="accent" id="a-flamingo" value="flamingo" data-dark="#f2cdcd" data-light="#dd7878"><label for="a-flamingo"><i aria-hidden="true"></i>Flamingo</label>
+          <input type="radio" name="accent" id="a-pink" value="pink" data-dark="#f5c2e7" data-light="#ea76cb"><label for="a-pink"><i aria-hidden="true"></i>Pink</label>
+          <input type="radio" name="accent" id="a-mauve" value="mauve" data-dark="#cba6f7" data-light="#8839ef"><label for="a-mauve"><i aria-hidden="true"></i>Mauve</label>
+          <input type="radio" name="accent" id="a-red" value="red" data-dark="#f38ba8" data-light="#d20f39"><label for="a-red"><i aria-hidden="true"></i>Red</label>
+          <input type="radio" name="accent" id="a-maroon" value="maroon" data-dark="#eba0ac" data-light="#e64553"><label for="a-maroon"><i aria-hidden="true"></i>Maroon</label>
+          <input type="radio" name="accent" id="a-peach" value="peach" data-dark="#fab387" data-light="#fe640b"><label for="a-peach"><i aria-hidden="true"></i>Peach</label>
+          <input type="radio" name="accent" id="a-yellow" value="yellow" data-dark="#f9e2af" data-light="#df8e1d"><label for="a-yellow"><i aria-hidden="true"></i>Yellow</label>
+          <input type="radio" name="accent" id="a-green" value="green" data-dark="#a6e3a1" data-light="#40a02b"><label for="a-green"><i aria-hidden="true"></i>Green</label>
+          <input type="radio" name="accent" id="a-teal" value="teal" data-dark="#94e2d5" data-light="#179299"><label for="a-teal"><i aria-hidden="true"></i>Teal</label>
+          <input type="radio" name="accent" id="a-sky" value="sky" data-dark="#89dceb" data-light="#04a5e5"><label for="a-sky"><i aria-hidden="true"></i>Sky</label>
+          <input type="radio" name="accent" id="a-sapphire" value="sapphire" data-dark="#74c7ec" data-light="#209fb5"><label for="a-sapphire"><i aria-hidden="true"></i>Sapphire</label>
+          <input type="radio" name="accent" id="a-blue" value="blue" data-dark="#89b4fa" data-light="#1e66f5"><label for="a-blue"><i aria-hidden="true"></i>Blue</label>
+          <input type="radio" name="accent" id="a-lavender" value="lavender" data-dark="#b4befe" data-light="#7287fd"><label for="a-lavender"><i aria-hidden="true"></i>Lavender</label>
+        </fieldset>
+      </section>
+    </div>
+
+    <!-- The name, across the bottom of the first screen, over the screen's lower edge -->
+    <h1 class="name" id="name"><span class="name-ink">vyntaris</span><span class="name-on" aria-hidden="true">vyntaris</span></h1>
   </div>
 
-<section class="xp" id="inside" aria-labelledby="xp-h">
+  <!-- Full width from here on -->
+  <section class="speed" id="speed" aria-labelledby="speed-h">
+    <h2 id="speed-h">Ready before the others</h2>
+    <div class="mosaic">
+      <img src="/shots/xp-lock.webp" width="1920" height="1080" loading="lazy" decoding="async"
+           alt="The Vyntaris lock screen: a large clock over the blurred wallpaper.">
+      <div class="tile tile-accent">
+        <p class="figure">9.1 s</p>
+        <p>from power on to the login screen. GNOME took 10.9 s, KDE Plasma 10.0 s.</p>
+      </div>
+      <div class="tile tile-tone">
+        <p class="figure">1.3 s</p>
+        <p>from Enter to a desktop you can use. GNOME took 2.5 s, KDE Plasma 4.1 s.</p>
+      </div>
+    </div>
+    <p class="note">Measured in three identical virtual machines on the same Arch Linux base, the median of three starts, October 2026.</p>
+  </section>
+
+  <section class="xp" id="inside" aria-labelledby="xp-h">
     <div class="xp-pin">
-      <div class="wrap xp-head">
-        <p class="caps eyebrow">Take it apart</p>
-        <h2 id="xp-h">Every layer, made to fit.</h2>
+      <div class="xp-head">
+        <h2 id="xp-h">Every layer, made to fit</h2>
         <p class="lead">Scroll, and the laptop opens and comes apart: what you see on the screen, and what runs beneath it.</p>
       </div>
       <div class="xp-scene" aria-hidden="true"></div>
-      <div class="wrap xp-fallback"><div class="shot"><img src="/shots/control.webp" loading="lazy" width="1920" height="1080" alt="The Vyntaris desktop with the control center open"></div><p class="xp-status"></p></div>
+      <div class="xp-fallback"><img src="/shots/control.webp" loading="lazy" width="1920" height="1080" alt="The Vyntaris desktop with the control center open"><p class="xp-status"></p></div>
       <svg class="xp-lines" aria-hidden="true"></svg>
       <div class="xp-cap" aria-live="polite">
         <div><span class="caps">Its own apps</span><h3>Dr. Help</h3><p>Looks the system over the way the Arch Wiki asks, and puts right what it can, with one password.</p></div>
         <div><span class="caps">Its own apps</span><h3>Store</h3><p>Every app Arch describes, and the AUR's, installed with a click. No terminal.</p></div>
         <div><span class="caps">Vyntaris Office</span><h3>VSheet, VDoc, VSlide</h3><p>Word, Excel and PowerPoint files, password-protected ones too.</p></div>
-        <div><span class="caps">Settings</span><h3>One place for all of it</h3><p>Every setting in one file, and Ctrl+F finds any of them.</p></div>
+        <div><span class="caps">Settings</span><h3>One place for all of it</h3><p>Every setting in one file, and the launcher finds any of them by name.</p></div>
       </div>
       <ol class="xp-labels">
         <li data-k="island" data-phase="s" data-side="r"><span class="caps">Quickshell</span><h3>The island</h3><p>The control center, the launcher, sound, media and the power menu all grow out of the clock. One panel at a time.</p></li>
@@ -88,7 +165,7 @@
         <li data-k="win" data-phase="s" data-side="r"><span class="caps">Hyprland</span><h3>The windows</h3><p>Tiling that places windows by itself, animated, set from the same settings file as everything else.</p></li>
         <li data-k="wall" data-phase="s" data-side="r"><span class="caps">Colour</span><h3>The wallpaper</h3><p>Drawn again in your accent. GTK and Qt apps, Firefox, VS Code, the icons and the login screen follow it.</p></li>
         <li data-k="deck" data-phase="b" data-side="l"><span class="caps">Keys</span><h3>One key to start</h3><p>Tap SUPER for the control center and type to search. The first letter is never lost.</p></li>
-        <li data-k="wifi" data-phase="b" data-side="l"><span class="caps">NetworkManager · BlueZ</span><h3>Wi-Fi, Bluetooth, the phone</h3><p>Networks and devices in the island, the password asked there. The phone link speaks KDE Connect's protocol, written for Vyntaris.</p></li>
+        <li data-k="wifi" data-phase="b" data-side="l"><span class="caps">NetworkManager and BlueZ</span><h3>Wi-Fi, Bluetooth, the phone</h3><p>Networks and devices in the island, the password asked there. The phone link speaks KDE Connect's protocol.</p></li>
         <li data-k="board" data-phase="b" data-side="l"><span class="caps">Arch Linux</span><h3>Underneath</h3><p>The kernel, systemd and pacman, straight from Arch. Drivers for what's inside install by themselves.</p></li>
         <li data-k="battery" data-phase="b" data-side="l"><span class="caps">Power</span><h3>The battery</h3><p>The power saver comes on by itself at 20 %, the charge stops at 80 % where the laptop allows it, and Dr. Help tells its wear.</p></li>
         <li data-k="ssd" data-phase="b" data-side="r"><span class="caps">Btrfs</span><h3>The disk</h3><p>Btrfs with zstd, trimmed every week and read through for damage every month. Dr. Help watches it for errors.</p></li>
@@ -96,250 +173,158 @@
         <li data-k="speakers" data-phase="b" data-side="r"><span class="caps">PipeWire</span><h3>Sound</h3><p>Every output and input in one panel, and noise suppression for the microphone in four steps.</p></li>
         <li data-k="snap" data-phase="t" data-side="r"><span class="caps">Timeshift</span><h3>A snapshot before every upgrade</h3><p>Btrfs snapshots of the system, never of your files: the last three kept, and the one from the install always.</p></li>
         <li data-k="guard" data-phase="t" data-side="l"><span class="caps">update-guard</span><h3>Updates that undo themselves</h3><p>An update gets three tries to start. If it can't, the boot menu's "Undo the update" puts the snapshot back by itself.</p></li>
-        <li class="pill" data-k="g1" data-phase="t">Before upgrade · today</li>
-        <li class="pill" data-k="g2" data-phase="t">Before upgrade · 4 days ago</li>
-        <li class="pill" data-k="g3" data-phase="t">Installed · 3 weeks ago</li>
+        <li class="pill" data-k="g1" data-phase="t">Before upgrade, today</li>
+        <li class="pill" data-k="g2" data-phase="t">Before upgrade, 4 days ago</li>
+        <li class="pill" data-k="g3" data-phase="t">Installed, 3 weeks ago</li>
       </ol>
     </div>
   </section>
 
-  <section id="island" aria-labelledby="island-h">
-    <div class="wrap">
-      <div class="section-head">
-        <p class="eyebrow">The island</p>
-        <h2 id="island-h">One place at the top of the screen, every panel you need.</h2>
-        <p class="lead">Tap SUPER and the island becomes the control center; start typing and it becomes the search.
-          Each panel opens from the island and goes back into it.</p>
+  <!-- Safe updates: three sentences on the left, the boot side of it on the right, changing with them -->
+  <section class="updates" id="updates" aria-labelledby="updates-h">
+    <div class="steps">
+      <h2 id="updates-h">Updates that undo themselves</h2>
+      <div class="step" data-state="1">
+        <p class="say">First, a snapshot of the system.</p>
+        <p>Before every upgrade Timeshift takes one, of the system and never of your files. The last three are kept, and the one from the install always.</p>
       </div>
-      <div class="panels">
-        <figure><img src="/shots/launcher-panel.webp" alt="The launcher: apps, settings, windows and files found as you type." width="680" height="720" loading="lazy" decoding="async">
-          <figcaption><h3>Launcher</h3><p>Apps, settings, open windows and files. Plain words work as commands: “volume 40”, “100 eur to rsd”.</p></figcaption></figure>
-        <figure><img src="/shots/sound-panel.webp" alt="The sound panel: the output and input in use, their volume, and every other device." width="540" height="560" loading="lazy" decoding="async">
-          <figcaption><h3>Sound</h3><p>Speakers, headphones, HDMI and Bluetooth in one list, and noise suppression for the microphone.</p></figcaption></figure>
-        <figure><img src="/shots/wallpapers-panel.webp" alt="The wallpaper picker: wallpapers in a row under the bar." width="900" height="330" loading="lazy" decoding="async">
-          <figcaption><h3>Wallpapers</h3><p>Under the bar, ← and → to browse, Enter to set. Vyntaris's own are drawn in your accent.</p></figcaption></figure>
-        <figure><img src="/shots/gamemode-panel.webp" alt="Game mode: on, with notifications silenced and the FPS shown." width="560" height="300" loading="lazy" decoding="async">
-          <figcaption><h3>Game mode</h3><p>Starts with a game: notifications quiet, the FPS and temperatures in the island.</p></figcaption></figure>
-        <figure><img src="/shots/nightlight-panel.webp" alt="Night light: warmer screen colours, on now or on a schedule." width="560" height="220" loading="lazy" decoding="async">
-          <figcaption><h3>Night light</h3><p>Warmer colours in the evening, by hand or on a schedule.</p></figcaption></figure>
+      <div class="step" data-state="2">
+        <p class="say">Then the new system gets three tries.</p>
+        <p>The first start after an upgrade is counted. If the desktop comes up, the count is cleared and that's all you ever see of it.</p>
+      </div>
+      <div class="step" data-state="3">
+        <p class="say">If it can't start, the old one comes back.</p>
+        <p>After the third try the boot menu takes "Undo the update" by itself: the snapshot goes back, and you are where you were.</p>
+      </div>
+    </div>
+    <div class="boot" data-ui data-state="1" aria-hidden="true">
+      <div class="boot-screen">
+        <div class="state s1">
+          <p class="boot-title">Snapshots</p>
+          <ul class="snaps">
+            <li class="on"><b>Before upgrade</b><span>today, 21:04</span><span>linux 7.2.11, mesa 26.2.5</span></li>
+            <li><b>Before upgrade</b><span>4 days ago</span><span>hyprland 0.56.2</span></li>
+            <li><b>Before upgrade</b><span>11 days ago</span><span>firefox 158.0</span></li>
+            <li><b>Installed</b><span>3 weeks ago</span><span>kept always</span></li>
+          </ul>
+        </div>
+        <div class="state s2">
+          <p class="boot-title">Starting Vyntaris</p>
+          <p class="tries"><span class="try done">1</span><span class="try now">2</span><span class="try">3</span></p>
+          <p class="boot-note">Try 2 of 3 after the upgrade of today, 21:04</p>
+        </div>
+        <div class="state s3">
+          <p class="boot-title">Boot menu</p>
+          <ul class="entries">
+            <li>Vyntaris</li>
+            <li class="on">Undo the update<span>back to today, 21:04</span></li>
+            <li>Windows Boot Manager</li>
+          </ul>
+          <p class="boot-note">Taken by itself after three tries</p>
+        </div>
       </div>
     </div>
   </section>
 
-  <section id="details" aria-labelledby="details-h">
-    <div class="wrap">
-      <div class="section-head">
-        <p class="eyebrow">Made to be lived in</p>
-        <h2 id="details-h">The small things, already done.</h2>
-      </div>
-      <div class="points">
-        <div><p class="eyebrow">Today</p><h3>Calendar, weather and the weeks ahead</h3>
-          <p>The control center keeps the month beside today's date, the weather where you are, and a quiet line of the weeks you have left.</p></div>
-        <div><p class="eyebrow">Live activities</p><h3>The island shows what's going on</h3>
-          <p>Downloads, timers, a stopwatch, packages installing, backups. Click an install and the island shows its terminal, progress bars and all.</p></div>
-        <div><p class="eyebrow">Privacy</p><h3>A dot while something listens</h3>
-          <p>When an app uses the microphone, the camera or the screen, a dot lights up in the bar. Its panel says which app, with a button to close it.</p></div>
-        <div><p class="eyebrow">Backups</p><h3>Your folders on your Google Drive</h3>
-          <p>Once a day, at every start or every hour. What you change or delete keeps its last copy there. It sees only what it put there.</p></div>
-        <div><p class="eyebrow">Phone</p><h3>Your phone, paired with KDE Connect</h3>
-          <p>Its battery in the bar, its notifications on the desktop, a shared clipboard, files both ways, and the phone as a touchpad.</p></div>
-        <div><p class="eyebrow">Quick Look</p><h3>Space to look at a file</h3>
-          <p>In the file manager, Space shows pictures, PDFs, videos, music and Office files without opening an app.</p></div>
-      </div>
-      <fieldset class="accents" id="accent">
-        <legend>One colour, everywhere. This page wears your system's accent; pick another and it follows that:</legend>
-      <input type="radio" name="accent" id="a-system" value="system" checked><label for="a-system" style="--c: AccentColor"><i aria-hidden="true"></i>System</label>
-      <input type="radio" name="accent" id="a-rosewater" value="rosewater" data-dark="#f5e0dc" data-light="#dc8a78"><label for="a-rosewater" style="--c: #f5e0dc"><i aria-hidden="true"></i>Rosewater</label>
-      <input type="radio" name="accent" id="a-flamingo" value="flamingo" data-dark="#f2cdcd" data-light="#dd7878"><label for="a-flamingo" style="--c: #f2cdcd"><i aria-hidden="true"></i>Flamingo</label>
-      <input type="radio" name="accent" id="a-pink" value="pink" data-dark="#f5c2e7" data-light="#ea76cb"><label for="a-pink" style="--c: #f5c2e7"><i aria-hidden="true"></i>Pink</label>
-      <input type="radio" name="accent" id="a-mauve" value="mauve" data-dark="#cba6f7" data-light="#8839ef"><label for="a-mauve" style="--c: #cba6f7"><i aria-hidden="true"></i>Mauve</label>
-      <input type="radio" name="accent" id="a-red" value="red" data-dark="#f38ba8" data-light="#d20f39"><label for="a-red" style="--c: #f38ba8"><i aria-hidden="true"></i>Red</label>
-      <input type="radio" name="accent" id="a-maroon" value="maroon" data-dark="#eba0ac" data-light="#e64553"><label for="a-maroon" style="--c: #eba0ac"><i aria-hidden="true"></i>Maroon</label>
-      <input type="radio" name="accent" id="a-peach" value="peach" data-dark="#fab387" data-light="#fe640b"><label for="a-peach" style="--c: #fab387"><i aria-hidden="true"></i>Peach</label>
-      <input type="radio" name="accent" id="a-yellow" value="yellow" data-dark="#f9e2af" data-light="#df8e1d"><label for="a-yellow" style="--c: #f9e2af"><i aria-hidden="true"></i>Yellow</label>
-      <input type="radio" name="accent" id="a-green" value="green" data-dark="#a6e3a1" data-light="#40a02b"><label for="a-green" style="--c: #a6e3a1"><i aria-hidden="true"></i>Green</label>
-      <input type="radio" name="accent" id="a-teal" value="teal" data-dark="#94e2d5" data-light="#179299"><label for="a-teal" style="--c: #94e2d5"><i aria-hidden="true"></i>Teal</label>
-      <input type="radio" name="accent" id="a-sky" value="sky" data-dark="#89dceb" data-light="#04a5e5"><label for="a-sky" style="--c: #89dceb"><i aria-hidden="true"></i>Sky</label>
-      <input type="radio" name="accent" id="a-sapphire" value="sapphire" data-dark="#74c7ec" data-light="#209fb5"><label for="a-sapphire" style="--c: #74c7ec"><i aria-hidden="true"></i>Sapphire</label>
-      <input type="radio" name="accent" id="a-blue" value="blue" data-dark="#89b4fa" data-light="#1e66f5"><label for="a-blue" style="--c: #89b4fa"><i aria-hidden="true"></i>Blue</label>
-      <input type="radio" name="accent" id="a-lavender" value="lavender" data-dark="#b4befe" data-light="#7287fd"><label for="a-lavender" style="--c: #b4befe"><i aria-hidden="true"></i>Lavender</label>
-      </fieldset>
+  <!-- The apps: one square plate, tabs on the right -->
+  <section class="apps" id="apps" aria-labelledby="apps-h">
+    <div class="plate">
+      <img data-app="store" src="/shots/xp-store.webp" width="1920" height="1080" loading="lazy" decoding="async" alt="The Store: popular apps in a list, each with an Install button.">
+      <img data-app="doctor" src="/shots/xp-doctor.webp" width="1920" height="1080" loading="lazy" decoding="async" alt="Dr. Help: a check-up of the system, each finding with a fix button." hidden>
+      <img data-app="office" src="/shots/xp-office.webp" width="1920" height="1080" loading="lazy" decoding="async" alt="VSheet, Vyntaris Office's spreadsheet, with a workbook open." hidden>
+      <img data-app="settings" src="/shots/xp-settings.webp" width="1920" height="1080" loading="lazy" decoding="async" alt="Settings on its Appearance page: accent, mode, glass and animations." hidden>
     </div>
-  </section>
-
-  <section id="apps" aria-labelledby="apps-h">
-    <div class="wrap">
-      <div class="section-head">
-        <p class="eyebrow">Apps of its own</p>
-        <h2 id="apps-h">The tools a desktop should come with.</h2>
+    <div class="apps-text">
+      <div class="tabs" role="tablist" aria-label="Its own apps">
+        <button type="button" role="tab" id="t-store" aria-controls="p-store" aria-selected="true" data-app="store">Store</button>
+        <button type="button" role="tab" id="t-doctor" aria-controls="p-doctor" aria-selected="false" data-app="doctor" tabindex="-1">Dr. Help</button>
+        <button type="button" role="tab" id="t-office" aria-controls="p-office" aria-selected="false" data-app="office" tabindex="-1">Office</button>
+        <button type="button" role="tab" id="t-settings" aria-controls="p-settings" aria-selected="false" data-app="settings" tabindex="-1">Settings</button>
       </div>
-      <div class="feature">
-        <figure><img src="/shots/store-960.webp" alt="The Store: popular apps in a list, each with an Install button." width="960" height="540" loading="lazy" decoding="async"></figure>
-        <div class="feature-text"><p class="eyebrow">Store</p><h3>Every app Arch has, one click away</h3>
-          <p>The Store lists every app Arch's repositories describe, in sections, searched as you type, installed and removed with a click. With the AUR on, community recipes are built and installed the same way, no terminal.</p></div>
+      <div class="app-copy">
+        <h2 id="apps-h">The apps it comes with</h2>
+        <div role="tabpanel" id="p-store" aria-labelledby="t-store">
+          <h3>Every app Arch has, one click away</h3>
+          <p>The Store lists every app Arch's repositories describe, in sections, searched as you type, installed and removed with a click. With the AUR on, community recipes are built and installed the same way, no terminal.</p>
+        </div>
+        <div role="tabpanel" id="p-doctor" aria-labelledby="t-doctor" hidden>
+          <h3>A check-up, in plain words</h3>
+          <p>Dr. Help looks the system over the way the Arch Wiki's system maintenance asks: failed services, errors in the log, leftover packages, mirrors, firmware, disk health. What it can fix has a button.</p>
+        </div>
+        <div role="tabpanel" id="p-office" aria-labelledby="t-office" hidden>
+          <h3>Documents, spreadsheets and slides</h3>
+          <p>VDoc, VSheet and VSlide open and save Word, Excel and PowerPoint files, password-protected ones too. VSheet computes old workbooks the way Excel does.</p>
+        </div>
+        <div role="tabpanel" id="p-settings" aria-labelledby="t-settings" hidden>
+          <h3>One place for all of it</h3>
+          <p>Every setting in one place, and every one found from the launcher by its name: the look, the bar, power, backups, drivers, users and the language.</p>
+        </div>
       </div>
-      <div class="feature flip">
-        <figure><img src="/shots/doctor-960.webp" alt="Dr. Help: a check-up of the system, each finding with a fix button." width="960" height="540" loading="lazy" decoding="async"></figure>
-        <div class="feature-text"><p class="eyebrow">Dr. Help</p><h3>A check-up, in plain words</h3>
-          <p>Dr. Help looks the system over the way the Arch Wiki's System maintenance asks: failed services, errors in the log, leftover packages, mirrors, firmware, disk health. What it can fix has a button; all of them at once is one password.</p></div>
-      </div>
-      <div class="feature">
-        <figure><img src="/shots/office-960.webp" alt="VSheet, Vyntaris Office's spreadsheet, with an empty workbook open." width="960" height="540" loading="lazy" decoding="async"></figure>
-        <div class="feature-text"><p class="eyebrow">Vyntaris Office</p><h3>Documents, spreadsheets and slides</h3>
-          <p>VDoc, VSheet and VSlide open and save Word, Excel and PowerPoint files, password-protected ones too. VSheet computes old workbooks the way Excel does.</p></div>
-      </div>
-      <div class="feature flip">
-        <figure><img src="/shots/settings-960.webp" alt="Settings on its Appearance page: accent, mode, glass and animations." width="960" height="540" loading="lazy" decoding="async"></figure>
-        <div class="feature-text"><p class="eyebrow">Settings</p><h3>One place for all of it</h3>
-          <p>Every setting in one file, every one found from the launcher by its name. The look, the bar, power, backups, drivers, users and the language.</p></div>
-      </div>
-      <div class="gallery" style="margin-top: var(--s12)">
-        <figure><img src="/shots/tiling-960.webp" alt="Two windows tiled side by side: a terminal and VDoc." width="960" height="540" loading="lazy" decoding="async"><figcaption>Hyprland tiling: windows place themselves.</figcaption></figure>
-        <figure><img src="/shots/lock-960.webp" alt="The lock screen: the blurred wallpaper behind a large clock, music controls under it." width="960" height="540" loading="lazy" decoding="async"><figcaption>The lock screen, with your music under the clock.</figcaption></figure>
-        <figure><img src="/shots/welcome-960.webp" alt="The welcome screen on its Look step: dark or light, accent and wallpaper." width="960" height="540" loading="lazy" decoding="async"><figcaption>Welcome: look, keyboard, time and the internet, done.</figcaption></figure>
+      <div class="cells">
+        <a class="cell cell-ink" href="#download">Download Vyntaris</a>
+        <a class="cell cell-tone" href="#questions">Read the questions</a>
       </div>
     </div>
   </section>
 
-  <section id="hood" aria-labelledby="hood-h">
-    <div class="wrap">
-      <div class="section-head">
-        <p class="eyebrow">Under the hood</p>
-        <h2 id="hood-h">Arch Linux, looked after.</h2>
-        <p class="lead">Vyntaris is a package from its own pacman repository. Underneath it is plain Arch, updated with
-          <code>pacman -Syu</code> or one click in the island.</p>
-      </div>
-      <div class="points">
-        <div><p class="eyebrow">update-guard</p><h3>Updates that undo themselves</h3>
-          <p>A Timeshift snapshot before every upgrade, and a boot entry that goes back to it. If the new system fails to start three times, the old one comes back on its own.</p></div>
-        <div><p class="eyebrow">Drivers</p><h3>Drivers by themselves</h3>
-          <p>Graphics, Wi-Fi, sound, printers and scanners install after each start and when a printer is plugged in. Only the firmware for the hardware you have.</p></div>
-        <div><p class="eyebrow">Upkeep</p><h3>Upkeep on a schedule</h3>
-          <p>The package cache trimmed weekly, SSDs trimmed, Btrfs scrubbed monthly, mirrors kept fast, firmware from fwupd.</p></div>
-        <div><p class="eyebrow">Fast</p><h3>Fast where it matters</h3>
-          <p>Hyprland and Quickshell, the desktop's own tools written in Rust, zram instead of a swap file, the wallpaper drawn without the GPU.</p></div>
-        <div><p class="eyebrow">Security</p><h3>Safe by default</h3>
-          <p>An nftables firewall, signed packages only, and uBlock Origin, Bitwarden and Privacy Badger in Firefox from the start.</p></div>
-        <div><p class="eyebrow">Games</p><h3>Ready for games</h3>
-          <p>Steam with Proton, Lutris, GameMode and MangoHud, set up by typing “set up games” in the launcher.</p></div>
-      </div>
+  <section class="questions" id="questions" aria-labelledby="questions-h">
+    <h2 id="questions-h">Questions</h2>
+    <div class="answers">
+      <p><b>What does it cost?</b> Nothing. Vyntaris is free, and so is everything it installs.</p>
+      <p><b>Is it really Arch Linux?</b> Yes. Underneath is plain Arch with its kernel, systemd and pacman; the desktop is a package from Vyntaris's own signed repository, and <code>pacman -Syu</code> updates both.</p>
+      <p><b>Can it sit next to Windows?</b> Yes. The installer can put Vyntaris in the free space and leave Windows as it is; the boot menu lists both.</p>
+      <p><b>Will my NVIDIA card work?</b> Drivers for graphics, Wi-Fi, sound and printers install by themselves after each start. On a laptop with two graphics cards the NVIDIA one sleeps until an app needs it.</p>
+      <p><b>What if an update breaks something?</b> Every upgrade starts with a snapshot, and a system that fails to start three times goes back to it by itself.</p>
+      <p><b>Do I need the terminal?</b> No. Apps come from the Store, settings from Settings, repairs from Dr. Help. The terminal is there when you want it.</p>
+      <p><b>Can I install apps from the AUR?</b> Yes. Turn the AUR on in the Store and its recipes are built and installed with the same click.</p>
+      <p><b>What about games?</b> Type "set up games" in the launcher: Steam with Proton, Lutris, GameMode and MangoHud. Game mode then starts with each game.</p>
+      <p><b>Which languages?</b> English, Serbian, German, French, Italian, Spanish, Polish and Portuguese, picked when you install and changed in Settings.</p>
+      <p><b>What does it send anywhere?</b> Nothing about you. Backups go to your own Google Drive only if you turn them on; the <a href="/policy/">privacy policy</a> says how.</p>
+      <p><b>What do I need to install it?</b> A 64-bit PC with UEFI and a USB stick of 4 GB or more. The image holds the whole desktop, so installing works without the internet.</p>
+      <p><b>How do I put it on a USB stick?</b> Copy the ISO to a Ventoy stick, or write it to the stick (this erases it; <code>sdX</code> is the stick): <code class="cmd" id="dd">sudo dd if=vyntaris-x86_64.iso of=/dev/sdX bs=4M status=progress</code> <button type="button" class="copy" data-copy="dd">Copy</button></p>
     </div>
   </section>
 
-  <section id="download" aria-labelledby="download-h">
-    <div class="wrap download">
-      <div class="get">
-        <p class="eyebrow">Download</p>
-        <h2 id="download-h">Install Vyntaris.</h2>
-        <p class="lead">One image for every PC with a 64-bit processor and UEFI. It updates itself from then on.</p>
-        <a class="btn btn-primary" href="https://dl.vyntarisos.com/vyntaris-x86_64.iso" download><svg viewBox="0 -960 960 960" aria-hidden="true"><path fill="currentColor" d="M480-325q-6 0-11-2t-10-7L308-485q-9-9-8.5-21.5T309-528q9-9 21.5-9t21.5 9l98 99v-341q0-13 8.5-21.5T480-800q13 0 21.5 8.5T510-770v341l99-99q9-9 21-8.5t21 9.5q9 9 9 21.5t-9 21.5L501-334q-5 5-10 7t-11 2ZM220-160q-24 0-42-18t-18-42v-113q0-13 8.5-21.5T190-363q13 0 21.5 8.5T220-333v113h520v-113q0-13 8.5-21.5T770-363q13 0 21.5 8.5T800-333v113q0 24-18 42t-42 18H220Z"/></svg>Download the ISO</a>
-        <dl>
-          <dt>File</dt><dd><code>vyntaris-x86_64.iso</code>, the latest release</dd>
-          <dt>Checksum</dt><dd><a href="https://dl.vyntarisos.com/SHA256SUMS">SHA256SUMS</a></dd>
-          <dt>Needs</dt><dd>a 64-bit PC with UEFI, and a USB stick of 4 GB or more</dd>
-        </dl>
+  <section class="get" id="download" aria-labelledby="download-h">
+    <div class="get-say">
+      <h2 id="download-h">Yours in a few minutes</h2>
+      <p>Download the image, put it on a USB stick and start the computer from it.</p>
+      <div class="get-actions">
+        <a class="btn" href="https://dl.vyntarisos.com/vyntaris-x86_64.iso" download>Download the ISO</a>
+        <a class="link" href="https://dl.vyntarisos.com/SHA256SUMS">Its checksum</a>
       </div>
-      <ol class="steps">
-        <li><div><h3>Download the ISO</h3><p>It has the installer and the whole desktop, so installing works without the internet.</p></div></li>
-        <li><div><h3>Put it on a USB stick</h3><p>Copy it to a Ventoy stick, or write it to the stick directly (this erases the stick; <code>sdX</code> is the stick):</p>
-          <div class="cmd"><pre id="dd">sudo dd if=vyntaris-x86_64.iso of=/dev/sdX bs=4M status=progress</pre><button type="button" data-copy="dd">Copy</button></div></div></li>
-        <li><div><h3>Boot it and install</h3><p>The installer asks who you are and which disk to use, nothing more. Firefox, the file manager, VS Code and the everyday tools come with it.</p></div></li>
-      </ol>
     </div>
+    <ul class="needs">
+      <li><b>A 64-bit PC with UEFI</b><span>Intel or AMD; NVIDIA, AMD and Intel graphics all work.</span></li>
+      <li><b>A USB stick of 4 GB</b><span>Or a Ventoy stick, with the image copied onto it.</span></li>
+      <li><b>No internet needed</b><span>The image holds the whole desktop. Free, now and later.</span></li>
+    </ul>
   </section>
 </main>
 
 <footer class="foot">
-  <div class="wrap">
-    <a class="brand" href="/"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" fill-rule="evenodd" d="M12.79 11.4L13.97 10.96L14.92 10.55L15.79 10.12L16.57 9.68L16.88 9.05L16.82 8.75L16.79 8.45L16.78 8.15L16.81 7.85L16.85 7.55L16.92 7.26L17.02 6.97L17.14 6.7L17.28 6.44L17.45 6.19L17.66 5.93L17.86 5.71L18.09 5.51L18.33 5.34L18.59 5.18L18.86 5.04L20.16 2.43L16.16 2.43zM6.69 12.72L8.05 12.57L9.18 12.38L10.35 12.12L11.45 11.83L7.26 2.43L1.08 2.43zM22.55 8.18L22.5 7.74L22.36 7.32L22.14 6.93L21.85 6.6L21.5 6.32L21.1 6.12L20.67 6L20.22 5.97L19.78 6.02L19.36 6.16L18.97 6.38L18.64 6.67L18.36 7.03L18.16 7.42L18.04 7.85L18.01 8.3L18.06 8.74L18.2 9.16L18.42 9.55L18.71 9.88L19.07 10.16L19.46 10.36L19.89 10.48L20.34 10.51L20.78 10.46L21.2 10.32L21.59 10.1L21.92 9.81L22.2 9.45L22.4 9.06L22.52 8.63zM3.06 13.46L3.08 13.5L0.65 14.24L0.75 14.52L0.89 14.78L1.1 15.07L1.3 15.28L1.56 15.51L1.85 15.7L2.15 15.86L2.52 16.01L2.92 16.14L3.34 16.24L3.77 16.32L4.23 16.37L4.78 16.41L5.88 16.41L7.15 16.31L7.92 16.21L8.7 16.08L9.49 15.92L10.4 15.7L11.22 15.49L12.13 15.21L12.93 14.95L13.82 14.62L14.69 14.27L15.44 13.94L16.25 13.55L16.93 13.19L17.66 12.77L18.25 12.39L18.81 12L19.32 11.6L18.83 11.42L18.37 11.17L17.96 10.85L17.59 10.48L16.86 10.93L15.99 11.39L15.03 11.84L13.99 12.27L12.9 12.66L11.87 12.98L10.83 13.27L9.7 13.53L8.59 13.73L7.52 13.88L6.52 13.96L5.6 13.98L4.79 13.94L4.06 13.84L3.48 13.69L3.23 13.58zM13.4 16.08L11.97 16.54L11.02 16.81L10.07 17.05L9.15 17.24L11.07 20.77z"/></svg>Vyntaris</a>
-    <span>Built on Arch Linux, Hyprland and Quickshell. Colours by Catppuccin.</span>
-    <nav aria-label="More">
-      <a href="/policy/">Privacy</a>
-      <a href="/tos/">Terms</a>
-      <a href="https://pkg.vyntarisos.com/">Package repository</a>
+  <div class="foot-picture">
+    <img src="/shots/control.webp" width="1920" height="1080" loading="lazy" decoding="async" alt="The control center open under the island, over the Terrain wallpaper.">
+  </div>
+  <div class="foot-menu">
+    <a class="brand" href="/" aria-label="Vyntaris, home"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" fill-rule="evenodd" d="M12.79 11.4L13.97 10.96L14.92 10.55L15.79 10.12L16.57 9.68L16.88 9.05L16.82 8.75L16.79 8.45L16.78 8.15L16.81 7.85L16.85 7.55L16.92 7.26L17.02 6.97L17.14 6.7L17.28 6.44L17.45 6.19L17.66 5.93L17.86 5.71L18.09 5.51L18.33 5.34L18.59 5.18L18.86 5.04L20.16 2.43L16.16 2.43zM6.69 12.72L8.05 12.57L9.18 12.38L10.35 12.12L11.45 11.83L7.26 2.43L1.08 2.43zM22.55 8.18L22.5 7.74L22.36 7.32L22.14 6.93L21.85 6.6L21.5 6.32L21.1 6.12L20.67 6L20.22 5.97L19.78 6.02L19.36 6.16L18.97 6.38L18.64 6.67L18.36 7.03L18.16 7.42L18.04 7.85L18.01 8.3L18.06 8.74L18.2 9.16L18.42 9.55L18.71 9.88L19.07 10.16L19.46 10.36L19.89 10.48L20.34 10.51L20.78 10.46L21.2 10.32L21.59 10.1L21.92 9.81L22.2 9.45L22.4 9.06L22.52 8.63zM3.06 13.46L3.08 13.5L0.65 14.24L0.75 14.52L0.89 14.78L1.1 15.07L1.3 15.28L1.56 15.51L1.85 15.7L2.15 15.86L2.52 16.01L2.92 16.14L3.34 16.24L3.77 16.32L4.23 16.37L4.78 16.41L5.88 16.41L7.15 16.31L7.92 16.21L8.7 16.08L9.49 15.92L10.4 15.7L11.22 15.49L12.13 15.21L12.93 14.95L13.82 14.62L14.69 14.27L15.44 13.94L16.25 13.55L16.93 13.19L17.66 12.77L18.25 12.39L18.81 12L19.32 11.6L18.83 11.42L18.37 11.17L17.96 10.85L17.59 10.48L16.86 10.93L15.99 11.39L15.03 11.84L13.99 12.27L12.9 12.66L11.87 12.98L10.83 13.27L9.7 13.53L8.59 13.73L7.52 13.88L6.52 13.96L5.6 13.98L4.79 13.94L4.06 13.84L3.48 13.69L3.23 13.58zM13.4 16.08L11.97 16.54L11.02 16.81L10.07 17.05L9.15 17.24L11.07 20.77z"/></svg></a>
+    <nav aria-label="Sections again">
+      <a href="#island">The island</a>
+      <a href="#colour">Colour</a>
+      <a href="#updates">Updates</a>
+      <a href="#apps">Apps</a>
+      <a href="#questions">Questions</a>
+      <a href="#download">Download</a>
     </nav>
+    <div class="foot-blocks">
+      <p>Built on Arch Linux, Hyprland and Quickshell. Colours by Catppuccin.</p>
+      <p><a href="https://pkg.vyntarisos.com/">The package repository</a><br><a href="https://dl.vyntarisos.com/SHA256SUMS">Checksums</a></p>
+    </div>
+    <p class="legal"><a href="/policy/">Privacy</a> <a href="/tos/">Terms</a> <span>© 2026 Vyntaris</span></p>
   </div>
 </footer>
 <p class="visually-hidden" aria-live="polite" id="status"></p>
 
-<script>
-// The accent picker (the page in the accent picked, remembered here) and the copy button. The page works
-// without this: the accent stays blue, the command can be selected by hand.
-(() => {
-  const root = document.documentElement, light = matchMedia("(prefers-color-scheme: light)");
-  const store = { get() { try { return localStorage.getItem("accent"); } catch (e) { return null; } },
-                  set(v) { try { localStorage.setItem("accent", v); } catch (e) {} } };
-  const apply = () => {
-    const on = document.querySelector('#accent input:checked');
-    // System: the stylesheet's own (the system's accent); one of the fourteen: that one, as dark or light
-    if (on && on.value !== "system") {
-      root.dataset.picked = "";
-      root.style.setProperty("--accent", light.matches ? on.dataset.light : on.dataset.dark);
-    } else {
-      delete root.dataset.picked;
-      root.style.removeProperty("--accent");
-    }
-    document.querySelectorAll('#accent label').forEach(l => {
-      const i = document.getElementById(l.htmlFor);
-      if (i.dataset.dark) l.style.setProperty("--c", light.matches ? i.dataset.light : i.dataset.dark);
-    });
-  };
-  const saved = store.get(), pick = saved && document.getElementById("a-" + saved);
-  if (pick) pick.checked = true;
-  document.getElementById("accent").addEventListener("change", e => { store.set(e.target.value); apply(); });
-  light.addEventListener("change", apply);
-  apply();
-
-  const status = document.getElementById("status");
-  document.querySelectorAll("[data-copy]").forEach(b => b.addEventListener("click", async () => {
-    const text = document.getElementById(b.dataset.copy).textContent;
-    try { await navigator.clipboard.writeText(text); b.textContent = "Copied"; status.textContent = "Command copied"; }
-    catch (e) { b.textContent = "Select it"; }
-    setTimeout(() => { b.textContent = "Copy"; }, 2000);
-  }));
-
-  // the hero's island: the panel picked shown, the others hidden (without this, the control center alone)
-  const picker = document.querySelector(".island-pick");
-  if (picker) {
-    picker.hidden = false;
-    picker.addEventListener("click", e => {
-      const b = e.target.closest("button[data-panel]");
-      if (!b) return;
-      picker.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
-      document.querySelectorAll(".stage-panel").forEach(img => { img.hidden = img.dataset.panel !== b.dataset.panel; });
-    });
-  }
-
-  // the laptop: three.js and its scene loaded only as it comes near (with less motion asked for, it stands
-  // still, open); without WebGL, its picture and its labels as a list instead
-  const xp = document.getElementById("inside");
-  if (xp) {
-    const gl = (() => { try { const c = document.createElement("canvas"); return !!(c.getContext("webgl2") || c.getContext("webgl")); } catch (e) { return false; } })();
-    const still = () => {
-      xp.classList.add("nogl");
-      const lead = xp.querySelector(".xp-head .lead");
-      if (lead) lead.textContent = "What you see on the screen, and what runs beneath it, layer by layer.";
-    };
-    if (!gl) still();
-    else {
-      const load = src => new Promise((ok, no) => { const el = document.createElement("script"); el.src = src; el.onload = ok; el.onerror = no; document.head.append(el); });
-      const near = new IntersectionObserver(es => {
-        if (!es.some(e => e.isIntersecting)) return;
-        near.disconnect();
-        load("/js/three.min.js").then(() => load("/js/laptop.js")).catch(still);
-      }, { rootMargin: "800px 0px" });
-      near.observe(xp);
-    }
-  }
-
-  // where you are, in the header
-  const links = [...document.querySelectorAll(".nav a")];
-  const seen = new IntersectionObserver(es => es.forEach(e => {
-    if (!e.isIntersecting) return;
-    links.forEach(a => a.toggleAttribute("aria-current", a.hash === "#" + e.target.id));
-  }), { rootMargin: "-45% 0px -50% 0px" });
-  links.forEach(a => { const s = document.querySelector(a.hash); if (s) seen.observe(s); });
-})();
-</script>
+<script src="/js/site.js" defer></script>
 </body>
 </html>
