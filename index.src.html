@@ -7,7 +7,7 @@
 <meta name="description" content="Vyntaris is a free desktop operating system built on Arch Linux. One island at the top of the screen for everything, one colour of yours through all of it, and updates that undo themselves if they go wrong.">
 <meta property="og:title" content="Vyntaris">
 <meta property="og:description" content="A computer you'll want to come back to.">
-<meta property="og:image" content="https://vyntarisos.com/shots/control.webp">
+<meta property="og:image" content="https://vyntarisos.com/shots/desk.webp">
 <link rel="preload" href="/fonts/literata.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/site.css">
 </head>
@@ -31,117 +31,84 @@
 </header>
 
 <main id="main">
-  <!-- The split: a Vyntaris screen that never moves on the left, the reading column on the right. The
-       screen's island opens into whatever the column is talking about; its wallpaper is drawn live in
-       the accent picked below -->
-  <div class="split">
-    <figure class="stage" id="stage" data-ui aria-label="A Vyntaris screen, its island open">
-      <div class="screen">
-        <canvas class="wall" width="1920" height="1080" aria-hidden="true"></canvas>
-        <img class="wall-still" src="/shots/xp-wall.webp" alt="" width="1920" height="1080" fetchpriority="high">
-        <img class="sbar" src="/shots/xp-bar.webp" alt="" width="1920" height="30">
-        <img class="panel" data-panel="control" src="/shots/control-panel.webp" width="540" height="900" style="--x:35.938%;--w:28.125%;--clip:inset(0 5.37% 7.33% 5.37% round 0 0 3.70% 3.70%)"
-             alt="The island as the control center: Wi-Fi, Bluetooth, night light and the microphone as tiles, volume and brightness, the processor and memory, and the month with the weather.">
-        <img class="panel" data-panel="launcher" src="/shots/launcher-panel.webp" width="680" height="720" style="--x:32.292%;--w:35.417%;--clip:inset(0 1.32% 16.11% 1.32% round 0 0 2.94% 2.94%)" hidden
-             alt="The island as the launcher: apps, settings, windows and files found as you type." loading="lazy">
-        <img class="panel" data-panel="sound" src="/shots/sound-panel.webp" width="540" height="560" style="--x:35.938%;--w:28.125%;--clip:inset(0 7.22% 17.32% 7.41% round 0 0 3.70% 3.70%)" hidden
-             alt="The island as the sound panel: the output and input in use, their volume and every other device." loading="lazy">
-        <img class="panel" data-panel="wallpapers" src="/shots/wallpapers-panel.webp" width="900" height="330" style="--x:26.562%;--w:46.875%;--clip:inset(0 4.33% 18.48% 4.33% round 0 0 2.22% 2.22%)" hidden
-             alt="The island as the wallpaper picker: wallpapers in a row under the bar." loading="lazy">
-        <img class="panel" data-panel="gamemode" src="/shots/gamemode-panel.webp" width="560" height="300" style="--x:35.417%;--w:29.167%;--clip:inset(0 8.75% 12.33% 8.75% round 0 0 3.57% 3.57%)" hidden
-             alt="The island as game mode: notifications silenced, the FPS and temperatures shown." loading="lazy">
+  <!-- The first screen: what it is, in large type, one action, and the desktop itself under it, large -->
+  <section class="hero" aria-labelledby="hero-h">
+    <div class="hero-say">
+      <h1 id="hero-h">A computer you'll want to come back to.</h1>
+      <p>Vyntaris is a free desktop operating system built on Arch Linux. One island at the top of the screen for everything, in a colour of yours.</p>
+      <div class="hero-actions">
+        <a class="btn btn-big" href="#download">Download Vyntaris</a>
+        <a class="link" href="#island">See how it works</a>
       </div>
+    </div>
+    <figure class="hero-screen" data-ui>
+      <img src="/shots/desk.webp" width="2560" height="1440" fetchpriority="high" decoding="async"
+           alt="The Vyntaris desktop: Firefox on the Arch Wiki, the terminal and the Store tiled, the island open as the control center, the Terrain wallpaper behind.">
     </figure>
+  </section>
 
-    <div class="column">
-      <section class="hero" aria-labelledby="name">
-        <p class="hero-line">A computer you'll want to come back to.</p>
-        <p class="hero-what">Vyntaris is a free desktop operating system built on Arch Linux, for 64-bit PCs with UEFI.</p>
-      </section>
-
-      <section class="island" id="island" aria-labelledby="island-h">
+  <!-- The island: one screen held while the five panels open on it in turn -->
+  <section class="island" id="island" aria-labelledby="island-h">
+    <div class="island-pin">
+      <div class="island-head">
         <h2 id="island-h">Everything grows out of the island</h2>
-        <p>The clock at the top of the screen is the island. Tap the Super key and it opens; start typing and it
-          searches. Each panel grows out of it and goes back into it. Pick one:</p>
-        <div class="index" role="group" aria-label="Open the island as">
-          <button type="button" data-panel="control" aria-pressed="true">Control center</button>
-          <button type="button" data-panel="launcher" aria-pressed="false">Launcher</button>
-          <button type="button" data-panel="sound" aria-pressed="false">Sound</button>
-          <button type="button" data-panel="wallpapers" aria-pressed="false">Wallpapers</button>
-          <button type="button" data-panel="gamemode" aria-pressed="false">Game mode</button>
-        </div>
-        <p class="index-note" aria-live="polite" id="panel-note">Wi-Fi, Bluetooth and the microphone as tiles, volume and brightness, the month and the weather where you are.</p>
-      </section>
-
-      <section class="menu" id="details" aria-labelledby="details-h">
-        <div class="sheet">
-          <h2 id="details-h">Already done</h2>
-          <table>
-            <caption>Every day</caption>
-            <tbody>
-              <tr><th scope="row">Calendar and weather<span>The month beside today, and the weather where you are.</span></th><td>Control center</td></tr>
-              <tr><th scope="row">Live activities<span>Downloads, timers, installs and backups, as they run.</span></th><td>In the island</td></tr>
-              <tr><th scope="row">Quick Look<span>Pictures, PDFs, videos and Office files, without an app.</span></th><td><kbd>Space</kbd></td></tr>
-              <tr><th scope="row">Your phone<span>Its battery, its notifications, files both ways.</span></th><td>KDE Connect</td></tr>
-            </tbody>
-          </table>
-          <table>
-            <caption>Looked after</caption>
-            <tbody>
-              <tr><th scope="row">Privacy dot<span>Lit while an app uses the microphone, camera or screen.</span></th><td>In the bar</td></tr>
-              <tr><th scope="row">Backups<span>Your folders, at every start, at shutdown or by hand.</span></th><td>Google Drive</td></tr>
-              <tr><th scope="row">Night light<span>Warmer colours in the evening, by hand or on a schedule.</span></th><td>At sunset</td></tr>
-              <tr><th scope="row">Game mode<span>Notifications quiet, the FPS and temperatures in the island.</span></th><td>With a game</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-
-      <section class="colour" id="colour" aria-labelledby="colour-h">
-        <h2 id="colour-h">One colour, everywhere</h2>
-        <p>The bar, the island, the wallpaper, Firefox, the apps and the login screen wear one accent. This page wears
-          your system's; pick another and watch the screen beside you draw its wallpaper again.</p>
-        <fieldset class="accents" id="accent">
-          <legend>Accent</legend>
-          <input type="radio" name="accent" id="a-system" value="system" checked><label for="a-system" style="--c: AccentColor"><i aria-hidden="true"></i>System</label>
-          <input type="radio" name="accent" id="a-rosewater" value="rosewater" data-dark="#f5e0dc" data-light="#dc8a78"><label for="a-rosewater"><i aria-hidden="true"></i>Rosewater</label>
-          <input type="radio" name="accent" id="a-flamingo" value="flamingo" data-dark="#f2cdcd" data-light="#dd7878"><label for="a-flamingo"><i aria-hidden="true"></i>Flamingo</label>
-          <input type="radio" name="accent" id="a-pink" value="pink" data-dark="#f5c2e7" data-light="#ea76cb"><label for="a-pink"><i aria-hidden="true"></i>Pink</label>
-          <input type="radio" name="accent" id="a-mauve" value="mauve" data-dark="#cba6f7" data-light="#8839ef"><label for="a-mauve"><i aria-hidden="true"></i>Mauve</label>
-          <input type="radio" name="accent" id="a-red" value="red" data-dark="#f38ba8" data-light="#d20f39"><label for="a-red"><i aria-hidden="true"></i>Red</label>
-          <input type="radio" name="accent" id="a-maroon" value="maroon" data-dark="#eba0ac" data-light="#e64553"><label for="a-maroon"><i aria-hidden="true"></i>Maroon</label>
-          <input type="radio" name="accent" id="a-peach" value="peach" data-dark="#fab387" data-light="#fe640b"><label for="a-peach"><i aria-hidden="true"></i>Peach</label>
-          <input type="radio" name="accent" id="a-yellow" value="yellow" data-dark="#f9e2af" data-light="#df8e1d"><label for="a-yellow"><i aria-hidden="true"></i>Yellow</label>
-          <input type="radio" name="accent" id="a-green" value="green" data-dark="#a6e3a1" data-light="#40a02b"><label for="a-green"><i aria-hidden="true"></i>Green</label>
-          <input type="radio" name="accent" id="a-teal" value="teal" data-dark="#94e2d5" data-light="#179299"><label for="a-teal"><i aria-hidden="true"></i>Teal</label>
-          <input type="radio" name="accent" id="a-sky" value="sky" data-dark="#89dceb" data-light="#04a5e5"><label for="a-sky"><i aria-hidden="true"></i>Sky</label>
-          <input type="radio" name="accent" id="a-sapphire" value="sapphire" data-dark="#74c7ec" data-light="#209fb5"><label for="a-sapphire"><i aria-hidden="true"></i>Sapphire</label>
-          <input type="radio" name="accent" id="a-blue" value="blue" data-dark="#89b4fa" data-light="#1e66f5"><label for="a-blue"><i aria-hidden="true"></i>Blue</label>
-          <input type="radio" name="accent" id="a-lavender" value="lavender" data-dark="#b4befe" data-light="#7287fd"><label for="a-lavender"><i aria-hidden="true"></i>Lavender</label>
-        </fieldset>
-      </section>
+        <p>The clock at the top of the screen is the island. Tap the Super key and it opens; start typing and it searches.</p>
+      </div>
+      <figure class="stage" id="stage" data-ui>
+        <img data-panel="control" src="/shots/island-control.webp" width="1216" height="760" decoding="async" alt="The island as the control center: Wi-Fi, Bluetooth, night light and the microphone as tiles, volume, the processor and memory, and the month with the weather.">
+        <img data-panel="launcher" src="/shots/island-launcher.webp" width="1216" height="760" decoding="async" loading="lazy" hidden alt="The island as the launcher: apps, open windows and settings found as you type.">
+        <img data-panel="nightlight" src="/shots/island-nightlight.webp" width="1216" height="760" decoding="async" loading="lazy" hidden alt="The island as night light: on now or on a schedule, and how warm.">
+        <img data-panel="wallpapers" src="/shots/island-wallpapers.webp" width="1216" height="760" decoding="async" loading="lazy" hidden alt="The island as the wallpaper picker: wallpapers in a row under the bar.">
+        <img data-panel="gamemode" src="/shots/island-gamemode.webp" width="1216" height="760" decoding="async" loading="lazy" hidden alt="The island as game mode: starting with games, notifications silenced, the FPS and temperatures shown.">
+      </figure>
+      <div class="index" role="group" aria-label="Open the island as">
+        <button type="button" data-panel="control" aria-pressed="true">Control center</button>
+        <button type="button" data-panel="launcher" aria-pressed="false">Launcher</button>
+        <button type="button" data-panel="nightlight" aria-pressed="false">Night light</button>
+        <button type="button" data-panel="wallpapers" aria-pressed="false">Wallpapers</button>
+        <button type="button" data-panel="gamemode" aria-pressed="false">Game mode</button>
+      </div>
+      <p class="index-note" aria-live="polite" id="panel-note">Wi-Fi, Bluetooth and the microphone as tiles, volume and brightness, the month and the weather where you are.</p>
     </div>
+  </section>
 
-    <!-- The name, across the bottom of the first screen, over the screen's lower edge -->
-    <h1 class="name" id="name"><span class="name-ink">vyntaris</span><span class="name-on" aria-hidden="true">vyntaris</span></h1>
-  </div>
+  <!-- One colour: the picker beside the same desktop worn in it -->
+  <section class="colour" id="colour" aria-labelledby="colour-h">
+    <div class="colour-say">
+      <h2 id="colour-h">One colour, everywhere</h2>
+      <p>The bar, the island, the wallpaper, Firefox, the apps and the login screen wear one accent. Pick one and see the whole desktop in it.</p>
+      <fieldset class="accents" id="accent">
+        <legend>Accent</legend>
+        <input type="radio" name="accent" id="a-system" value="system" checked><label for="a-system" style="--c: AccentColor"><i aria-hidden="true"></i>System</label>
+        <input type="radio" name="accent" id="a-rosewater" value="rosewater" data-dark="#f5e0dc" data-light="#dc8a78"><label for="a-rosewater"><i aria-hidden="true"></i>Rosewater</label>
+        <input type="radio" name="accent" id="a-flamingo" value="flamingo" data-dark="#f2cdcd" data-light="#dd7878"><label for="a-flamingo"><i aria-hidden="true"></i>Flamingo</label>
+        <input type="radio" name="accent" id="a-pink" value="pink" data-dark="#f5c2e7" data-light="#ea76cb"><label for="a-pink"><i aria-hidden="true"></i>Pink</label>
+        <input type="radio" name="accent" id="a-mauve" value="mauve" data-dark="#cba6f7" data-light="#8839ef"><label for="a-mauve"><i aria-hidden="true"></i>Mauve</label>
+        <input type="radio" name="accent" id="a-red" value="red" data-dark="#f38ba8" data-light="#d20f39"><label for="a-red"><i aria-hidden="true"></i>Red</label>
+        <input type="radio" name="accent" id="a-maroon" value="maroon" data-dark="#eba0ac" data-light="#e64553"><label for="a-maroon"><i aria-hidden="true"></i>Maroon</label>
+        <input type="radio" name="accent" id="a-peach" value="peach" data-dark="#fab387" data-light="#fe640b"><label for="a-peach"><i aria-hidden="true"></i>Peach</label>
+        <input type="radio" name="accent" id="a-yellow" value="yellow" data-dark="#f9e2af" data-light="#df8e1d"><label for="a-yellow"><i aria-hidden="true"></i>Yellow</label>
+        <input type="radio" name="accent" id="a-green" value="green" data-dark="#a6e3a1" data-light="#40a02b"><label for="a-green"><i aria-hidden="true"></i>Green</label>
+        <input type="radio" name="accent" id="a-teal" value="teal" data-dark="#94e2d5" data-light="#179299"><label for="a-teal"><i aria-hidden="true"></i>Teal</label>
+        <input type="radio" name="accent" id="a-sky" value="sky" data-dark="#89dceb" data-light="#04a5e5"><label for="a-sky"><i aria-hidden="true"></i>Sky</label>
+        <input type="radio" name="accent" id="a-sapphire" value="sapphire" data-dark="#74c7ec" data-light="#209fb5"><label for="a-sapphire"><i aria-hidden="true"></i>Sapphire</label>
+        <input type="radio" name="accent" id="a-blue" value="blue" data-dark="#89b4fa" data-light="#1e66f5"><label for="a-blue"><i aria-hidden="true"></i>Blue</label>
+        <input type="radio" name="accent" id="a-lavender" value="lavender" data-dark="#b4befe" data-light="#7287fd"><label for="a-lavender"><i aria-hidden="true"></i>Lavender</label>
+      </fieldset>
+    </div>
+    <figure class="colour-screen" data-ui>
+      <img id="tinted" src="/shots/tint/blue.webp" width="1920" height="1080" loading="lazy" decoding="async"
+           alt="The Vyntaris desktop in the accent picked: Firefox, the terminal and the Store tiled, Settings open on its Appearance page.">
+    </figure>
+  </section>
 
-  <!-- Full width from here on -->
   <section class="speed" id="speed" aria-labelledby="speed-h">
-    <h2 id="speed-h">Ready before the others</h2>
-    <div class="mosaic">
-      <img src="/shots/xp-lock.webp" width="1920" height="1080" loading="lazy" decoding="async"
-           alt="The Vyntaris lock screen: a large clock over the blurred wallpaper.">
-      <div class="tile tile-accent">
-        <p class="figure">{{BOOT}}</p>
-        <p>from power on to the login screen. GNOME took {{BOOT_GNOME}}, KDE Plasma {{BOOT_KDE}}.</p>
-      </div>
-      <div class="tile tile-tone">
-        <p class="figure">{{LOGIN}}</p>
-        <p>from Enter to a desktop you can use. GNOME took {{LOGIN_GNOME}}, KDE Plasma {{LOGIN_KDE}}.</p>
-      </div>
+    <div class="speed-head">
+      <h2 id="speed-h">Ready before the others</h2>
+      <p>The same computer, three desktops, the same way of timing them: from the screen, the moment it stops changing.</p>
     </div>
-    <p class="note">Measured in three identical virtual machines on the same Arch Linux base, the median of three starts, {{DATE}}.</p>
+    {{CHART}}
+    <p class="note">Three identical virtual machines on the same Arch Linux base, the median of three starts each, {{DATE}}.</p>
   </section>
 
   <section class="xp" id="inside" aria-labelledby="xp-h">
@@ -226,43 +193,56 @@
     </div>
   </section>
 
-  <!-- The apps: one square plate, tabs on the right -->
-  <section class="apps" id="apps" aria-labelledby="apps-h">
-    <div class="plate">
-      <img data-app="store" src="/shots/xp-store.webp" width="1920" height="1080" loading="lazy" decoding="async" alt="The Store: popular apps in a list, each with an Install button.">
-      <img data-app="doctor" src="/shots/xp-doctor.webp" width="1920" height="1080" loading="lazy" decoding="async" alt="Dr. Help: a check-up of the system, each finding with a fix button." hidden>
-      <img data-app="office" src="/shots/xp-office.webp" width="1920" height="1080" loading="lazy" decoding="async" alt="VSheet, Vyntaris Office's spreadsheet, with a workbook open." hidden>
-      <img data-app="settings" src="/shots/xp-settings.webp" width="1920" height="1080" loading="lazy" decoding="async" alt="Settings on its Appearance page: accent, mode, glass and animations." hidden>
+  <section class="menu" id="details" aria-labelledby="details-h">
+    <div class="sheet">
+      <h2 id="details-h">Already done</h2>
+      <table>
+        <caption>Every day</caption>
+        <tbody>
+          <tr><th scope="row">Calendar and weather<span>The month beside today, and the weather where you are.</span></th><td>Control center</td></tr>
+          <tr><th scope="row">Live activities<span>Downloads, timers, installs and backups, as they run.</span></th><td>In the island</td></tr>
+          <tr><th scope="row">Quick Look<span>Pictures, PDFs, videos and Office files, without an app.</span></th><td><kbd>Space</kbd></td></tr>
+          <tr><th scope="row">Your phone<span>Its battery, its notifications, files both ways.</span></th><td>KDE Connect</td></tr>
+        </tbody>
+      </table>
+      <table>
+        <caption>Looked after</caption>
+        <tbody>
+          <tr><th scope="row">Privacy dot<span>Lit while an app uses the microphone, camera or screen.</span></th><td>In the bar</td></tr>
+          <tr><th scope="row">Backups<span>Your folders, at every start, at shutdown or by hand.</span></th><td>Google Drive</td></tr>
+          <tr><th scope="row">Night light<span>Warmer colours in the evening, by hand or on a schedule.</span></th><td>At sunset</td></tr>
+          <tr><th scope="row">Game mode<span>Notifications quiet, the FPS and temperatures in the island.</span></th><td>With a game</td></tr>
+        </tbody>
+      </table>
     </div>
-    <div class="apps-text">
-      <div class="tabs" role="tablist" aria-label="Its own apps">
-        <button type="button" role="tab" id="t-store" aria-controls="p-store" aria-selected="true" data-app="store">Store</button>
-        <button type="button" role="tab" id="t-doctor" aria-controls="p-doctor" aria-selected="false" data-app="doctor" tabindex="-1">Dr. Help</button>
-        <button type="button" role="tab" id="t-office" aria-controls="p-office" aria-selected="false" data-app="office" tabindex="-1">Office</button>
-        <button type="button" role="tab" id="t-settings" aria-controls="p-settings" aria-selected="false" data-app="settings" tabindex="-1">Settings</button>
+  </section>
+
+  <!-- The apps: four of its own, each shown whole -->
+  <section class="apps" id="apps" aria-labelledby="apps-h">
+    <div class="apps-head">
+      <h2 id="apps-h">The apps it comes with</h2>
+      <p>Made for Vyntaris, in its colours and its type, and found from the launcher by name.</p>
+    </div>
+    <div class="bento">
+      <div class="bento-row">
+      <figure class="b-store" data-ui>
+        <div class="shot"><img src="/shots/app-store.webp" width="1600" height="1000" loading="lazy" decoding="async" alt="The Store: popular apps in a list, each with an Install button."></div>
+        <figcaption><b>Store.</b> Every app Arch's repositories describe, searched as you type and installed with a click. With the AUR on, its recipes too, no terminal.</figcaption>
+      </figure>
+      <figure class="b-doctor" data-ui>
+        <div class="shot"><img src="/shots/app-doctor.webp" width="1600" height="1000" loading="lazy" decoding="async" alt="Dr. Help: everything looks fine, each check listed with what it found."></div>
+        <figcaption><b>Dr. Help.</b> Looks the system over the way the Arch Wiki asks, and fixes what it can with one password.</figcaption>
+      </figure>
       </div>
-      <div class="app-copy">
-        <h2 id="apps-h">The apps it comes with</h2>
-        <div role="tabpanel" id="p-store" aria-labelledby="t-store">
-          <h3>Every app Arch has, one click away</h3>
-          <p>The Store lists every app Arch's repositories describe, in sections, searched as you type, installed and removed with a click. With the AUR on, community recipes are built and installed the same way, no terminal.</p>
-        </div>
-        <div role="tabpanel" id="p-doctor" aria-labelledby="t-doctor" hidden>
-          <h3>A check-up, in plain words</h3>
-          <p>Dr. Help looks the system over the way the Arch Wiki's system maintenance asks: failed services, errors in the log, leftover packages, mirrors, firmware, disk health. What it can fix has a button.</p>
-        </div>
-        <div role="tabpanel" id="p-office" aria-labelledby="t-office" hidden>
-          <h3>Documents, spreadsheets and slides</h3>
-          <p>VDoc, VSheet and VSlide open and save Word, Excel and PowerPoint files, password-protected ones too. VSheet computes old workbooks the way Excel does.</p>
-        </div>
-        <div role="tabpanel" id="p-settings" aria-labelledby="t-settings" hidden>
-          <h3>One place for all of it</h3>
-          <p>Every setting in one place, and every one found from the launcher by its name: the look, the bar, power, backups, drivers, users and the language.</p>
-        </div>
-      </div>
-      <div class="cells">
-        <a class="cell cell-ink" href="#download">Download Vyntaris</a>
-        <a class="cell cell-tone" href="#questions">Read the questions</a>
+      <div class="bento-row flip">
+      <figure class="b-settings" data-ui>
+        <div class="shot"><img src="/shots/app-settings.webp" width="1600" height="1000" loading="lazy" decoding="async" alt="Settings on its Bar page: the clock, workspace icons, the privacy indicator and the bar's style."></div>
+        <figcaption><b>Settings.</b> Every setting in one place, and every one found from the launcher by its name.</figcaption>
+      </figure>
+      <figure class="b-office" data-ui>
+        <div class="shot"><img src="/shots/app-office.webp" width="1600" height="1000" loading="lazy" decoding="async" alt="VSheet, Vyntaris Office's spreadsheet, with a household budget open."></div>
+        <figcaption><b>Office.</b> VDoc, VSheet and VSlide open and save Word, Excel and PowerPoint files, password-protected ones too.</figcaption>
+      </figure>
       </div>
     </div>
   </section>
@@ -303,11 +283,7 @@
 </main>
 
 <footer class="foot">
-  <div class="foot-picture">
-    <img src="/shots/control.webp" width="1920" height="1080" loading="lazy" decoding="async" alt="The control center open under the island, over the Terrain wallpaper.">
-  </div>
-  <div class="foot-menu">
-    <a class="brand" href="/" aria-label="Vyntaris, home">{{LOGO}}</a>
+  <div class="foot-top">
     <nav aria-label="Sections again">
       <a href="#island">The island</a>
       <a href="#colour">Colour</a>
@@ -319,9 +295,10 @@
     <div class="foot-blocks">
       <p>Built on Arch Linux, Hyprland and Quickshell. Colours by Catppuccin.</p>
       <p><a href="https://pkg.vyntarisos.com/">The package repository</a><br><a href="https://dl.vyntarisos.com/SHA256SUMS">Checksums</a></p>
+      <p><a href="/policy/">Privacy</a><br><a href="/tos/">Terms</a><br>© 2026 Vyntaris</p>
     </div>
-    <p class="legal"><a href="/policy/">Privacy</a> <a href="/tos/">Terms</a> <span>© 2026 Vyntaris</span></p>
   </div>
+  <p class="wordmark" aria-hidden="true">vyntaris</p>
 </footer>
 <p class="visually-hidden" aria-live="polite" id="status"></p>
 
