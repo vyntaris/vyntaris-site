@@ -311,18 +311,17 @@
     });
   }
 
-  // the laptop: three.js and its scene loaded only as it comes near; with less motion asked for, or no
-  // WebGL, its picture and its labels as a list instead
+  // the laptop: three.js and its scene loaded only as it comes near (with less motion asked for, it stands
+  // still, open); without WebGL, its picture and its labels as a list instead
   const xp = document.getElementById("inside");
   if (xp) {
-    const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
     const gl = (() => { try { const c = document.createElement("canvas"); return !!(c.getContext("webgl2") || c.getContext("webgl")); } catch (e) { return false; } })();
     const still = () => {
       xp.classList.add("nogl");
       const lead = xp.querySelector(".xp-head .lead");
       if (lead) lead.textContent = "What you see on the screen, and what runs beneath it, layer by layer.";
     };
-    if (reduce || !gl) still();
+    if (!gl) still();
     else {
       const load = src => new Promise((ok, no) => { const el = document.createElement("script"); el.src = src; el.onload = ok; el.onerror = no; document.head.append(el); });
       const near = new IntersectionObserver(es => {

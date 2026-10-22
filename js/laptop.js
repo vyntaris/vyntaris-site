@@ -62,6 +62,14 @@ function main() {
   const out = t => 1 - Math.pow(1 - t, 3);
   const lerp = (a, b, t) => a + (b - a) * t;
   const css = name => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+  // a colour as three.js reads it: the system's own (AccentColor), color-mix() and the like, as rgb(),
+  // painted once and read back
+  const probe = document.createElement("canvas").getContext("2d", { willReadFrequently: true });
+  const rgb = c => {
+    probe.clearRect(0, 0, 1, 1); probe.fillStyle = "#000"; probe.fillStyle = c; probe.fillRect(0, 0, 1, 1);
+    const [r, g, b] = probe.getImageData(0, 0, 1, 1).data;
+    return `rgb(${r}, ${g}, ${b})`;
+  };
 
   const scene = new THREE.Scene();
   const pmrem = new THREE.PMREMGenerator(renderer);
@@ -367,7 +375,7 @@ function main() {
   const logoPath = document.querySelector(".brand svg path")?.getAttribute("d") || "";
   let accent = "";
   function paint() {
-    const a = css("--accent") || "#89b4fa", light = css("color-scheme") === "light" || css("--crust").toLowerCase() === "#dce0e8";
+    const a = rgb(css("--accent") || "#89b4fa"), light = css("color-scheme") === "light" || css("--crust").toLowerCase() === "#dce0e8";
     const sig = a + light;
     if (sig === accent) return;
     accent = sig;
@@ -467,7 +475,7 @@ function main() {
   let vw = 1, vh = 1, narrow = false, dirty = true, headBottom = 0, labelRoom = 0, pillRoom = 0, capRoom = 0;
   function size() {
     sec.classList.toggle("still", still.matches);
-    vw = pin.clientWidth; vh = pin.clientHeight;
+    vw = host.clientWidth; vh = host.clientHeight;
     narrow = vw < 1080;
     sec.classList.toggle("narrow", narrow);
     renderer.setSize(vw, vh, false);
@@ -476,7 +484,12 @@ function main() {
     camera.updateProjectionMatrix();
     lines.setAttribute("viewBox", `0 0 ${vw} ${vh}`);
     // where the section's title ends: while it shows, the laptop keeps below it
-    headBottom = head.offsetTop + head.offsetHeight + 16;
+    headBottom = still.matches ? 0 : head.offsetTop + head.offsetHeight + 16;
+    const lead = head.querySelector(".lead");
+    if (lead) {
+      lead.dataset.scroll ??= lead.textContent;
+      lead.textContent = still.matches ? "What you see on the screen, and what runs beneath it, layer by layer." : lead.dataset.scroll;
+    }
     // narrow: the room the label at the bottom takes (the tallest of them), kept free of the laptop
     // the apps' words at the bottom, up close: the room they take (the tallest), kept free of the laptop
     capRoom = Math.max(0, ...caps.map(c => c.offsetHeight)) + 28 + 20;
@@ -493,9 +506,11 @@ function main() {
   };
 
   // --- each frame -----------------------------------------------------------------------------------------
-  let p = still.matches ? .45 : 0, last = performance.now(), running = false;
+  // with less motion asked for: open, the desktop on it, still
+  const STILL = .1;
+  let p = still.matches ? STILL : 0, last = performance.now(), running = false;
   const target = () => {
-    if (still.matches) return .45;
+    if (still.matches) return STILL;
     const top = parseFloat(getComputedStyle(pin).top) || 0;
     return clamp((top - sec.getBoundingClientRect().top) / Math.max(1, sec.offsetHeight - pin.offsetHeight));
   };
@@ -593,7 +608,7 @@ function main() {
     const screenAt = screen.getWorldPosition(tmp.set(0, 0, 0)).clone();
     tgt.set((narrow ? -.12 : -.42) * eS - .1 * eB - 2.1 * eT, lerp(0, LH * .4, o) - .22 * eS + .42 * eB + .1 * eT, lerp(.2, 0, o) + .1 * eB - 1.7 * eT);
     tgt.lerp(screenAt.add(new THREE.Vector3(0, -.12, 0)), z);
-    const far = fit(W * (1 + .35 * eS + .3 * eB + 1.25 * eT), lerp(D * .9, LH * 1.35, o) + .7 * eS + 2.1 * eB + .4 * eT, narrow ? .9 : .4, (narrow ? .74 : .66) * (vh - room - below) / vh);
+    const far = fit(W * (1 + .35 * eS + .3 * eB + 1.25 * eT), lerp(D * .9, LH * 1.35, o) + .7 * eS + 2.1 * eB + .4 * eT, narrow ? .8 : .4, (narrow ? .74 : .66) * (vh - room - below) / vh);
     const near = fit(W * 1.12, LH * 1.4, narrow ? .9 : .5, .86 * (vh - Math.min(capRoom, vh * .45)) / vh);
     const dist = lerp(far, near, z);
     const elr = THREE.MathUtils.degToRad(el), azr = THREE.MathUtils.degToRad(az);
@@ -611,6 +626,8 @@ function main() {
   // with it outlined (narrow); a snapshot's date as a pill on it
   const WINDOW = { s: [.19, .30], b: [.41, .52], t: [.63, .72] };
   function place(p, ph) {
+    // standing still: the labels are a list under it
+    if (still.matches) { labels.forEach((li, i) => { li.classList.remove("on"); li.style.transform = ""; marks[i].g.classList.remove("on"); }); return; }
     const active = ["s", "b", "t"].find(k => ph[k] > .9) || null;
     const group = labels.filter(li => li.dataset.phase === active);
     const cards = group.filter(li => !li.classList.contains("pill"));

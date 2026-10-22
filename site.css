@@ -177,6 +177,7 @@ figure { margin: 0; }
 .xp-scene { position: absolute; inset: 0; }
 .xp-scene canvas { display: block; width: 100%; height: 100%; }
 .xp-fallback { display: none; }
+.xp.still:not(.nogl) .xp-fallback { display: none !important; }
 /* until the scene has drawn once: the desktop as a picture where the laptop will be, never an empty view */
 .xp:not(.live):not(.nogl) .xp-fallback { display: block; position: absolute; left: 50%; top: 56%; transform: translate(-50%, -50%); width: min(760px, 86%); padding: 0; }
 .xp-status { display: none; color: var(--muted); font-size: 13px; margin-top: 10px; }
@@ -210,8 +211,14 @@ figure { margin: 0; }
 .xp-cap .caps { color: var(--accent); }
 .xp-cap h3 { font-size: 22px; }
 .xp-cap p { color: var(--subtext); font-size: 15px; }
+/* with less motion asked for: the laptop standing still, open, and its labels as a list under it */
 .xp.still { height: auto; }
-.xp.still .xp-pin { position: relative; top: 0; height: min(860px, 100svh); }
+.xp.still .xp-pin { position: relative; top: 0; height: auto; overflow: visible; padding-bottom: 48px; }
+.xp.still .xp-head { position: relative; }
+.xp.still .xp-scene { position: relative; inset: auto; height: clamp(260px, 74vw, min(560px, 62svh)); }
+.xp.still .xp-lines, .xp.still .xp-cap, .xp.still .xp-labels li.pill { display: none; }
+.xp.still .xp-labels { position: relative; inset: auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr)); gap: 12px; max-width: 1160px; margin: 8px auto 0; padding: 0 16px; }
+.xp.still .xp-labels li, .xp.narrow.still .xp-labels li:not(.pill) { position: relative; inset: auto; width: auto; opacity: 1; transform: none !important; }
 /* without WebGL: the desktop as a picture, the labels as a list under it */
 .xp.nogl { height: auto; }
 .xp.nogl .xp-pin { position: relative; top: 0; height: auto; overflow: visible; padding-bottom: 48px; }
