@@ -234,26 +234,18 @@ figure { margin: 0; }
 .xp .xp-head .eyebrow { color: var(--ink); }
 .xp .ic { display: none; }
 
-/* ---- the header as the desktop's bar: the sections in an island hanging from its middle, its sides
-   curving out of the bar's line as the shell's do (a phone has no room for it: the sections are below) */
+/* ---- the header as the desktop's bar: the sections in the middle of it as the clock is, and the bar's line
+   dipping under them as it dips under the island, a shallow notch with an S-curve each side (drawn by the
+   page's script to the links' width; without it, the line runs straight). A phone has no room for it ---- */
 @media (min-width: 761px) {
-  .top { border-bottom-color: var(--ink); }
-  /* The island hangs below the bar's line; its body starts where its shoulders end (--sh, their radius), so
-     each side's line goes on from its shoulder's without meeting it twice; above the body, as high as the
-     shoulders, its colour (a shadow without blur), the links raised into it */
-  .top .nav { --sh: 12px; position: absolute; left: 0; right: 0; width: fit-content; top: calc(100% + var(--sh)); margin: 0 auto;
-    padding: 0 var(--s2) 4px; gap: var(--s2); background: var(--mantle); box-shadow: 0 calc(-1 * var(--sh)) 0 var(--mantle);
-    border: 1px solid var(--ink); border-top: 0; border-radius: 0 0 var(--sh) var(--sh); }
-  /* a shoulder: a square whose corner arc is the line, from the bar's line down into the island's side */
-  .top .nav::before, .top .nav::after { content: ""; position: absolute; top: calc(-1 * var(--sh)); width: var(--sh); height: var(--sh); }
-  .top .nav::before { right: 100%; background: radial-gradient(circle at 0 100%, transparent calc(var(--sh) - 1.15px),
-    var(--ink) calc(var(--sh) - .65px), var(--ink) calc(var(--sh) - .35px), var(--mantle) calc(var(--sh) + .15px)); }
-  .top .nav::after { left: 100%; background: radial-gradient(circle at 100% 100%, transparent calc(var(--sh) - 1.15px),
-    var(--ink) calc(var(--sh) - .65px), var(--ink) calc(var(--sh) - .35px), var(--mantle) calc(var(--sh) + .15px)); }
-  .top .nav a { font-size: 13px; padding-block: 5px; margin-top: calc(-1 * var(--sh)); }
+  .top { background: var(--mantle); -webkit-backdrop-filter: none; backdrop-filter: none; border-bottom-color: var(--ink); }
+  .top.edged { border-bottom-color: transparent; }
+  .top .nav { position: absolute; left: 50%; top: 0; height: 100%; transform: translateX(-50%); margin: 0; gap: 16px; align-items: center; }
+  .top .nav a { font-size: 14px; padding-block: 6px; }
   .top .btn { margin-inline-start: auto; }
-  html { scroll-padding-top: 116px; }
-  .hero { padding-top: var(--s12); }
+  .edge { position: absolute; left: 0; top: 100%; margin-top: -1px; overflow: visible; pointer-events: none; }
+  .edge .fill { fill: var(--mantle); }
+  .edge .line { fill: none; stroke: var(--ink); stroke-width: 1; }
 }
 
 /* ---- the hero's island: the wallpaper and the bar, the panel picked laid where it opens */

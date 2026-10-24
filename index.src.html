@@ -377,6 +377,33 @@
     }
   }
 
+  // the header's line dipping under the sections, as the bar's dips under the island: flat out to a
+  // curve, down 11 px, along under the links, and back up the same way
+  const top = document.querySelector(".top"), nav = top && top.querySelector(".nav");
+  if (nav) {
+    const NS = "http://www.w3.org/2000/svg", svg = document.createElementNS(NS, "svg");
+    const fill = document.createElementNS(NS, "path"), line = document.createElementNS(NS, "path");
+    svg.setAttribute("class", "edge"); svg.setAttribute("aria-hidden", "true");
+    fill.setAttribute("class", "fill"); line.setAttribute("class", "line");
+    svg.append(fill, line); top.append(svg);
+    const draw = () => {
+      if (getComputedStyle(nav).position !== "absolute") { svg.style.display = "none"; top.classList.remove("edged"); return; }
+      svg.style.display = "";
+      const t = top.getBoundingClientRect(), r = nav.getBoundingClientRect(), W = t.width;
+      const c = 22, d = 11.5, y = 0.5;          // on the half pixel: a 1 px line drawn sharp
+      const x2 = r.left - t.left, x3 = r.right - t.left, x1 = x2 - c, x4 = x3 + c;
+      const notch = `C${x1 + c / 2} ${y} ${x2 - c / 2} ${d} ${x2} ${d}H${x3}C${x3 + c / 2} ${d} ${x4 - c / 2} ${y} ${x4} ${y}`;
+      line.setAttribute("d", `M0 ${y}H${x1}${notch}H${W}`);
+      fill.setAttribute("d", `M${x1} -1V${y}${notch}V-1Z`);
+      svg.setAttribute("width", W); svg.setAttribute("height", d + 2);
+      svg.setAttribute("viewBox", `0 -1 ${W} ${d + 2}`);
+      top.classList.add("edged");
+    };
+    draw();
+    addEventListener("resize", draw);
+    document.fonts && document.fonts.ready.then(draw);
+  }
+
   // where you are, in the header
   const links = [...document.querySelectorAll(".nav a")];
   const seen = new IntersectionObserver(es => es.forEach(e => {
