@@ -303,3 +303,11 @@ figure { margin: 0; }
 /* on a narrow screen the table scrolls sideways: the measure's name stays in view */
 .measures th[scope="row"], .measures thead th:first-child { position: sticky; inset-inline-start: 0; z-index: 1; background: var(--base); }
 .measures thead th:first-child { background: var(--mantle); }
+
+/* Download: what it needs, the key's fingerprint, and before you install */
+.download code { overflow-wrap: anywhere; }
+.needs-h { font-size: 15px; font-weight: 600; margin-top: var(--s2); }
+.needs { margin: 0; padding-inline-start: 1.2em; color: var(--subtext); font-size: 15px; display: grid; gap: 4px; }
+.steps .cmd + p { margin-top: var(--s2); }
+.before { display: grid; gap: var(--s4); margin-top: var(--s12); }
+.before h4 { margin: 0; color: var(--text); font-size: 17px; line-height: 1.3; font-weight: 600; }

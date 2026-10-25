@@ -8,6 +8,11 @@
 <meta property="og:title" content="Vyntaris">
 <meta property="og:description" content="A computer you'll want to come back to.">
 <meta property="og:image" content="https://vyntarisos.com/shots/desk.webp">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://vyntarisos.com/">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://vyntarisos.com/">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="preload" href="/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/site.css">
 </head>
@@ -76,7 +81,7 @@
       <li><strong>Updates that undo themselves</strong><span>A snapshot before every upgrade, and the way back if one fails.</span></li>
       <li><strong>Drivers by themselves</strong><span>Graphics, Wi-Fi, sound and printers, found and installed.</span></li>
       <li><strong>Rolling, straight from Arch</strong><span>Plain Arch underneath, always current.</span></li>
-      <li><strong>No setup questions</strong><span>Who you are and which disk. Ready in minutes.</span></li>
+      <li><strong>A short setup</strong><span>The internet, your language, who you are and which disk. Ready in minutes.</span></li>
     </ul>
   </div>
 
@@ -92,7 +97,7 @@
       <svg class="xp-lines" aria-hidden="true"></svg>
       <div class="xp-cap" aria-live="polite">
         <div><span class="caps">Its own apps</span><h3>Dr. Help</h3><p>Looks the system over the way the Arch Wiki asks, and puts right what it can, with one password.</p></div>
-        <div><span class="caps">Its own apps</span><h3>Store</h3><p>Every app Arch describes, and the AUR's, installed with a click. No terminal.</p></div>
+        <div><span class="caps">Its own apps</span><h3>Store</h3><p>Every app Arch describes, installed with a click. No terminal.</p></div>
         <div><span class="caps">Vyntaris Office</span><h3>VSheet, VDoc, VSlide</h3><p>Word, Excel and PowerPoint files, password-protected ones too.</p></div>
         <div><span class="caps">Settings</span><h3>One place for all of it</h3><p>Every setting in one file, and Ctrl+F finds any of them.</p></div>
       </div>
@@ -190,7 +195,7 @@
       <div class="feature">
         <figure><img src="/shots/app-store.webp" alt="The Store: popular apps in a list, each with an Install button." width="1600" height="1000" loading="lazy" decoding="async"></figure>
         <div class="feature-text"><p class="eyebrow">Store</p><h3>Every app Arch has, one click away</h3>
-          <p>The Store lists every app Arch's repositories describe, in sections, searched as you type, installed and removed with a click. With the AUR on, community recipes are built and installed the same way, no terminal.</p></div>
+          <p>The Store lists every app Arch's repositories describe, in sections, searched as you type, installed and removed with a click. The AUR, the community's own recipes, stays off until you turn it on: anyone can put a recipe there and Arch doesn't check them, so each shows its votes and when it last changed, and asks before it's built.</p></div>
       </div>
       <div class="feature flip">
         <figure><img src="/shots/app-doctor.webp" alt="Dr. Help: everything looks fine, each check listed with what it found, and an update waiting with its button." width="1600" height="1000" loading="lazy" decoding="async"></figure>
@@ -343,20 +348,57 @@
       <div class="get">
         <p class="eyebrow">Download</p>
         <h2 id="download-h">Install Vyntaris.</h2>
-        <p class="lead">One image for every PC with a 64-bit processor and UEFI. It updates itself from then on.</p>
+        <p class="lead">One image for every PC with a 64-bit processor and UEFI. It installs the newest Vyntaris, which
+          updates itself from then on.</p>
         <a class="btn btn-primary" href="https://dl.vyntarisos.com/vyntaris-x86_64.iso" download><svg viewBox="0 -960 960 960" aria-hidden="true"><path fill="currentColor" d="M480-325q-6 0-11-2t-10-7L308-485q-9-9-8.5-21.5T309-528q9-9 21.5-9t21.5 9l98 99v-341q0-13 8.5-21.5T480-800q13 0 21.5 8.5T510-770v341l99-99q9-9 21-8.5t21 9.5q9 9 9 21.5t-9 21.5L501-334q-5 5-10 7t-11 2ZM220-160q-24 0-42-18t-18-42v-113q0-13 8.5-21.5T190-363q13 0 21.5 8.5T220-333v113h520v-113q0-13 8.5-21.5T770-363q13 0 21.5 8.5T800-333v113q0 24-18 42t-42 18H220Z"/></svg>Download the ISO</a>
         <dl>
-          <dt>File</dt><dd><code>vyntaris-x86_64.iso</code>, the latest release</dd>
-          <dt>Checksum</dt><dd><a href="https://dl.vyntarisos.com/SHA256SUMS">SHA256SUMS</a></dd>
-          <dt>Needs</dt><dd>a 64-bit PC with UEFI, and a USB stick of 4 GB or more</dd>
+          <dt>File</dt><dd><code>vyntaris-x86_64.iso</code>, about 1.6 GB</dd>
+          <dt>Checksums</dt><dd><a href="https://dl.vyntarisos.com/SHA256SUMS">SHA256SUMS</a>, signed in
+            <a href="https://dl.vyntarisos.com/SHA256SUMS.sig">SHA256SUMS.sig</a></dd>
+          <dt>Key</dt><dd><a href="/vyntaris.gpg">vyntaris.gpg</a>, <code>567C CD91 2301 A261 B06D AFFF C090 5C46 984D 9F8B</code></dd>
         </dl>
+        <h3 class="needs-h">What it needs</h3>
+        <ul class="needs">
+          <li>A 64-bit PC (x86-64) that starts in UEFI mode</li>
+          <li>30 GB on the disk and 4 GB of memory</li>
+          <li>The internet while installing, by cable or Wi-Fi</li>
+          <li>A USB stick of 4 GB or more</li>
+        </ul>
       </div>
       <ol class="steps">
-        <li><div><h3>Download the ISO</h3><p>It has the installer and the whole desktop, so installing works without the internet.</p></div></li>
+        <li><div><h3>Download the ISO and check it</h3><p>In the folder it went to, with <code>SHA256SUMS</code> beside it, check that it arrived whole:</p>
+          <div class="cmd"><pre id="sum">sha256sum --ignore-missing -c SHA256SUMS</pre><button type="button" data-copy="sum">Copy</button></div>
+          <p>And that the checksums are Vyntaris's own, with <code>SHA256SUMS.sig</code> and <code>vyntaris.gpg</code> beside them:</p>
+          <div class="cmd"><pre id="sig">gpg --import vyntaris.gpg &amp;&amp; gpg --verify SHA256SUMS.sig SHA256SUMS</pre><button type="button" data-copy="sig">Copy</button></div></div></li>
         <li><div><h3>Put it on a USB stick</h3><p>Copy it to a Ventoy stick, or write it to the stick directly (this erases the stick; <code>sdX</code> is the stick):</p>
           <div class="cmd"><pre id="dd">sudo dd if=vyntaris-x86_64.iso of=/dev/sdX bs=4M status=progress</pre><button type="button" data-copy="dd">Copy</button></div></div></li>
-        <li><div><h3>Boot it and install</h3><p>The installer asks who you are and which disk to use, nothing more. Firefox, the file manager, VS Code and the everyday tools come with it.</p></div></li>
+        <li><div><h3>Start from it and install</h3><p>Turn Secure Boot off in the PC's firmware setup and start from the stick. The installer
+          asks for the internet, your language and keyboard, the time zone, who you are and which disk. Firefox, the file
+          manager, VS Code and the everyday tools come with it.</p></div></li>
       </ol>
+    </div>
+    <div class="wrap before">
+      <h3>Before you install</h3>
+      <div class="points">
+        <div><p class="eyebrow">Secure Boot</p><h4>Off to start, back on after</h4>
+          <p>The stick starts only with Secure Boot off. Once Vyntaris is installed, <code>vyntaris-secure-boot</code> signs it
+            with keys of your own, and Secure Boot can go back on.</p></div>
+        <div><p class="eyebrow">Windows</p><h4>Next to Windows</h4>
+          <p>The installer can use a disk's free space, or one partition of 30 GB or more, and leave Windows as it is. Make room
+            in Windows first (Disk Management, Shrink volume), and with BitLocker keep its recovery key at hand.</p></div>
+        <div><p class="eyebrow">Your files</p><h4>Copy them somewhere first</h4>
+          <p>"Whole disk" erases everything on it. Snapshots keep the system, never your files, so copy what matters elsewhere
+            before you install.</p></div>
+        <div><p class="eyebrow">Graphics</p><h4>NVIDIA, AMD and Intel</h4>
+          <p>Their drivers install by themselves. On a laptop with two graphics cards, the NVIDIA one sleeps until a game or
+            <code>prime-run</code> wakes it.</p></div>
+        <div><p class="eyebrow">Updates</p><h4>Rolling, from Arch</h4>
+          <p>Updates come when they're ready, from Arch and from Vyntaris, with a snapshot taken before each one. There are no
+            big upgrades to wait for.</p></div>
+        <div><p class="eyebrow">Help</p><h4>Something wrong?</h4>
+          <p>Tell us on the <a href="https://github.com/vyntaris/vyntaris-site/issues">issue tracker</a>. Dr. Help in Vyntaris
+            gathers what the system says, without your names and addresses, and shows it to you first.</p></div>
+      </div>
     </div>
   </section>
 </main>
@@ -368,117 +410,14 @@
     <nav aria-label="More">
       <a href="/policy/">Privacy</a>
       <a href="/tos/">Terms</a>
+      <a href="https://github.com/vyntaris/vyntaris-site/issues">Report a problem</a>
+      <a href="/vyntaris.gpg">Signing key</a>
       <a href="https://pkg.vyntarisos.com/">Package repository</a>
     </nav>
   </div>
 </footer>
 <p class="visually-hidden" aria-live="polite" id="status"></p>
 
-<script>
-// The accent picker (the page in the accent picked, remembered here) and the copy button. The page works
-// without this: the accent stays blue, the command can be selected by hand.
-(() => {
-  const root = document.documentElement, light = matchMedia("(prefers-color-scheme: light)");
-  const store = { get() { try { return localStorage.getItem("accent"); } catch (e) { return null; } },
-                  set(v) { try { localStorage.setItem("accent", v); } catch (e) {} } };
-  const apply = () => {
-    const on = document.querySelector('#accent input:checked');
-    // System: the stylesheet's own (the system's accent); one of the fourteen: that one, as dark or light
-    if (on && on.value !== "system") {
-      root.dataset.picked = "";
-      root.style.setProperty("--accent", light.matches ? on.dataset.light : on.dataset.dark);
-    } else {
-      delete root.dataset.picked;
-      root.style.removeProperty("--accent");
-    }
-    document.querySelectorAll('#accent label').forEach(l => {
-      const i = document.getElementById(l.htmlFor);
-      if (i.dataset.dark) l.style.setProperty("--c", light.matches ? i.dataset.light : i.dataset.dark);
-    });
-  };
-  const saved = store.get(), pick = saved && document.getElementById("a-" + saved);
-  if (pick) pick.checked = true;
-  document.getElementById("accent").addEventListener("change", e => { store.set(e.target.value); apply(); });
-  light.addEventListener("change", apply);
-  apply();
-
-  const status = document.getElementById("status");
-  document.querySelectorAll("[data-copy]").forEach(b => b.addEventListener("click", async () => {
-    const text = document.getElementById(b.dataset.copy).textContent;
-    try { await navigator.clipboard.writeText(text); b.textContent = "Copied"; status.textContent = "Command copied"; }
-    catch (e) { b.textContent = "Select it"; }
-    setTimeout(() => { b.textContent = "Copy"; }, 2000);
-  }));
-
-  // the hero's island: the panel picked shown, the others hidden (without this, the control center alone)
-  const picker = document.querySelector(".island-pick");
-  if (picker) {
-    picker.hidden = false;
-    picker.addEventListener("click", e => {
-      const b = e.target.closest("button[data-panel]");
-      if (!b) return;
-      picker.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
-      document.querySelectorAll(".stage-shot").forEach(img => { img.hidden = img.dataset.panel !== b.dataset.panel; });
-    });
-  }
-
-  // the laptop: three.js and its scene loaded only as it comes near (with less motion asked for, it stands
-  // still, open); without WebGL, its picture and its labels as a list instead
-  const xp = document.getElementById("inside");
-  if (xp) {
-    const gl = (() => { try { const c = document.createElement("canvas"); return !!(c.getContext("webgl2") || c.getContext("webgl")); } catch (e) { return false; } })();
-    const still = () => {
-      xp.classList.add("nogl");
-      const lead = xp.querySelector(".xp-head .lead");
-      if (lead) lead.textContent = "What you see on the screen, and what runs beneath it, layer by layer.";
-    };
-    if (!gl) still();
-    else {
-      const load = src => new Promise((ok, no) => { const el = document.createElement("script"); el.src = src; el.onload = ok; el.onerror = no; document.head.append(el); });
-      const near = new IntersectionObserver(es => {
-        if (!es.some(e => e.isIntersecting)) return;
-        near.disconnect();
-        load("/js/three.min.js").then(() => load("/js/laptop.js")).catch(still);
-      }, { rootMargin: "800px 0px" });
-      near.observe(xp);
-    }
-  }
-
-  // the header's line dipping under the sections, as the bar's dips under the island: flat out to a
-  // curve, down 11 px, along under the links, and back up the same way
-  const top = document.querySelector(".top"), nav = top && top.querySelector(".nav");
-  if (nav) {
-    const NS = "http://www.w3.org/2000/svg", svg = document.createElementNS(NS, "svg");
-    const fill = document.createElementNS(NS, "path"), line = document.createElementNS(NS, "path");
-    svg.setAttribute("class", "edge"); svg.setAttribute("aria-hidden", "true");
-    fill.setAttribute("class", "fill"); line.setAttribute("class", "line");
-    svg.append(fill, line); top.append(svg);
-    const draw = () => {
-      if (getComputedStyle(nav).position !== "absolute") { svg.style.display = "none"; top.classList.remove("edged"); return; }
-      svg.style.display = "";
-      const t = top.getBoundingClientRect(), r = nav.getBoundingClientRect(), W = t.width;
-      const c = 22, d = 11.5, y = 0.5;          // on the half pixel: a 1 px line drawn sharp
-      const x2 = r.left - t.left, x3 = r.right - t.left, x1 = x2 - c, x4 = x3 + c;
-      const notch = `C${x1 + c / 2} ${y} ${x2 - c / 2} ${d} ${x2} ${d}H${x3}C${x3 + c / 2} ${d} ${x4 - c / 2} ${y} ${x4} ${y}`;
-      line.setAttribute("d", `M0 ${y}H${x1}${notch}H${W}`);
-      fill.setAttribute("d", `M${x1} -1V${y}${notch}V-1Z`);
-      svg.setAttribute("width", W); svg.setAttribute("height", d + 2);
-      svg.setAttribute("viewBox", `0 -1 ${W} ${d + 2}`);
-      top.classList.add("edged");
-    };
-    draw();
-    addEventListener("resize", draw);
-    document.fonts && document.fonts.ready.then(draw);
-  }
-
-  // where you are, in the header
-  const links = [...document.querySelectorAll(".nav a")];
-  const seen = new IntersectionObserver(es => es.forEach(e => {
-    if (!e.isIntersecting) return;
-    links.forEach(a => a.toggleAttribute("aria-current", a.hash === "#" + e.target.id));
-  }), { rootMargin: "-45% 0px -50% 0px" });
-  links.forEach(a => { const s = document.querySelector(a.hash); if (s) seen.observe(s); });
-})();
-</script>
+<script src="/js/site.js" defer></script>
 </body>
 </html>
