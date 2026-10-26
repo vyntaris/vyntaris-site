@@ -151,7 +151,9 @@ first minutes; a notification says when, and whether a restart is needed.</p>
 <details>
   <summary>Does it work with NVIDIA?</summary>
   <p>Yes, the driver installs by itself. On a laptop with two graphics cards the NVIDIA one sleeps until it's
-  needed; a yellow dot in the bar shows when it's awake, and its panel says which app woke it.</p>
+  needed, and its driver starts only when a game or <code>prime-run</code> asks for it, which keeps about
+  370 MB of memory free. A yellow dot in the bar shows when the card is awake, and its panel says which app
+  woke it.</p>
 </details>
 <details id="secure-boot">
   <summary>Can I turn Secure Boot back on?</summary>
@@ -220,6 +222,11 @@ open a terminal inside the installed system. Your files stay as they are.</p>
 <h3>The desktop froze or disappeared</h3>
 <p>The bar and the desktop restart by themselves within seconds. If it happens again and again, Vyntaris goes
 back to the login screen. One app that uses up the memory is closed before the whole desktop freezes.</p>
+
+<h3>A monitor on the HDMI port stays dark</h3>
+<p>On many laptops with two graphics cards, the HDMI port belongs to the NVIDIA card, whose driver Vyntaris starts
+only when it's needed. Turn on Settings → Drivers → <strong>Start its driver with the system</strong>, and
+restart.</p>
 
 <h3>Something else</h3>
 <ol>
