@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Help · Vyntaris</title>
+<meta name="description" content="Installing Vyntaris step by step, the first things to know, common questions, and what to do when something doesn't work.">
+<link rel="preload" href="/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/site.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="/"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" fill-rule="evenodd" d="M12.79 11.4L13.97 10.96L14.92 10.55L15.79 10.12L16.57 9.68L16.88 9.05L16.82 8.75L16.79 8.45L16.78 8.15L16.81 7.85L16.85 7.55L16.92 7.26L17.02 6.97L17.14 6.7L17.28 6.44L17.45 6.19L17.66 5.93L17.86 5.71L18.09 5.51L18.33 5.34L18.59 5.18L18.86 5.04L20.16 2.43L16.16 2.43zM6.69 12.72L8.05 12.57L9.18 12.38L10.35 12.12L11.45 11.83L7.26 2.43L1.08 2.43zM22.55 8.18L22.5 7.74L22.36 7.32L22.14 6.93L21.85 6.6L21.5 6.32L21.1 6.12L20.67 6L20.22 5.97L19.78 6.02L19.36 6.16L18.97 6.38L18.64 6.67L18.36 7.03L18.16 7.42L18.04 7.85L18.01 8.3L18.06 8.74L18.2 9.16L18.42 9.55L18.71 9.88L19.07 10.16L19.46 10.36L19.89 10.48L20.34 10.51L20.78 10.46L21.2 10.32L21.59 10.1L21.92 9.81L22.2 9.45L22.4 9.06L22.52 8.63zM3.06 13.46L3.08 13.5L0.65 14.24L0.75 14.52L0.89 14.78L1.1 15.07L1.3 15.28L1.56 15.51L1.85 15.7L2.15 15.86L2.52 16.01L2.92 16.14L3.34 16.24L3.77 16.32L4.23 16.37L4.78 16.41L5.88 16.41L7.15 16.31L7.92 16.21L8.7 16.08L9.49 15.92L10.4 15.7L11.22 15.49L12.13 15.21L12.93 14.95L13.82 14.62L14.69 14.27L15.44 13.94L16.25 13.55L16.93 13.19L17.66 12.77L18.25 12.39L18.81 12L19.32 11.6L18.83 11.42L18.37 11.17L17.96 10.85L17.59 10.48L16.86 10.93L15.99 11.39L15.03 11.84L13.99 12.27L12.9 12.66L11.87 12.98L10.83 13.27L9.7 13.53L8.59 13.73L7.52 13.88L6.52 13.96L5.6 13.98L4.79 13.94L4.06 13.84L3.48 13.69L3.23 13.58zM13.4 16.08L11.97 16.54L11.02 16.81L10.07 17.05L9.15 17.24L11.07 20.77z"/></svg>Vyntaris</a>
+    <nav class="nav" aria-label="Pages">
+      <a href="/help/" aria-current="page">Help</a>
+      <a href="/policy/">Privacy</a>
+      <a href="/tos/">Terms</a>
+    </nav>
+    <a class="btn btn-primary btn-small" href="/#download">Download</a>
+  </div>
+</header>
+<main class="wrap prose" id="main">
+<p class="eyebrow">Vyntaris</p>
+<h1>Help</h1>
+<p class="lead">How to install Vyntaris, the first things worth knowing, answers to common questions, and what to
+do when something doesn't work.</p>
+
+<nav class="toc" aria-label="On this page">
+  <a href="#install">Installing, step by step</a>
+  <a href="#first">The first minutes</a>
+  <a href="#faq">Questions</a>
+  <a href="#trouble">When something doesn't work</a>
+</nav>
+
+<h2 id="install">Installing, step by step</h2>
+<p>You need a 64-bit PC that starts in UEFI mode, 30 GB on the disk, 4 GB of memory, the internet (cable or
+Wi-Fi) and a USB stick of 4 GB or more. Installing takes about 15 to 30 minutes, most of it downloading.</p>
+
+<h3>1. Save your files</h3>
+<p>If you install on a whole disk, everything on it is erased. Copy what matters to another disk or to the
+cloud first. Installing next to Windows leaves Windows and its files alone, but a copy is still wise.</p>
+
+<h3>2. Download the ISO</h3>
+<p>Download <a href="https://dl.vyntarisos.com/vyntaris-x86_64.iso">vyntaris-x86_64.iso</a> (about 1.6 GB). To
+check that it arrived whole and is really Vyntaris's, see <a href="/#download">the download section</a>; it's
+optional, but a good habit.</p>
+
+<h3>3. Put it on a USB stick</h3>
+<p>Writing the ISO erases the stick.</p>
+<ul>
+  <li><strong>From Windows:</strong> <a href="https://rufus.ie/">Rufus</a>. Pick the stick and the ISO, press
+    Start, and when it asks, choose <strong>Write in DD Image mode</strong>.</li>
+  <li><strong>From Linux:</strong> <code>sudo dd if=vyntaris-x86_64.iso of=/dev/sdX bs=4M status=progress</code>,
+    where <code>sdX</code> is the stick (<code>lsblk</code> lists the disks; pick the wrong one and it's erased).</li>
+  <li><strong>Ventoy:</strong> copy the ISO onto a Ventoy stick like any other file.</li>
+</ul>
+
+<h3>4. If Windows stays: make room for Vyntaris</h3>
+<p>In Windows, open <strong>Disk Management</strong>, right-click the largest partition, choose
+<strong>Shrink Volume</strong> and free at least 30 GB. Leave the space empty. If the disk uses BitLocker, write
+down its recovery key first (Settings → Privacy &amp; security → Device encryption, or your Microsoft account):
+Windows may ask for it once after the change.</p>
+
+<h3>5. Turn Secure Boot off</h3>
+<p>The stick starts only with Secure Boot off. Restart into the PC's firmware setup (usually F2, Del or F10 as
+it starts; from Windows: Settings → System → Recovery → Advanced startup → UEFI Firmware Settings), find
+<strong>Secure Boot</strong>, set it to Disabled, save and exit. After installing, you can turn it back on; see
+<a href="#secure-boot">the question about it</a>.</p>
+
+<h3>6. Start from the stick</h3>
+<p>With the stick plugged in, restart and open the boot menu: usually <strong>F12</strong> (Dell, Lenovo, Acer),
+<strong>F11</strong> (MSI), <strong>F8</strong> (ASUS) or <strong>Esc</strong> then <strong>F9</strong> (HP).
+Pick the USB stick (if it's listed twice, the one marked UEFI). Choose <strong>Vyntaris</strong> in the menu that
+appears.</p>
+
+<h3>7. Answer the installer</h3>
+<p>The installer opens by itself and asks, one page at a time:</p>
+<ul>
+  <li><strong>Internet:</strong> plug in a cable, or pick a Wi-Fi network and type its password.</li>
+  <li><strong>Language &amp; keyboard:</strong> the installer switches language at once. Try the layout in the
+    field below it.</li>
+  <li><strong>Time zone.</strong></li>
+  <li><strong>You:</strong> your name, a user name (lowercase letters and digits), the computer's name and a
+    password. This password also unlocks the screen and approves changes to the system, so remember it.</li>
+  <li><strong>Disk:</strong> where Vyntaris goes.
+    <ul>
+      <li><strong>Whole disk</strong> erases the disk you pick.</li>
+      <li><strong>Free space</strong> uses the room you made in step 4 and touches nothing else.</li>
+      <li><strong>One partition</strong> erases only the partition you pick (30 GB or more).</li>
+    </ul>
+    Keep <strong>Btrfs</strong> unless you have a reason not to: it's what makes updates undo themselves.</li>
+  <li><strong>Summary:</strong> read it once more, then <strong>Install</strong> (or <strong>Erase and
+    install</strong>).</li>
+</ul>
+<p>The computer can stay alone while it installs. When it says <strong>Vyntaris is installed</strong>, take out
+the stick and restart.</p>
+
+<h3>8. The first start</h3>
+<p>Log in with the password you chose. A short welcome asks for light or dark, the accent colour and the
+wallpaper, and offers the extras (games, for one). Drivers for your hardware install by themselves in the
+first minutes; a notification says when, and whether a restart is needed.</p>
+
+<h2 id="first">The first minutes</h2>
+<ul>
+  <li><strong>Tap SUPER</strong> (the Windows key) for the control center: Wi-Fi, Bluetooth, sound, brightness,
+    the calendar and notifications. Start typing to search apps, files and settings.</li>
+  <li><strong>SUPER+A</strong> shows every app. <strong>SUPER+ENTER</strong> opens the terminal,
+    <strong>SUPER+E</strong> the files, <strong>SUPER+B</strong> the browser.</li>
+  <li><strong>SUPER+Q</strong> closes a window. Windows place themselves side by side;
+    <strong>SUPER+SHIFT+SPACE</strong> lets one float freely.</li>
+  <li><strong>SUPER+I</strong> opens Settings, and <strong>SUPER+F1</strong> lists every shortcut.</li>
+  <li><strong>SUPER+ESC</strong> is the power menu: lock, sleep, restart, shut down.</li>
+  <li>The <strong>Store</strong> installs apps with a click. <strong>Dr. Help</strong> checks the system and
+    fixes what it can: type <code>check my system</code> after tapping SUPER.</li>
+  <li>Plain words work in the search: <code>volume 40</code>, <code>dark mode</code>, <code>turn bluetooth
+    off</code>, <code>100 eur to usd</code>, <code>timer 5m</code>.</li>
+</ul>
+
+<h2 id="faq">Questions</h2>
+<div class="faq">
+<details>
+  <summary>Is Vyntaris free?</summary>
+  <p>Yes, to download, install and use. It's free software under the GNU GPL, and its source is on
+  <a href="https://github.com/vyntaris/vyntaris">GitHub</a>.</p>
+</details>
+<details>
+  <summary>Can it sit next to Windows?</summary>
+  <p>Yes. Make room in Windows (step 4) and choose <strong>Free space</strong> or <strong>One partition</strong>.
+  A menu at start lets you pick Vyntaris or Windows; it stays hidden when there's only Vyntaris.</p>
+</details>
+<details>
+  <summary>How do updates work? Can one break my computer?</summary>
+  <p>Updates come from Arch Linux and Vyntaris whenever they're ready; the island shows when some are waiting,
+  and one click installs them. Before every update a snapshot of the system is taken. If an update stops
+  Vyntaris from starting, it gets three tries, then the start menu's <strong>Undo the update</strong> puts the
+  system back by itself. Your files are never part of a snapshot, so going back never touches them.</p>
+</details>
+<details>
+  <summary>How do I install an app that isn't in the Store?</summary>
+  <p>The Store lists every app from Arch Linux's repositories. More come from the AUR, which anyone can upload
+  to: turn it on in Settings → Apps, read the warning on each, and the Store builds it for you. In the terminal,
+  <code>pacman</code> and <code>yay</code> work as on any Arch Linux.</p>
+</details>
+<details>
+  <summary>Can I play games?</summary>
+  <p>Yes. Tap SUPER and type <code>set up games</code>: it installs Steam with Proton, Lutris, GameMode and
+  MangoHud. Game mode starts by itself with a fullscreen game.</p>
+</details>
+<details>
+  <summary>Does it work with NVIDIA?</summary>
+  <p>Yes, the driver installs by itself. On a laptop with two graphics cards the NVIDIA one sleeps until it's
+  needed; a yellow dot in the bar shows when it's awake, and its panel says which app woke it.</p>
+</details>
+<details id="secure-boot">
+  <summary>Can I turn Secure Boot back on?</summary>
+  <p>Yes. In the firmware setup, put Secure Boot into <strong>Setup Mode</strong> (sometimes called "Clear
+  keys"), start Vyntaris, and in the terminal run <code>vyntaris-secure-boot</code>. It signs Vyntaris with
+  keys of your own; then turn Secure Boot back on.</p>
+</details>
+<details>
+  <summary>Does Vyntaris collect my data?</summary>
+  <p>No. It has no accounts, no telemetry and no analytics. What it connects to, and why, is in the
+  <a href="/policy/">privacy policy</a>.</p>
+</details>
+<details>
+  <summary>How do I back up my files?</summary>
+  <p>Open <strong>Backup</strong>, sign in to Google Drive and pick the folders. It backs them up at every start,
+  when you shut down, or only when you ask. Snapshots, in Settings → Backups, keep the system, not your files.</p>
+</details>
+<details>
+  <summary>How do I change the language?</summary>
+  <p>Settings → Date, time &amp; language. It takes effect at the next login. Vyntaris speaks English, Serbian,
+  German, French, Spanish, Italian, Portuguese and Polish.</p>
+</details>
+<details>
+  <summary>Is it Arch Linux? Does the Arch Wiki apply?</summary>
+  <p>Underneath, yes: the same kernel, packages and pacman, straight from Arch. The
+  <a href="https://wiki.archlinux.org/">Arch Wiki</a> applies to everything below the desktop.</p>
+</details>
+</div>
+
+<h2 id="trouble">When something doesn't work</h2>
+
+<h3>The USB stick doesn't start</h3>
+<ul>
+  <li>Check that Secure Boot is off (step 5).</li>
+  <li>In the boot menu, pick the entry for the stick marked <strong>UEFI</strong>.</li>
+  <li>If it was written with Rufus, write it again in <strong>DD Image mode</strong>.</li>
+  <li>Try another USB port, preferably one straight on the computer rather than a hub.</li>
+</ul>
+
+<h3>The installer shows a black screen</h3>
+<p>Some graphics cards don't start the graphical installer. In the menu where you picked
+<strong>Vyntaris</strong>, press <strong>e</strong>, add <code>installer=text</code> at the end of the line, and
+press Enter. The same questions are then asked in text. The graphical installer also offers <strong>Use the text
+installer</strong> on its first page.</p>
+
+<h3>No internet in the installer</h3>
+<p>A network cable is the surest way. If the Wi-Fi isn't listed, the chip may need a driver that installs only
+after Vyntaris is in place: use a cable, or share your phone's connection over USB (USB tethering).</p>
+
+<h3>The installation failed</h3>
+<p>The installer shows why. If it mentions keys or signatures, the computer's clock is usually wrong: open the
+installer's terminal, run <code>fix-keyring</code>, and install again. If the download was cut off, check the
+internet and try again.</p>
+
+<h3>Vyntaris doesn't start after an update</h3>
+<p>Restart, up to three times. After the third failed start, Vyntaris goes back to how it was before the update
+by itself, and tells you so when you log in. You can also pick <strong>Undo the update</strong> in the start
+menu (hold <strong>Space</strong> while the computer starts to show it), or use Settings → Backups → Undo last
+update while it still runs.</p>
+
+<h3>Vyntaris doesn't start at all</h3>
+<p>Start from the USB stick, and on the installer's first page choose <strong>Repair an installed
+Vyntaris</strong>. It can go back to any snapshot, make the boot images again, finish an interrupted update, or
+open a terminal inside the installed system. Your files stay as they are.</p>
+
+<h3>The desktop froze or disappeared</h3>
+<p>The bar and the desktop restart by themselves within seconds. If it happens again and again, Vyntaris goes
+back to the login screen. One app that uses up the memory is closed before the whole desktop freezes.</p>
+
+<h3>Something else</h3>
+<ol>
+  <li>Open <strong>Dr. Help</strong> (tap SUPER, type <code>check my system</code>). It finds the most common
+    problems and puts a fix next to each one.</li>
+  <li>If that doesn't solve it, choose <strong>Report a problem</strong> in Dr. Help. Write what went wrong; it
+    adds what the system says, takes out your names and addresses, and shows you everything before it goes.</li>
+  <li>Or open an issue on <a href="https://github.com/vyntaris/vyntaris/issues/new/choose">GitHub</a> yourself.</li>
+</ol>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <a class="brand" href="/"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" fill-rule="evenodd" d="M12.79 11.4L13.97 10.96L14.92 10.55L15.79 10.12L16.57 9.68L16.88 9.05L16.82 8.75L16.79 8.45L16.78 8.15L16.81 7.85L16.85 7.55L16.92 7.26L17.02 6.97L17.14 6.7L17.28 6.44L17.45 6.19L17.66 5.93L17.86 5.71L18.09 5.51L18.33 5.34L18.59 5.18L18.86 5.04L20.16 2.43L16.16 2.43zM6.69 12.72L8.05 12.57L9.18 12.38L10.35 12.12L11.45 11.83L7.26 2.43L1.08 2.43zM22.55 8.18L22.5 7.74L22.36 7.32L22.14 6.93L21.85 6.6L21.5 6.32L21.1 6.12L20.67 6L20.22 5.97L19.78 6.02L19.36 6.16L18.97 6.38L18.64 6.67L18.36 7.03L18.16 7.42L18.04 7.85L18.01 8.3L18.06 8.74L18.2 9.16L18.42 9.55L18.71 9.88L19.07 10.16L19.46 10.36L19.89 10.48L20.34 10.51L20.78 10.46L21.2 10.32L21.59 10.1L21.92 9.81L22.2 9.45L22.4 9.06L22.52 8.63zM3.06 13.46L3.08 13.5L0.65 14.24L0.75 14.52L0.89 14.78L1.1 15.07L1.3 15.28L1.56 15.51L1.85 15.7L2.15 15.86L2.52 16.01L2.92 16.14L3.34 16.24L3.77 16.32L4.23 16.37L4.78 16.41L5.88 16.41L7.15 16.31L7.92 16.21L8.7 16.08L9.49 15.92L10.4 15.7L11.22 15.49L12.13 15.21L12.93 14.95L13.82 14.62L14.69 14.27L15.44 13.94L16.25 13.55L16.93 13.19L17.66 12.77L18.25 12.39L18.81 12L19.32 11.6L18.83 11.42L18.37 11.17L17.96 10.85L17.59 10.48L16.86 10.93L15.99 11.39L15.03 11.84L13.99 12.27L12.9 12.66L11.87 12.98L10.83 13.27L9.7 13.53L8.59 13.73L7.52 13.88L6.52 13.96L5.6 13.98L4.79 13.94L4.06 13.84L3.48 13.69L3.23 13.58zM13.4 16.08L11.97 16.54L11.02 16.81L10.07 17.05L9.15 17.24L11.07 20.77z"/></svg>Vyntaris</a>
+    <span>Built on Arch Linux, Hyprland and Quickshell.</span>
+    <nav aria-label="More">
+      <a href="/help/">Help</a>
+      <a href="/policy/">Privacy</a>
+      <a href="/tos/">Terms</a>
+      <a href="https://pkg.vyntarisos.com/">Package repository</a>
+    </nav>
+  </div>
+</footer>
+</body>
+</html>
