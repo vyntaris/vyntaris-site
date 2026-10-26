@@ -1,6 +1,6 @@
 # vyntaris-site
 
-Vyntaris's website, served by Cloudflare Pages at https://vyntarisos.com/ (straight from this repository: no
+Vyntaris's website, served by Cloudflare Workers at https://vyntarisos.com/ (straight from this repository: no
 build, the output directory is its root):
 
 - `/` the home page, with the desktop's real screenshots (`shots/`, taken by `tools/site-shots.sh` in the
