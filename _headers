@@ -10,3 +10,6 @@
 /vyntaris.gpg
   Content-Type: application/pgp-keys
   Content-Disposition: attachment; filename="vyntaris.gpg"
+
+/film/*
+  Cache-Control: public, max-age=604800
