@@ -48,9 +48,22 @@
     if (!nav) return;
     nav.hidden = false;
     const buttons = $$("button", nav);
+    // pictures of the same desktop: one screen, its wallpaper still, only the panel changing
+    let screen = null;
+    const shots = $$(".stage img", sw);
+    if (shots.length) {
+      screen = document.createElement("div");
+      screen.className = "screen";
+      const base = new Image();
+      base.src = "/shots/island-desktop.webp"; base.alt = ""; base.width = 1216; base.height = 760;
+      screen.append(base);
+      shots.forEach(img => { img.classList.add("shot"); img.dataset.of = img.closest("[data-page]").dataset.page; screen.append(img); });
+      $(".panes", sw).prepend(screen);
+    }
     const open = id => {
       buttons.forEach(b => b.setAttribute("aria-selected", String(b.dataset.for === id)));
       pages.forEach(p => { p.hidden = p.dataset.page !== id; });
+      if (screen) shots.forEach(img => img.classList.toggle("on", img.dataset.of === id));
     };
     nav.addEventListener("click", e => { const b = e.target.closest("button"); if (b) open(b.dataset.for); });
     nav.addEventListener("keydown", e => {
@@ -64,7 +77,7 @@
     new IntersectionObserver((es, o) => {
       if (!es.some(e => e.isIntersecting)) return;
       o.disconnect();
-      $$("img", sw).forEach(img => { img.loading = "eager"; });
+      shots.forEach(img => { img.loading = "eager"; });
     }, { rootMargin: "600px 0px" }).observe(sw);
   });
 

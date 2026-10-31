@@ -90,7 +90,7 @@ main > section { padding: clamp(56px, 8vw, 112px) var(--gutter); }
 .film { width: 100%; aspect-ratio: 16 / 9; border-radius: var(--r-window); border: 2px solid var(--accent); background: #000; }
 
 /* ---- take it apart: its own rules, unchanged ---- */
-.xp { position: relative; height: 400vh; padding: 0; }
+.xp { position: relative; height: 520vh; padding: 0; }
 .xp-pin { position: sticky; top: var(--bar); height: calc(100svh - var(--bar)); overflow: hidden; }
 .xp-head { position: absolute; left: 0; right: 0; top: 0; padding-top: 40px; display: grid; gap: 10px; z-index: 2; }
 .xp-head .lead { font-size: 16px; }
@@ -298,7 +298,10 @@ main > section { padding: clamp(56px, 8vw, 112px) var(--gutter); }
 main img { transition: opacity .45s cubic-bezier(.2, 0, 0, 1), filter .45s cubic-bezier(.2, 0, 0, 1), transform .45s cubic-bezier(.2, 0, 0, 1); }
 main img.arriving { opacity: 0; filter: blur(10px); transform: scale(1.012); }
 .stage:not([hidden]), .pages > :not([hidden]) { animation: pane .32s cubic-bezier(.2, 0, 0, 1); }
-.stage img { aspect-ratio: 1216 / 760; }
+.screen { position: relative; aspect-ratio: 1216 / 760; overflow: hidden; border-radius: var(--r-window); border: 1px solid var(--rim); background: var(--crust); }
+.screen img { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; border-radius: 0; }
+.screen .shot { clip-path: inset(0 41% 100% 41% round 0 0 24px 24px); transition: clip-path .2s cubic-bezier(.4, 0, 1, 1); }
+.screen .shot.on { z-index: 1; clip-path: inset(0 0 0 0 round 0 0 0 0); transition: clip-path .52s cubic-bezier(.16, 1, .3, 1) .16s; }
 @keyframes pane { from { opacity: 0; transform: translateY(6px); } }
 .foot { display: flex; flex-wrap: wrap; gap: 8px 20px; align-items: center; min-height: 44px; padding: 10px var(--gutter); background: var(--glass); border-top: 1px solid var(--accent); font-size: 12px; color: var(--muted); }
 .foot nav { display: flex; flex-wrap: wrap; gap: 4px 16px; margin-left: auto; }

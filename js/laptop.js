@@ -557,13 +557,13 @@ function main() {
     const below = Math.max(Math.min(labelRoom, vh * .45) * Math.max(eS, eB, eT), Math.min(capRoom, vh * .45) * z);
     lid.rotation.x = -THREE.MathUtils.degToRad(lerp(0, 104, o));
     // the layers apart along the screen's depth; the base's parts up and down
-    const spread = { wall: 0, win: .36, bar: .62, island: .88 };
+    const spread = { wall: 0, win: .72, bar: 1.26, island: 1.8 };
     for (const k in spread) layers[k].position.z = .0008 * layers[k].userData.order + spread[k] * eS;
-    parts.deck.position.set(0, parts.deck.userData.y + 1.05 * eB, .25 * eB);
+    parts.deck.position.set(0, parts.deck.userData.y + 1.75 * eB, .25 * eB);
     // the lid goes up with the deck it's hinged to: nothing passes through the screen
-    lid.position.set(0, 1.05 * eB, -D / 2 + .25 * eB);
-    parts.board.position.y = parts.board.userData.y - .1 * eB;
-    parts.case.position.y = parts.case.userData.y - .8 * eB;
+    lid.position.set(0, 1.75 * eB, -D / 2 + .25 * eB);
+    parts.board.position.y = parts.board.userData.y - .3 * eB;
+    parts.case.position.y = parts.case.userData.y - 1.5 * eB;
     shadow.position.y = parts.case.position.y - .05;
     // the parts rise from where they sit; the speakers out to the sides; the fans turn
     for (const m of [deckMat, keyMat, padMat]) {
@@ -571,10 +571,10 @@ function main() {
       m.opacity = 1 - .68 * eB;
       m.depthWrite = eB < .5;
     }
-    const rise = { ssd: .48, wifi: .44, fans: .58, fanL: .58, speakers: .36, spkL: .36, battery: .36 };
+    const rise = { ssd: .8, wifi: .72, fans: .98, fanL: .98, speakers: .6, spkL: .6, battery: .6 };
     for (const k in rise) {
       const g = comps[k], b = g.userData.base;
-      g.position.set(b.x + (k === "speakers" ? .5 : k === "spkL" ? -.5 : 0) * eB, rise[k] * eB, b.z);
+      g.position.set(b.x * (1 + .3 * eB) + (k === "speakers" ? .9 : k === "spkL" ? -.9 : 0) * eB, rise[k] * eB - .15 * eB, b.z * (1 + .3 * eB));
     }
     blades.forEach((b, i) => { b.rotation.z += dt * (i ? 5 : -5) * eB; });
     for (const k in layers) layers[k].children.find(c => c.isLineLoop).material.opacity = eS * .75;
@@ -583,7 +583,7 @@ function main() {
     ghosts.forEach(g => {
       const i = g.userData.i;
       g.visible = eT > .01;
-      g.position.set(-1.45 * i * eT, .06 * i * eT, -1.3 * i * eT);
+      g.position.set(-1.95 * i * eT, .08 * i * eT, -1.75 * i * eT);
     });
     ghostMat.opacity = .14 * eT; ghostEdge.opacity = .6 * eT;
     // unlocking: the lock screen fades as the desktop's layers settle in from a little smaller
@@ -603,12 +603,12 @@ function main() {
     caps.forEach((c, i) => c.classList.toggle("on", i === app));
 
     // the camera: from above, turning to the side as it comes apart, then in front, close
-    const el = lerp(lerp(44, 16, o) + 10 * eS + 14 * eB + 4 * eT, 4, z), az = (lerp(-8, 0, o) + 34 * eS + 24 * eB + 30 * eT) * (1 - z);
+    const el = lerp(lerp(44, 16, o) + 10 * eS + 14 * eB + 4 * eT, 4, z), az = (lerp(-8, 0, o) + 42 * eS + 24 * eB + 30 * eT) * (1 - z);
     laptop.updateMatrixWorld(true);
     const screenAt = screen.getWorldPosition(tmp.set(0, 0, 0)).clone();
-    tgt.set((narrow ? -.12 : -.42) * eS - .1 * eB - 2.1 * eT, lerp(0, LH * .4, o) - .22 * eS + .42 * eB + .1 * eT, lerp(.2, 0, o) + .1 * eB - 1.7 * eT);
+    tgt.set((narrow ? -.12 : -.42) * eS - .1 * eB - 2.8 * eT, lerp(0, LH * .4, o) - .22 * eS + .55 * eB + .1 * eT, lerp(.2, 0, o) + .55 * eS + .1 * eB - 2.3 * eT);
     tgt.lerp(screenAt.add(new THREE.Vector3(0, -.12, 0)), z);
-    const far = fit(W * (1 + .35 * eS + .3 * eB + 1.25 * eT), lerp(D * .9, LH * 1.35, o) + .7 * eS + 2.1 * eB + .4 * eT, narrow ? .8 : .4, (narrow ? .74 : .66) * (vh - room - below) / vh);
+    const far = fit(W * (1 + .95 * eS + .75 * eB + 1.75 * eT), lerp(D * .9, LH * 1.35, o) + 1.1 * eS + 3.5 * eB + .6 * eT, narrow ? .8 : .47, (narrow ? .74 : .82) * (vh - room - below) / vh);
     const near = fit(W * 1.12, LH * 1.4, narrow ? .9 : .5, .86 * (vh - Math.min(capRoom, vh * .45)) / vh);
     const dist = lerp(far, near, z);
     const elr = THREE.MathUtils.degToRad(el), azr = THREE.MathUtils.degToRad(az);
