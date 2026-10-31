@@ -7,13 +7,13 @@
 :root {
   --crust: #11111b; --mantle: #181825; --base: #1e1e2e; --surface: #313244; --surface-2: #45475a;
   --text: #cdd6f4; --subtext: #bac2de; --muted: #a6adc8;
-  --accent: #89b4fa;
+  --accent: #cba6f7;
   /* the accent where it's text, a focus ring or a button's fill: as it is on dark, darker on light, so it
      keeps 4.5:1 whichever of the fourteen accents is picked */
   --ink: var(--accent); --on-ink: #11111b;
   /* until one is picked, the visitor's own (the system's accent colour, which Firefox passes on: on
      Vyntaris, the desktop's), lightened on dark so any of them keeps its contrast */
-  --system: color-mix(in oklab, AccentColor 70%, #ffffff);
+  --system: #cba6f7;
   --line: rgba(205, 214, 244, .12);
   --s1: 8px; --s2: 16px; --s3: 24px; --s4: 32px; --s6: 48px; --s8: 64px; --s12: 96px;
   --radius: 12px;
@@ -24,12 +24,12 @@
 }
 @media (prefers-color-scheme: light) {
   :root:not([data-scheme="dark"]) {
-    --crust: #dce0e8; --mantle: #e6e9ef; --base: #eff1f5; --surface: #ccd0da; --surface-2: #bcc0cc;
-    --text: #4c4f69; --subtext: #4c4f69; --muted: #5c5f77;
-    --accent: #1e66f5;
-    --ink: color-mix(in oklab, var(--accent) 60%, #000); --on-ink: #ffffff;
-    --system: AccentColor;
-    --line: rgba(76, 79, 105, .16);
+    --crust: #ebebee; --mantle: #f3f3f5; --base: #fbfbfc; --surface: #dfdfe3; --surface-2: #cdcdd3;
+    --text: #26262b; --subtext: #3f3f46; --muted: #50505a;
+    --accent: #cba6f7;
+    --ink: #8128ec; --on-ink: #ffffff;
+    --system: #cba6f7;
+    --line: rgba(38, 38, 43, .12);
     color-scheme: light;
   }
 }
@@ -48,7 +48,7 @@ h3 { font-size: 20px; line-height: 1.3; font-weight: 600; letter-spacing: -.01em
 p { margin: 0; }
 code, pre, kbd { font-family: var(--mono); font-size: .9em; }
 .wrap { max-width: var(--page); margin-inline: auto; padding-inline: max(var(--s2), env(safe-area-inset-left, 0px)); }
-.eyebrow { font-size: 13px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--ink); }
+.eyebrow { font-size: 13px; font-weight: 600; color: var(--ink); }
 .lead { font-size: 20px; line-height: 1.55; color: var(--subtext); max-width: 60ch; }
 .muted { color: var(--muted); }
 .skip { position: absolute; left: var(--s2); top: -100px; z-index: 20; background: var(--ink); color: var(--on-ink); padding: var(--s1) var(--s2); border-radius: 8px; font-weight: 600; }
