@@ -1,38 +1,10 @@
-// What makes the page behave like the desktop. Without it everything is still there: the panels'
-// pages one under the other, the page dark and mauve, the commands to be selected by hand.
+// What makes the page behave like the desktop. Without it everything is still there: the panels one
+// under the other, every picture shown at once, the commands to be selected by hand.
 (() => {
-  const root = document.documentElement, $ = (s, el = document) => el.querySelector(s), $$ = (s, el = document) => [...el.querySelectorAll(s)];
+  const $ = (s, el = document) => el.querySelector(s), $$ = (s, el = document) => [...el.querySelectorAll(s)];
   const NS = "http://www.w3.org/2000/svg";
-  const store = {
-    get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
-    set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} },
-  };
   const svgEl = (name, attrs) => { const e = document.createElementNS(NS, name); for (const k in attrs) e.setAttribute(k, attrs[k]); return e; };
-
-  // the shell's own shape: the sides lean in as they come down (components/Slant.js)
-  const lean = h => Math.min(h * 1.2, 26 + h * .05);
   const f = n => n.toFixed(1);
-  function corners(pts, r) {
-    let d = "";
-    pts.forEach(([x, y, k], i) => {
-      const [px, py] = pts[(i + pts.length - 1) % pts.length], [nx, ny] = pts[(i + 1) % pts.length];
-      const dp = Math.hypot(px - x, py - y) || 1, dn = Math.hypot(nx - x, ny - y) || 1, c = Math.min(k ?? r, dp / 2, dn / 2);
-      d += `${i ? "L" : "M"}${f(x + (px - x) / dp * c)} ${f(y + (py - y) / dp * c)}Q${f(x)} ${f(y)} ${f(x + (nx - x) / dn * c)} ${f(y + (ny - y) / dn * c)}`;
-    });
-    return d + "Z";
-  }
-  function shape(el) {
-    const svg = svgEl("svg", { class: "shape", "aria-hidden": "true" }), path = svgEl("path", { class: "fill" });
-    svg.append(path); el.prepend(svg);
-    const draw = () => {
-      const w = el.offsetWidth, h = el.offsetHeight, l = lean(h);
-      path.setAttribute("d", corners([[0, -2, 0], [w, -2, 0], [w - l, h, 24], [l, h, 24]], 24));
-      el.classList.add("shaped");
-    };
-    new ResizeObserver(draw).observe(el);
-    draw();
-  }
-  $$(".hang").forEach(shape);
 
   // the bar's line, dipping under the island
   const bar = $(".bar"), island = $(".island");
@@ -59,18 +31,18 @@
     setTimeout(tick, (60 - d.getSeconds()) * 1000);
   };
   tick();
-  // light or dark, and the night light: real, on this page
-  function scheme(v, keep) {
-    root.dataset.scheme = v;
-    if (keep) store.set("scheme", v);
-  }
-  const toggleLight = () => scheme(root.dataset.scheme === "light" ? "dark" : "light", true);
-  const toggleNight = () => {
-    const on = !("night" in root.dataset);
-    root.toggleAttribute("data-night", on);
-  };
 
-  // side menus: one page at a time
+  // a picture comes in softly once it has arrived, instead of appearing line by line
+  const soften = img => {
+    if (img.complete && img.naturalWidth) return;
+    img.classList.add("arriving");
+    const done = () => img.classList.remove("arriving");
+    img.addEventListener("load", done, { once: true });
+    img.addEventListener("error", done, { once: true });
+  };
+  $$("main img").forEach(soften);
+
+  // side menus: one page at a time, the next picture already here when it's asked for
   $$(".switcher").forEach(sw => {
     const nav = $(".nav", sw), pages = $$("[data-page]", sw);
     if (!nav) return;
@@ -89,6 +61,11 @@
       b.focus(); open(b.dataset.for);
     });
     open(buttons[0].dataset.for);
+    new IntersectionObserver((es, o) => {
+      if (!es.some(e => e.isIntersecting)) return;
+      o.disconnect();
+      $$("img", sw).forEach(img => { img.loading = "eager"; });
+    }, { rootMargin: "600px 0px" }).observe(sw);
   });
 
   // the copy buttons
@@ -145,80 +122,4 @@
       near.observe(xp);
     }
   }
-
-  // the launcher: as on the desktop, typing anywhere opens it and the first letter isn't lost
-  const launcher = $("#launcher"), input = $("#search"), hits = $("#hits");
-  const entries = [
-    ...links.map(a => ({ name: a.title, kind: "Section", go: a.hash, words: a.title })),
-    { name: "Download the ISO", kind: "About 1.6 GB", go: "https://dl.vyntarisos.com/vyntaris-x86_64.iso", words: "download iso install usb" },
-    { name: "How to install", kind: "Wiki", go: "/wiki/#install", words: "install usb setup windows secure boot" },
-    { name: "Questions", kind: "Wiki", go: "/wiki/#faq", words: "faq free nvidia games language" },
-    { name: "When something's wrong", kind: "Wiki", go: "/wiki/#trouble", words: "problem trouble help black screen" },
-    { name: "The first minutes", kind: "Wiki", go: "/wiki/#first", words: "keys shortcuts super" },
-    { name: "Dr. Help", kind: "Wiki", go: "/wiki/#apps", words: "doctor health check" },
-    { name: "Store", kind: "Wiki", go: "/wiki/#apps", words: "apps install aur" },
-    { name: "Privacy policy", kind: "Page", go: "/policy/", words: "data google drive" },
-    { name: "Terms of service", kind: "Page", go: "/tos/", words: "license legal" },
-    { name: "All the numbers", kind: "Wiki", go: "/wiki/#numbers", words: "speed benchmark measured" },
-    { name: "GitHub", kind: "Source code", go: "https://github.com/vyntaris/vyntaris", words: "git repository" },
-    { name: "Light mode", kind: "Do it", run: toggleLight, words: "dark theme light" },
-    { name: "Night light", kind: "Do it", run: toggleNight, words: "warm evening" },
-  ];
-  let shown = [], picked = 0;
-  function close() {
-    launcher.hidden = true;
-    input.value = "";
-    if (last && last.focus) last.focus();
-  }
-  function act(entry) {
-    if (!entry) return;
-    close();
-    if (entry.run) entry.run();
-    else location.href = entry.go;
-  }
-  function list() {
-    const words = input.value.trim().toLowerCase().split(/\s+/).filter(Boolean);
-    shown = entries.filter(e => words.every(w => (e.name + " " + e.words).toLowerCase().includes(w))).slice(0, 9);
-    picked = Math.min(picked, Math.max(0, shown.length - 1));
-    hits.replaceChildren(...shown.map((e, i) => {
-      const row = document.createElement("button");
-      row.type = "button"; row.setAttribute("role", "option"); row.setAttribute("aria-selected", String(i === picked));
-      const b = document.createElement("b"), s = document.createElement("small");
-      b.textContent = e.name; s.textContent = e.kind;
-      row.append(b, s);
-      row.addEventListener("click", () => act(e));
-      return row;
-    }));
-    if (!shown.length) { const n = document.createElement("p"); n.className = "nothing"; n.textContent = "No matches"; hits.append(n); }
-  }
-  let last = null;
-  function open(text) {
-    last = document.activeElement;
-    launcher.hidden = false;
-    input.value = text || "";
-    picked = 0;
-    list();
-    input.focus();
-  }
-  island.addEventListener("click", () => (launcher.hidden ? open("") : close()));
-  input.addEventListener("input", () => { picked = 0; list(); });
-  input.addEventListener("keydown", e => {
-    if (e.key === "ArrowDown" || e.key === "ArrowUp") {
-      e.preventDefault();
-      if (shown.length) { picked = (picked + (e.key === "ArrowDown" ? 1 : -1) + shown.length) % shown.length; list(); }
-    } else if (e.key === "Enter") { e.preventDefault(); act(shown[picked]); }
-  });
-  addEventListener("keydown", e => {
-    if (e.key === "Escape" && !launcher.hidden) { e.preventDefault(); close(); return; }
-    if (!launcher.hidden || e.ctrlKey || e.metaKey || e.altKey || e.key.length !== 1 || e.key === " ") return;
-    const t = e.target;
-    if (t.closest && t.closest("input, textarea, select, video, [contenteditable]")) return;
-    e.preventDefault();
-    open(e.key);
-  });
-  addEventListener("click", e => { if (!launcher.hidden && !launcher.contains(e.target) && !island.contains(e.target)) close(); });
-  shape(launcher);
-
-  // dark, as the system starts, until light is picked
-  scheme(store.get("scheme") || "dark");
 })();
