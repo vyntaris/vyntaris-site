@@ -347,13 +347,13 @@ function main() {
   const FULL = [0, 0, 1920, 1080];
   const win = rounded(943 / 1021, .012);
   layer("wall", 1, shot("/shots/xp-wall.webp", FULL, null, 1));
-  layer("win", 2, shot("/shots/xp-term.webp", [10, 49, 943, 1021], win, 2), shot("/shots/xp-doc.webp", [967, 49, 943, 1021], win, 2));
+  layer("win", 2, shot("/shots/xp-term.webp", [10, 49, 943, 1021], win, 2), shot("/shots/xp-store-window.webp", [967, 49, 943, 1021], win, 2));
   layer("bar", 3, shot("/shots/xp-bar.webp", [0, 0, 1920, 30], null, 3));
   layer("island", 4, shot("/shots/xp-island.webp", [654, 0, 612, 740], rounded(612 / 740, .062, false), 4));
   // what covers the layers: the lock screen as the lid opens, then the apps, each over the one before
   const lock = shot("/shots/xp-lock.webp", FULL, null, 10);
   screen.add(lock);
-  const apps = ["doctor", "store", "office", "settings"].map((n, i) => {
+  const apps = ["doctor", "store", "settings"].map((n, i) => {
     const m = shot(`/shots/xp-${n}.webp`, FULL, null, 11 + i);
     m.material.opacity = 0; m.visible = false;
     screen.add(m);

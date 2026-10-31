@@ -157,9 +157,10 @@
     { name: "The first minutes", kind: "Wiki", go: "/wiki/#first", words: "keys shortcuts super" },
     { name: "Dr. Help", kind: "Wiki", go: "/wiki/#apps", words: "doctor health check" },
     { name: "Store", kind: "Wiki", go: "/wiki/#apps", words: "apps install aur" },
-    { name: "VDoc, VSheet, VSlide", kind: "Wiki", go: "/wiki/#apps", words: "office word excel powerpoint" },
+    { name: "Privacy policy", kind: "Page", go: "/policy/", words: "data google drive" },
+    { name: "Terms of service", kind: "Page", go: "/tos/", words: "license legal" },
     { name: "All the numbers", kind: "Wiki", go: "/wiki/#numbers", words: "speed benchmark measured" },
-    { name: "Source code", kind: "GitHub", go: "https://github.com/vyntaris/vyntaris", words: "git repository" },
+    { name: "GitHub", kind: "Source code", go: "https://github.com/vyntaris/vyntaris", words: "git repository" },
     { name: "Light mode", kind: "Do it", run: toggleLight, words: "dark theme light" },
     { name: "Night light", kind: "Do it", run: toggleNight, words: "warm evening" },
   ];

@@ -77,9 +77,9 @@ code, pre { font-family: var(--mono); font-size: .92em; }
 
 /* ---- the desktop: the first screen ---- */
 .desk { position: relative; min-height: 100svh; display: grid; grid-template-columns: minmax(0, 1fr); gap: 0 24px; padding: 0 var(--gutter) var(--gutter); overflow: hidden; background: var(--crust); }
-.wall { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: brightness(var(--wall, 1)); }
-.pitch { position: relative; grid-column: 1; align-self: center; padding-top: var(--bar); color: #fff; max-width: 720px; text-shadow: 0 1px 18px rgba(0, 0, 0, .55); }
-.pitch h1 { font-size: clamp(44px, 5.6vw, 88px); line-height: .98; letter-spacing: -.035em; font-weight: 700; color: #fff; }
+.wall { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.pitch { position: relative; grid-column: 1; align-self: center; padding-top: var(--bar); color: #fff; width: calc(30vw - var(--gutter)); }
+.pitch h1 { font-size: clamp(40px, 4.2vw, 84px); line-height: .98; letter-spacing: -.035em; font-weight: 700; color: #fff; }
 .pitch p { margin-top: 18px; max-width: 34ch; font-size: 16px; color: rgba(255, 255, 255, .86); }
 .pitch .do { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px; text-shadow: none; }
 .pitch small { display: block; margin-top: 12px; font-size: 12px; color: rgba(255, 255, 255, .72); }
@@ -209,7 +209,6 @@ main > section { padding: clamp(56px, 8vw, 112px) var(--gutter); }
 .win figcaption { padding: 8px 12px 9px; font-size: 12px; font-weight: 600; color: var(--muted); }
 .win figcaption b { display: block; color: var(--text); font-size: 15px; font-weight: 600; }
 .w-half { grid-column: span 6; }
-.w-third { grid-column: span 4; }
 
 /* settings: a page per subject */
 #details { background: var(--mantle); }
@@ -316,6 +315,13 @@ main > section { padding: clamp(56px, 8vw, 112px) var(--gutter); }
 .doc .win { margin: 16px 0; }
 .doc .fine { font-size: 13px; color: var(--muted); }
 .doc .real { display: block; margin: 12px 0 0; }
+@media (max-width: 1100px), (max-aspect-ratio: 3 / 2) {
+  .desk { display: flex; flex-direction: column; min-height: 0; padding: calc(var(--bar) + 40px) var(--gutter) 0; background: #11111b; }
+  .pitch { order: -1; align-self: flex-start; width: auto; max-width: 560px; padding: 0; }
+  .pitch h1 { font-size: clamp(44px, 9vw, 72px); }
+  .wall { position: static; display: block; width: calc(100% + 2 * var(--gutter)); max-width: none; margin: 16px calc(-1 * var(--gutter)) 0; height: auto; aspect-ratio: 16 / 10; -webkit-mask-image: linear-gradient(transparent, #000 18%); mask-image: linear-gradient(transparent, #000 18%); }
+}
+.wiki.solo { max-width: 860px; }
 .foot { display: flex; flex-wrap: wrap; gap: 8px 20px; align-items: center; min-height: 44px; padding: 10px var(--gutter); background: var(--glass); border-top: 1px solid var(--accent); font-size: 12px; color: var(--muted); }
 .foot nav { display: flex; flex-wrap: wrap; gap: 4px 16px; margin-left: auto; }
 .foot a { color: var(--muted); text-decoration: none; }
@@ -334,7 +340,7 @@ main > section { padding: clamp(56px, 8vw, 112px) var(--gutter); }
   .switcher { flex-direction: column; }
   .switcher .nav { width: 100%; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
   .system { grid-template-columns: 1fr; }
-  .w-half, .w-third { grid-column: 1 / -1; }
+  .w-half { grid-column: 1 / -1; }
   .real { grid-template-columns: 1fr; }
   .fetch-body { grid-template-columns: 1fr; }
   .launcher { padding-inline: 16px; }
