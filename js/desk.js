@@ -76,19 +76,21 @@
 
   // light or dark, and the night light: real, on this page
   const lightTile = $("#t-light"), nightTile = $("#t-night");
-  const say = (tile, on, words) => { tile.setAttribute("aria-pressed", String(on)); $("small", tile).textContent = words; };
+  const say = (tile, on, words) => { if (!tile) return; tile.setAttribute("aria-pressed", String(on)); $("small", tile).textContent = words; };
   function scheme(v, keep) {
     root.dataset.scheme = v;
     if (keep) store.set("scheme", v);
     say(lightTile, v === "light", v === "light" ? "On" : "Off");
     accent(store.get("accent") || "mauve");
   }
-  lightTile.addEventListener("click", () => scheme(root.dataset.scheme === "light" ? "dark" : "light", true));
-  nightTile.addEventListener("click", () => {
+  const toggleLight = () => scheme(root.dataset.scheme === "light" ? "dark" : "light", true);
+  const toggleNight = () => {
     const on = !("night" in root.dataset);
     root.toggleAttribute("data-night", on);
     say(nightTile, on, on ? "On" : "Off");
-  });
+  };
+  lightTile?.addEventListener("click", toggleLight);
+  nightTile?.addEventListener("click", toggleNight);
 
   // one colour, everywhere
   function accent(name) {
@@ -167,6 +169,17 @@
   }), { rootMargin: "-45% 0px -50% 0px" });
   links.forEach(a => { const s = $(a.hash); if (s) seen.observe(s); });
 
+  // the wiki's side menu follows where you are
+  const sideLinks = $$(".side a");
+  if (sideLinks.length) {
+    sideLinks[0].setAttribute("aria-current", "");
+    const here = new IntersectionObserver(es => es.forEach(e => {
+      if (!e.isIntersecting) return;
+      sideLinks.forEach(a => a.toggleAttribute("aria-current", a.hash === "#" + e.target.id));
+    }), { rootMargin: "-20% 0px -75% 0px" });
+    sideLinks.forEach(a => { const s = $(a.hash); if (s) here.observe(s); });
+  }
+
   // the laptop: three.js and its scene loaded only as it comes near; without WebGL, its picture and labels
   const xp = $("#inside");
   if (xp) {
@@ -174,7 +187,7 @@
     const still = () => {
       xp.classList.add("nogl");
       const lead = $(".xp-head .lead", xp);
-      if (lead) lead.textContent = "What you see on the screen, and what runs beneath it, layer by layer.";
+      if (lead) lead.textContent = "Everything on the screen, and what runs under it.";
     };
     if (!gl) still();
     else {
@@ -193,13 +206,17 @@
   const entries = [
     ...links.map(a => ({ name: a.title, kind: "Section", go: a.hash, words: a.title })),
     { name: "Download the ISO", kind: "About 1.6 GB", go: "https://dl.vyntarisos.com/vyntaris-x86_64.iso", words: "download iso install usb" },
-    { name: "Dr. Help", kind: "App", go: "#apps", words: "doctor health check" },
-    { name: "Store", kind: "App", go: "#apps", words: "apps install aur" },
-    { name: "Vyntaris Office", kind: "App", go: "#apps", words: "word excel powerpoint vdoc vsheet vslide" },
-    { name: "Help", kind: "Page", go: "/help/", words: "problem trouble question" },
+    { name: "How to install", kind: "Wiki", go: "/wiki/#install", words: "install usb setup windows secure boot" },
+    { name: "Questions", kind: "Wiki", go: "/wiki/#faq", words: "faq free nvidia games language" },
+    { name: "When something's wrong", kind: "Wiki", go: "/wiki/#trouble", words: "problem trouble help black screen" },
+    { name: "The first minutes", kind: "Wiki", go: "/wiki/#first", words: "keys shortcuts super" },
+    { name: "Dr. Help", kind: "Wiki", go: "/wiki/#apps", words: "doctor health check" },
+    { name: "Store", kind: "Wiki", go: "/wiki/#apps", words: "apps install aur" },
+    { name: "VDoc, VSheet, VSlide", kind: "Wiki", go: "/wiki/#apps", words: "office word excel powerpoint" },
+    { name: "All the numbers", kind: "Wiki", go: "/wiki/#numbers", words: "speed benchmark measured" },
     { name: "Source code", kind: "GitHub", go: "https://github.com/vyntaris/vyntaris", words: "git repository" },
-    { name: "Light mode", kind: "Do it", run: () => lightTile.click(), words: "dark theme light" },
-    { name: "Night light", kind: "Do it", run: () => nightTile.click(), words: "warm evening" },
+    { name: "Light mode", kind: "Do it", run: toggleLight, words: "dark theme light" },
+    { name: "Night light", kind: "Do it", run: toggleNight, words: "warm evening" },
     ...$$(".swatches button").map(b => ({ name: b.title, kind: "Accent", run: () => b.click(), words: "colour color accent" })),
   ];
   let shown = [], picked = 0;
