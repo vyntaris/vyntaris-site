@@ -49,8 +49,8 @@
   new ResizeObserver(drawEdge).observe(bar);
   document.fonts && document.fonts.ready.then(drawEdge);
 
-  // the clock and the month, the visitor's own
-  const now = new Date(), clock = $("#clock");
+  // the clock, the visitor's own
+  const clock = $("#clock");
   const fmt = new Intl.DateTimeFormat("en-GB", { weekday: "short", day: "numeric", month: "short" });
   const tick = () => {
     const d = new Date();
@@ -59,71 +59,16 @@
     setTimeout(tick, (60 - d.getSeconds()) * 1000);
   };
   tick();
-  const month = $("#month");
-  if (month) {
-    month.hidden = false;
-    $(".today b", month).textContent = now.getDate();
-    $(".today span", month).textContent = now.toLocaleDateString("en-GB", { weekday: "long" });
-    $(".today small", month).textContent = now.toLocaleDateString("en-GB", { month: "long", year: "numeric" });
-    const grid = $(".grid", month), first = (new Date(now.getFullYear(), now.getMonth(), 1).getDay() + 6) % 7;
-    const days = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate(), before = new Date(now.getFullYear(), now.getMonth(), 0).getDate();
-    let html = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"].map(d => `<u>${d}</u>`).join("");
-    for (let i = 0; i < first; i++) html += `<s>${before - first + 1 + i}</s>`;
-    for (let i = 1; i <= days; i++) html += i === now.getDate() ? `<em>${i}</em>` : `<span>${i}</span>`;
-    for (let i = 1; (first + days + i - 1) % 7 !== 0; i++) html += `<s>${i}</s>`;
-    grid.innerHTML = html;
-  }
-
   // light or dark, and the night light: real, on this page
-  const lightTile = $("#t-light"), nightTile = $("#t-night");
-  const say = (tile, on, words) => { if (!tile) return; tile.setAttribute("aria-pressed", String(on)); $("small", tile).textContent = words; };
   function scheme(v, keep) {
     root.dataset.scheme = v;
     if (keep) store.set("scheme", v);
-    say(lightTile, v === "light", v === "light" ? "On" : "Off");
-    accent(store.get("accent") || "mauve");
   }
   const toggleLight = () => scheme(root.dataset.scheme === "light" ? "dark" : "light", true);
   const toggleNight = () => {
     const on = !("night" in root.dataset);
     root.toggleAttribute("data-night", on);
-    say(nightTile, on, on ? "On" : "Off");
   };
-  lightTile?.addEventListener("click", toggleLight);
-  nightTile?.addEventListener("click", toggleNight);
-
-  // one colour, everywhere
-  function accent(name) {
-    const b = $(`.swatches [data-accent="${name}"]`) || $('.swatches [data-accent="mauve"]');
-    $$(".swatches button").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
-    root.style.setProperty("--accent", b.dataset.fill);
-    root.style.setProperty("--ink-light", b.dataset.ink);
-    const label = $("#accent-name");
-    if (label) label.textContent = b.title;
-    dispatchEvent(new Event("vyntaris-accent"));
-  }
-  $(".swatches").addEventListener("click", e => {
-    const b = e.target.closest("button[data-accent]");
-    if (!b) return;
-    store.set("accent", b.dataset.accent);
-    accent(b.dataset.accent);
-  });
-
-  // the first picture's brightness, with the shell's slider
-  const wall = $("#wall-dim"), cells = wall && wall.closest(".cells");
-  if (cells) {
-    const n = 26;
-    for (let i = 0; i < n; i++) cells.prepend(document.createElement("i"));
-    const marks = $$("i", cells), out = $("#wall-out");
-    const show = () => {
-      const v = +wall.value, lit = Math.round(v / 100 * n);
-      marks.forEach((m, i) => { m.classList.toggle("on", i < lit); m.classList.toggle("tip", i === lit - 1); });
-      out.textContent = v;
-      $(".desk").style.setProperty("--wall", (.25 + v / 100 * .95).toFixed(3));
-    };
-    wall.addEventListener("input", show);
-    show();
-  }
 
   // side menus: one page at a time
   $$(".switcher").forEach(sw => {
@@ -217,7 +162,6 @@
     { name: "Source code", kind: "GitHub", go: "https://github.com/vyntaris/vyntaris", words: "git repository" },
     { name: "Light mode", kind: "Do it", run: toggleLight, words: "dark theme light" },
     { name: "Night light", kind: "Do it", run: toggleNight, words: "warm evening" },
-    ...$$(".swatches button").map(b => ({ name: b.title, kind: "Accent", run: () => b.click(), words: "colour color accent" })),
   ];
   let shown = [], picked = 0;
   function close() {

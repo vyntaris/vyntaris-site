@@ -20,7 +20,7 @@
 :root[data-scheme="light"] {
   --crust: #ebebee; --mantle: #f3f3f5; --base: #fbfbfc; --surface: #dfdfe3; --surface-2: #cdcdd3;
   --text: #26262b; --subtext: #3f3f46; --muted: #50505a; --quiet: #65656f;
-  --ink: var(--ink-light, #7a30e0);
+  --ink: #8128ec;
   --glass: var(--base); --tile: rgba(38, 38, 43, .05); --tile-hover: rgba(38, 38, 43, .09);
   --rim: rgba(38, 38, 43, .16); --line: rgba(38, 38, 43, .12);
   --track: #cdcdd3; --red: #c0233a; --green: #27773a; --warm: #b54d0c; --term-prompt: #2558cf;
@@ -76,9 +76,9 @@ code, pre { font-family: var(--mono); font-size: .92em; }
 .hang:not(.shaped) { background: var(--glass); border: 1px solid var(--accent); border-top: 0; border-radius: 0 0 24px 24px; }
 
 /* ---- the desktop: the first screen ---- */
-.desk { position: relative; min-height: 100svh; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 540px) minmax(0, 1fr); gap: 0 24px; padding: 0 var(--gutter) var(--gutter); overflow: hidden; background: var(--crust); }
+.desk { position: relative; min-height: 100svh; display: grid; grid-template-columns: minmax(0, 1fr); gap: 0 24px; padding: 0 var(--gutter) var(--gutter); overflow: hidden; background: var(--crust); }
 .wall { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: brightness(var(--wall, 1)); }
-.pitch { position: relative; grid-column: 1; align-self: center; padding-top: var(--bar); color: #fff; min-width: 300px; text-shadow: 0 1px 18px rgba(0, 0, 0, .55); }
+.pitch { position: relative; grid-column: 1; align-self: center; padding-top: var(--bar); color: #fff; max-width: 720px; text-shadow: 0 1px 18px rgba(0, 0, 0, .55); }
 .pitch h1 { font-size: clamp(44px, 5.6vw, 88px); line-height: .98; letter-spacing: -.035em; font-weight: 700; color: #fff; }
 .pitch p { margin-top: 18px; max-width: 34ch; font-size: 16px; color: rgba(255, 255, 255, .86); }
 .pitch .do { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px; text-shadow: none; }
@@ -91,40 +91,6 @@ code, pre { font-family: var(--mono); font-size: .92em; }
 .pitch .btn:not(.primary) { background: rgba(17, 17, 27, .55); color: #fff; border-color: rgba(255, 255, 255, .28); }
 .pitch .btn:not(.primary):hover { background: rgba(17, 17, 27, .75); }
 
-.control { grid-column: 2; align-self: start; margin-top: var(--bar); padding: 18px 44px 24px; display: grid; gap: 14px; }
-.control-head { display: flex; align-items: center; justify-content: space-between; color: var(--muted); font-size: 12px; }
-.tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-.tile { display: flex; align-items: center; gap: 10px; min-height: 58px; padding: 0 12px 0 10px; border-radius: var(--r-tile); background: var(--tile); border: 1px solid var(--rim); text-align: left; text-decoration: none; color: var(--text); transition: background-color .14s, transform .14s; min-width: 0; }
-.tile:hover { background: var(--tile-hover); }
-.tile:active { transform: scale(.97); }
-.tile > i { display: grid; place-items: center; width: 38px; height: 38px; flex: none; border-radius: 50%; background: var(--tile-hover); color: var(--subtext); }
-.tile[aria-pressed="true"] > i { background: var(--accent); color: var(--on-accent); }
-.tile b { display: block; font-size: 13px; font-weight: 600; line-height: 1.3; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.tile small { display: block; font-size: 11px; color: var(--quiet); line-height: 1.3; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.tile span { min-width: 0; }
-.seg { display: flex; align-items: center; gap: 12px; }
-.seg .ic { color: var(--subtext); }
-.seg output { width: 30px; text-align: right; font: 500 12px var(--mono); }
-.cells { position: relative; flex: 1; height: 24px; display: flex; align-items: center; gap: 4px; }
-.cells i { flex: 1; height: 6px; border-radius: 2px; background: var(--track); transition: height .14s; }
-.cells i.on { height: 12px; background: var(--accent); }
-.cells i.tip { background: var(--ink); }
-:root:not([data-scheme="light"]) .cells i.tip { background: color-mix(in oklab, var(--accent) 80%, #fff); }
-.cells input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: pointer; }
-.cells:has(input:focus-visible) { outline: 2px solid var(--text); outline-offset: 2px; border-radius: 4px; }
-.swatches { display: flex; align-items: center; justify-content: space-between; gap: 6px; }
-.swatches button { width: 24px; height: 24px; border-radius: 50%; background: var(--c); display: grid; place-items: center; color: transparent; transition: transform .14s; }
-.swatches button:hover { transform: scale(1.12); }
-.swatches button[aria-pressed="true"] { color: #11111b; }
-.swatches .ic { width: 13px; height: 13px; }
-.month { display: grid; grid-template-columns: auto 1fr; gap: 0 22px; padding-top: 2px; }
-.today b { display: block; font: 300 34px/1.15 var(--mono); }
-.today span { display: block; font-size: 12px; color: var(--ink); font-weight: 600; }
-.today small { display: block; font-size: 11px; color: var(--muted); }
-.grid { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; font: 500 11px/22px var(--mono); color: var(--text); }
-.grid u { text-decoration: none; color: var(--muted); font-family: var(--font); font-weight: 600; }
-.grid s { text-decoration: none; color: var(--quiet); }
-.grid em { font-style: normal; width: 22px; margin: auto; border-radius: 50%; background: var(--accent); color: var(--on-accent); font-weight: 700; }
 .hint { display: flex; flex-wrap: wrap; gap: 4px 12px; justify-content: center; font-size: 11px; color: var(--quiet); }
 kbd { font: 500 10px var(--mono); padding: 1px 6px; border-radius: 9px; border: 1px solid var(--rim); color: var(--muted); margin-right: 4px; }
 
@@ -356,13 +322,7 @@ main > section { padding: clamp(56px, 8vw, 112px) var(--gutter); }
 .foot a:hover { color: var(--text); text-decoration: underline; }
 
 @media (max-width: 1180px) {
-  .desk { grid-template-columns: minmax(0, 1fr); padding-top: var(--bar); min-height: 0; gap: 24px; }
-  .pitch { grid-column: 1; grid-row: 1; padding-top: 40px; }
-  .control { grid-column: 1; grid-row: 2; margin-top: 0; padding: 16px; width: min(100%, 620px); justify-self: center; border-radius: 16px !important; }
-  .control > .shape { display: none; }
-  .control.hang { background: var(--glass); border: 1px solid var(--accent); border-radius: 16px; }
   .film-row { grid-template-columns: 1fr; }
-  .pitch { padding-top: 40px; }
 }
 @media (max-width: 860px) {
   .ws, .title, .brand span { display: none; }
