@@ -206,6 +206,7 @@ function main() {
     const s = all.find(k => k.super);
     const sk = new THREE.Mesh(keyGeo, accentGlow);
     sk.position.set(s.x, .0105, s.z); sk.scale.set(s.w, 1, kh);
+    keyLayer.userData.superAt = new THREE.Vector3(s.x, .02, s.z);
     keyLayer.add(sk);
     const pad = new THREE.Mesh(new RoundedBoxGeometry(W * .36, .004, D * .27, 2, .002), padMat);
     pad.position.set(0, .001, D / 2 - .12 - D * .135);
@@ -247,17 +248,17 @@ function main() {
     g.fillStyle = a; g.fillRect(0, 0, 18, h);
     for (let i = 0; i < 3; i++) { g.fillStyle = "#2b2c3c"; g.fillRect(w * .52 + i * w * .155, h * .18, w * .13, h * .64); }
     label(g, "NVMe", "Btrfs · zstd", a, false, w * .25, h * .38, 70);
-  }), [.33, .014, 0]);
+  }), [.12, .014, 0]);
   comp("wifi", parts.board, -.92, .34, .26, .01, .2, face(.26, .2, (g, w, h, a) => {
     g.fillStyle = "#16261e"; g.fillRect(0, 0, w, h);
     g.fillStyle = "#c9cdd8"; g.fillRect(w * .2, h * .22, w * .6, h * .36);
     label(g, "Wi-Fi 6E", "· Bluetooth ·", a, false, w / 2, h * .74, 70);
-  }), [-.13, .01, .1]);
+  }), [0, .01, 0]);
   // the fans: a housing and blades that turn while they're out
   const blades = [];
   for (const side of [-1, 1]) {
     const k = side < 0 ? "fanL" : "fans";
-    const g = comp(k, parts.board, side * .78, -.43, .58, .03, .58, null, [side * .29, .03, -.1]);
+    const g = comp(k, parts.board, side * .78, -.43, .58, .03, .58, null, [0, .03, 0]);
     g.children[0].visible = false;
     const housing = new THREE.Mesh(new THREE.CylinderGeometry(.27, .27, .03, 48, 1, true), dark);
     housing.position.y = .015;
@@ -285,13 +286,13 @@ function main() {
     g.fillStyle = "#4a4c62";
     for (let y = 20; y < ch - 10; y += 26) for (let x = 20; x < cw - 10; x += 26) { g.beginPath(); g.arc(x, y, 7, 0, 7); g.fill(); }
   });
-  for (const side of [-1, 1]) comp(side < 0 ? "spkL" : "speakers", parts.case, side * 1.36, .02, .2, .03, .95, grille(.2, .95), [side * .1, .03, -.3]);
+  for (const side of [-1, 1]) comp(side < 0 ? "spkL" : "speakers", parts.case, side * 1.36, .02, .2, .03, .95, grille(.2, .95), [0, .03, 0]);
   comp("battery", parts.case, 0, .36, 2.2, .03, .62, face(2.2, .62, (g, w, h, a, light) => {
     g.fillStyle = "#1d1e2c"; g.fillRect(0, 0, w, h);
     g.strokeStyle = a; g.lineWidth = 5;
     for (let i = 0; i < 4; i++) { g.fillStyle = "#26283a"; g.beginPath(); g.roundRect(30 + i * (w - 60) / 4 + 8, 30, (w - 60) / 4 - 16, h - 60, 18); g.fill(); g.stroke(); }
     label(g, "BATTERY", "charge limit 80 %", a, light, w / 2, h * .42, 64);
-  }), [-1.1, .03, .2]);
+  }), [-.75, .03, 0]);
 
   // the snapshots: the system as it was, copies coming out of it back in time
   const ghostMat = new THREE.MeshBasicMaterial({ transparent: true, opacity: 0, depthWrite: false, toneMapped: false });
@@ -402,12 +403,6 @@ function main() {
   }));
   shadow.rotation.x = -Math.PI / 2;
   laptop.add(shadow);
-  // the floor: a grid in the accent, fading out around it
-  const floorMat = new THREE.MeshBasicMaterial({ transparent: true, depthWrite: false, toneMapped: false, opacity: .16 });
-  const floor = new THREE.Mesh(new THREE.PlaneGeometry(26, 26), floorMat);
-  floor.rotation.x = -Math.PI / 2;
-  floor.renderOrder = -2;
-  laptop.add(floor);
 
   // --- the colours, from the page's palette (light or dark, the accent) --------------------------------------
   const logoPath = document.querySelector(".brand svg path")?.getAttribute("d") || "";
@@ -422,16 +417,6 @@ function main() {
     padMat.color.set(light ? 0xb3b7c4 : 0x2f3145);
     accentGlow.color.set(a);
     rim.color.set(a); under.color.set(a);
-    floorMat.map?.dispose();
-    floorMat.map = canvas(1024, 1024, (g, w, h) => {
-      g.strokeStyle = a; g.lineWidth = 1.5; g.globalAlpha = .5;
-      for (let i = 0; i <= 40; i++) { const q = i * w / 40; g.beginPath(); g.moveTo(q, 0); g.lineTo(q, h); g.moveTo(0, q); g.lineTo(w, q); g.stroke(); }
-      g.globalAlpha = 1; g.globalCompositeOperation = "destination-in";
-      const f = g.createRadialGradient(w / 2, h / 2, w * .02, w / 2, h / 2, w * .3);
-      f.addColorStop(0, "rgba(0,0,0,1)"); f.addColorStop(1, "rgba(0,0,0,0)");
-      g.fillStyle = f; g.fillRect(0, 0, w, h);
-    });
-    floorMat.needsUpdate = true;
     outlines.forEach(l => l.material.color.set(a));
     ghostMat.color.set(a); ghostEdge.color.set(a); railMat.color.set(a);
     shadow.material.opacity = light ? .45 : .9;
@@ -497,8 +482,11 @@ function main() {
     if (/^g\d$/.test(k)) { const g = ghosts[+k[1] - 1]; return g.userData.hinge.localToWorld(new THREE.Vector3(0, GAP + LT, LH)); }
     // the snapshots' label: the nearest copy's front right; update-guard's: the laptop's own lid, top left
     // beside the row of copies, not on it: the laptop's front right, the oldest copy's front left
-    if (k === "snap") return laptop.localToWorld(new THREE.Vector3(W / 2, 0, D / 2));
-    if (k === "guard") return ghosts[2].localToWorld(new THREE.Vector3(-W / 2, 0, D / 2));
+    if (k === "snap") return ghosts[0].userData.hinge.localToWorld(new THREE.Vector3(W / 2, GAP + LT, LH));
+    if (k === "guard") return ghosts[0].localToWorld(new THREE.Vector3(-W / 2, 0, D / 2));
+    if (k === "deck") return keyLayer.localToWorld(keyLayer.userData.superAt.clone());
+    // the linux chip drawn on the board
+    if (k === "board") return parts.board.localToWorld(new THREE.Vector3(-.3 * W * .96 * .97, .002, -.233 * D * .96 * .96));
     const g = parts[k];
     return g.localToWorld(new THREE.Vector3(-W * g.userData.inset * .47, .002, D * g.userData.inset * .45));
   };
@@ -617,8 +605,6 @@ function main() {
     parts.board.position.y = parts.board.userData.y - .5 * eB;
     parts.case.position.y = parts.case.userData.y - 2.5 * eB;
     shadow.position.y = parts.case.position.y - .05;
-    floor.position.y = parts.case.position.y - .09;
-    floorMat.opacity = .16 * (1 - z);
     // the parts rise from where they sit; the speakers out to the sides; the fans turn
     for (const m of [deckMat, padMat]) {
       m.transparent = eB > .001;
@@ -719,7 +705,7 @@ function main() {
         const over = end - (vh - 16);
         if (over > 0) col.forEach(s => s.ly -= over);
         const xs = col.map(s => s.x);
-        const lx = side === "r" ? Math.min(vw - 266, Math.max(...xs) + 56) : Math.max(16, Math.min(...xs) - 56 - 250);
+        const lx = side === "r" ? Math.min(vw - 266, Math.max(...xs) + 56) : Math.max(16, Math.min(...xs) - 56 - 250 - (active === "b" ? 90 : 0));
         col.forEach(s => s.lx = lx);
       }
     }
