@@ -90,7 +90,7 @@ main > section { padding: clamp(56px, 8vw, 112px) var(--gutter); }
 .film { width: 100%; aspect-ratio: 16 / 9; border-radius: var(--r-window); border: 2px solid var(--accent); background: #000; }
 
 /* ---- take it apart: its own rules, unchanged ---- */
-.xp { position: relative; height: 520vh; padding: 0; }
+.xp { position: relative; height: 680vh; padding: 0; }
 .xp-pin { position: sticky; top: var(--bar); height: calc(100svh - var(--bar)); overflow: hidden; }
 .xp-head { position: absolute; left: 0; right: 0; top: 0; padding-top: 40px; display: grid; gap: 10px; z-index: 2; }
 .xp-head .lead { font-size: 16px; }
@@ -300,9 +300,20 @@ main img.arriving { opacity: 0; filter: blur(10px); transform: scale(1.012); }
 .stage:not([hidden]), .pages > :not([hidden]) { animation: pane .32s cubic-bezier(.2, 0, 0, 1); }
 .screen { position: relative; aspect-ratio: 1216 / 760; overflow: hidden; border-radius: var(--r-window); border: 1px solid var(--rim); background: var(--crust); }
 .screen img { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; border-radius: 0; }
-.screen .shot { clip-path: inset(0 41% 100% 41% round 0 0 24px 24px); transition: clip-path .2s cubic-bezier(.4, 0, 1, 1); }
-.screen .shot.on { z-index: 1; clip-path: inset(0 0 0 0 round 0 0 0 0); transition: clip-path .52s cubic-bezier(.16, 1, .3, 1) .16s; }
+/* a panel goes back up into the island, and the next comes down out of it with the shell's own spring */
+.screen .shot { opacity: 0; transform-origin: 50% 0; transform: translateY(-5%) scale(.42, .08); transition: transform .24s cubic-bezier(.4, 0, 1, 1), opacity .12s linear .12s; }
+.screen .shot.on { z-index: 1; opacity: 1; transform: none; transition: transform .68s linear(0, .143, .425, .679, .866, .97, 1.012, 1.029, 1.027, 1.019, 1.011, 1.005, 1) .2s, opacity .1s linear .2s; }
 @keyframes pane { from { opacity: 0; transform: translateY(6px); } }
+.xp-pin { background: radial-gradient(ellipse 62% 56% at 50% 58%, color-mix(in oklab, var(--accent) 13%, var(--base)), var(--crust) 78%); }
+.xp-lines path { stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset .55s cubic-bezier(.2, 0, 0, 1) calc(var(--i, 0) * 50ms); }
+.xp-lines g.on path { stroke-dashoffset: 0; }
+.xp-labels li:not(.pill) { padding: 10px 12px; border-radius: 12px; border: 1px solid var(--rim); background: color-mix(in oklab, var(--crust) 86%, transparent); backdrop-filter: blur(6px); }
+.xp-steps { position: absolute; left: var(--gutter); bottom: 24px; z-index: 3; display: flex; gap: 14px; font-size: 12px; color: var(--quiet); pointer-events: none; }
+.xp-steps li { display: flex; align-items: center; gap: 6px; transition: color .2s; }
+.xp-steps li::before { content: ""; width: 18px; height: 6px; border-radius: 2px; background: var(--track); transition: background-color .2s, height .14s; }
+.xp-steps li[data-on] { color: var(--text); font-weight: 600; }
+.xp-steps li[data-on]::before { background: var(--accent); height: 10px; }
+.xp.narrow .xp-steps, .xp.still .xp-steps, .xp.nogl .xp-steps { display: none; }
 .foot { display: flex; flex-wrap: wrap; gap: 8px 20px; align-items: center; min-height: 44px; padding: 10px var(--gutter); background: var(--glass); border-top: 1px solid var(--accent); font-size: 12px; color: var(--muted); }
 .foot nav { display: flex; flex-wrap: wrap; gap: 4px 16px; margin-left: auto; }
 .foot a { color: var(--muted); text-decoration: none; }

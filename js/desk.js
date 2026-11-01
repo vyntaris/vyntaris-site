@@ -57,7 +57,7 @@
       const base = new Image();
       base.src = "/shots/island-desktop.webp"; base.alt = ""; base.width = 1216; base.height = 760;
       screen.append(base);
-      shots.forEach(img => { img.classList.add("shot"); img.dataset.of = img.closest("[data-page]").dataset.page; screen.append(img); });
+      shots.forEach(img => { img.classList.add("shot"); img.dataset.of = img.closest("[data-page]").dataset.page; img.src = img.dataset.cut; img.loading = "eager"; screen.append(img); });
       $(".panes", sw).prepend(screen);
     }
     const open = id => {

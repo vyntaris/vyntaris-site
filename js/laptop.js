@@ -40,6 +40,7 @@ function RoundedBoxGeometry(w, h, d, _segments, r) {
 function main() {
   const pin = sec.querySelector(".xp-pin"), host = sec.querySelector(".xp-scene"), lines = sec.querySelector(".xp-lines");
   const head = sec.querySelector(".xp-head");
+  const steps = [...sec.querySelectorAll(".xp-steps li")];
   const labels = [...sec.querySelectorAll(".xp-labels li")], caps = [...sec.querySelectorAll(".xp-cap div")];
   const still = matchMedia("(prefers-reduced-motion: reduce)");
   let renderer;
@@ -55,11 +56,14 @@ function main() {
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.05;
+  renderer.localClippingEnabled = true;
   host.appendChild(renderer.domElement);
 
   const clamp = v => Math.min(1, Math.max(0, v));
   const ease = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
   const out = t => 1 - Math.pow(1 - t, 3);
+  // past the end and back, a little, as the shell's own panels do
+  const back = t => 1 + 1.9 * Math.pow(t - 1, 3) + .9 * Math.pow(t - 1, 2);
   const lerp = (a, b, t) => a + (b - a) * t;
   const css = name => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
   // a colour as three.js reads it: the system's own (AccentColor), color-mix() and the like, as rgb(),
@@ -94,7 +98,12 @@ function main() {
   const camera = new THREE.PerspectiveCamera(30, 1, .1, 100);
   const key = new THREE.DirectionalLight(0xffffff, 1.4);
   key.position.set(3, 6, 5);
-  scene.add(key, new THREE.HemisphereLight(0xc8d0ff, 0x101018, .5));
+  // the accent behind it, so its edges read against the dark
+  const rim = new THREE.DirectionalLight(0xffffff, .9);
+  rim.position.set(-4, 3, -6);
+  const under = new THREE.PointLight(0xffffff, 1.2, 9);
+  under.position.set(0, -1.4, 1.2);
+  scene.add(key, rim, under, new THREE.HemisphereLight(0xc8d0ff, 0x101018, .5));
 
   // --- textures: sharp at any angle --------------------------------------------------------------------
   const maxAniso = renderer.capabilities.getMaxAnisotropy();
@@ -175,6 +184,8 @@ function main() {
   plate("case", .045, -.055, 1, caseTop);
   plate("board", .02, -.035, .96, boardTop);
   const deck = plate("deck", .035, 0, 1, null);
+  const keyLayer = new THREE.Group();
+  deck.add(keyLayer);
   // keys: five rows of fourteen, the bottom one ctrl, fn, SUPER, alt, space, alt, ctrl and the arrows
   {
     const span = W * .86, gap = .018, cols = 14, kw = (span - gap * (cols - 1)) / cols, kh = kw * .92;
@@ -191,11 +202,11 @@ function main() {
     const keys = new THREE.InstancedMesh(keyGeo, keyMat, all.length);
     const m = new THREE.Matrix4();
     all.forEach((k, i) => keys.setMatrixAt(i, m.compose(new THREE.Vector3(k.x, .01, k.z), new THREE.Quaternion(), new THREE.Vector3(k.w, 1, kh))));
-    deck.add(keys);
+    keyLayer.add(keys);
     const s = all.find(k => k.super);
     const sk = new THREE.Mesh(keyGeo, accentGlow);
     sk.position.set(s.x, .0105, s.z); sk.scale.set(s.w, 1, kh);
-    deck.add(sk);
+    keyLayer.add(sk);
     const pad = new THREE.Mesh(new RoundedBoxGeometry(W * .36, .004, D * .27, 2, .002), padMat);
     pad.position.set(0, .001, D / 2 - .12 - D * .135);
     deck.add(pad);
@@ -284,6 +295,8 @@ function main() {
 
   // the snapshots: the system as it was, copies coming out of it back in time
   const ghostMat = new THREE.MeshBasicMaterial({ transparent: true, opacity: 0, depthWrite: false, toneMapped: false });
+  const ghostShots = ["/shots/control.webp", "/shots/gallery-tiling.webp", "/shots/xp-wall.webp"];
+  const ghostScreens = [];
   const ghostEdge = new THREE.LineBasicMaterial({ transparent: true, opacity: 0, depthWrite: false });
   const ghosts = [1, 2, 3].map(i => {
     const g = new THREE.Group();
@@ -298,11 +311,28 @@ function main() {
     const gl = new THREE.Mesh(lidBox, ghostMat), ge = new THREE.LineSegments(new THREE.EdgesGeometry(lidBox), ghostEdge);
     gl.position.set(0, GAP + LT / 2, LH / 2); ge.position.copy(gl.position);
     hinge.add(gl, ge);
+    const pic = new THREE.Mesh(new THREE.PlaneGeometry(SW, SH), new THREE.MeshBasicMaterial({ map: image(ghostShots[i - 1]), transparent: true, opacity: 0, depthWrite: false, toneMapped: false }));
+    pic.rotation.x = Math.PI / 2;
+    pic.position.set(0, GAP - .002, LH / 2);
+    pic.userData.strength = [.92, .66, .42][i - 1];
+    ghostScreens.push(pic);
+    hinge.add(pic);
     g.add(slab, slabEdge, hinge);
     g.userData = { i, top: new THREE.Vector3(0, GAP + LT, LH), hinge };
     g.visible = false;
     laptop.add(g);
     return g;
+  });
+
+  const GX = -2.95, GY = .1, GZ = -2.35;
+  const railMat = new THREE.LineBasicMaterial({ transparent: true, opacity: 0, depthWrite: false, toneMapped: false });
+  const rail = new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0, -.04, 0), new THREE.Vector3(GX * 3, GY * 3 - .04, GZ * 3)]), railMat);
+  laptop.add(rail);
+  const beads = [0, 1, 2, 3].map(i => {
+    const b = new THREE.Mesh(new THREE.SphereGeometry(.05, 20, 14), accentGlow);
+    b.position.set(GX * i, GY * i - .04, GZ * i);
+    laptop.add(b);
+    return b;
   });
 
   // the lid, hinged at the back of the deck: its body and the logo on its back; the screen on its face
@@ -345,6 +375,7 @@ function main() {
     layers[k] = g;
   };
   const FULL = [0, 0, 1920, 1080];
+  const screenEdge = new THREE.Plane();
   const win = rounded(943 / 1021, .012);
   layer("wall", 1, shot("/shots/xp-wall.webp", FULL, null, 1));
   layer("win", 2, shot("/shots/xp-term.webp", [10, 49, 943, 1021], win, 2), shot("/shots/xp-store-window.webp", [967, 49, 943, 1021], win, 2));
@@ -356,6 +387,7 @@ function main() {
   const apps = ["doctor", "store", "settings"].map((n, i) => {
     const m = shot(`/shots/xp-${n}.webp`, FULL, null, 11 + i);
     m.material.opacity = 0; m.visible = false;
+    m.material.clippingPlanes = [screenEdge];
     screen.add(m);
     return m;
   });
@@ -370,6 +402,12 @@ function main() {
   }));
   shadow.rotation.x = -Math.PI / 2;
   laptop.add(shadow);
+  // the floor: a grid in the accent, fading out around it
+  const floorMat = new THREE.MeshBasicMaterial({ transparent: true, depthWrite: false, toneMapped: false, opacity: .16 });
+  const floor = new THREE.Mesh(new THREE.PlaneGeometry(26, 26), floorMat);
+  floor.rotation.x = -Math.PI / 2;
+  floor.renderOrder = -2;
+  laptop.add(floor);
 
   // --- the colours, from the page's palette (light or dark, the accent) --------------------------------------
   const logoPath = document.querySelector(".brand svg path")?.getAttribute("d") || "";
@@ -383,8 +421,19 @@ function main() {
     deckMat.color.copy(body.color);
     padMat.color.set(light ? 0xb3b7c4 : 0x2f3145);
     accentGlow.color.set(a);
+    rim.color.set(a); under.color.set(a);
+    floorMat.map?.dispose();
+    floorMat.map = canvas(1024, 1024, (g, w, h) => {
+      g.strokeStyle = a; g.lineWidth = 1.5; g.globalAlpha = .5;
+      for (let i = 0; i <= 40; i++) { const q = i * w / 40; g.beginPath(); g.moveTo(q, 0); g.lineTo(q, h); g.moveTo(0, q); g.lineTo(w, q); g.stroke(); }
+      g.globalAlpha = 1; g.globalCompositeOperation = "destination-in";
+      const f = g.createRadialGradient(w / 2, h / 2, w * .02, w / 2, h / 2, w * .3);
+      f.addColorStop(0, "rgba(0,0,0,1)"); f.addColorStop(1, "rgba(0,0,0,0)");
+      g.fillStyle = f; g.fillRect(0, 0, w, h);
+    });
+    floorMat.needsUpdate = true;
     outlines.forEach(l => l.material.color.set(a));
-    ghostMat.color.set(a); ghostEdge.color.set(a);
+    ghostMat.color.set(a); ghostEdge.color.set(a); railMat.color.set(a);
     shadow.material.opacity = light ? .45 : .9;
     logoMat.map?.dispose();
     logoMat.map = canvas(512, 512, (g, w) => {
@@ -447,8 +496,9 @@ function main() {
     if (comps[k]) return comps[k].localToWorld(comps[k].userData.at.clone());
     if (/^g\d$/.test(k)) { const g = ghosts[+k[1] - 1]; return g.userData.hinge.localToWorld(new THREE.Vector3(0, GAP + LT, LH)); }
     // the snapshots' label: the nearest copy's front right; update-guard's: the laptop's own lid, top left
-    if (k === "snap") return ghosts[0].localToWorld(new THREE.Vector3(W / 2, 0, D / 2));
-    if (k === "guard") return lid.localToWorld(new THREE.Vector3(-W / 2, GAP + LT, LH));
+    // beside the row of copies, not on it: the laptop's front right, the oldest copy's front left
+    if (k === "snap") return laptop.localToWorld(new THREE.Vector3(W / 2, 0, D / 2));
+    if (k === "guard") return ghosts[2].localToWorld(new THREE.Vector3(-W / 2, 0, D / 2));
     const g = parts[k];
     return g.localToWorld(new THREE.Vector3(-W * g.userData.inset * .47, .002, D * g.userData.inset * .45));
   };
@@ -456,18 +506,19 @@ function main() {
   const marks = labels.map((li, i) => {
     li.style.setProperty("--i", i);
     const g = document.createElementNS(ns, "g"), path = document.createElementNS(ns, "path"), dot = document.createElementNS(ns, "circle");
-    dot.setAttribute("r", "3"); g.append(path, dot); lines.appendChild(g);
+    dot.setAttribute("r", "3"); path.setAttribute("pathLength", "1"); g.style.setProperty("--i", i % 7);
+    g.append(path, dot); lines.appendChild(g);
     return { g, path, dot };
   });
 
   // --- what plays out in time: unlocking, each app opening ------------------------------------------------
   const tween = v => ({ v, from: v, to: v, start: 0 });
   const unlocked = tween(0), shown = apps.map(() => tween(0));
-  const DUR = { unlock: 700, app: 650 };
+  const DUR = { unlock: 700, app: 760 };
   const aim = (t, to, now) => { if (t.to !== to) { t.from = t.v; t.to = to; t.start = now; } };
   const step = (t, now, dur) => {
     const k = still.matches ? 1 : clamp((now - t.start) / dur);
-    t.v = lerp(t.from, t.to, out(k));
+    t.v = lerp(t.from, t.to, t.to > t.from ? back(k) : out(k));
     return k < 1;
   };
 
@@ -557,24 +608,27 @@ function main() {
     const below = Math.max(Math.min(labelRoom, vh * .45) * Math.max(eS, eB, eT), Math.min(capRoom, vh * .45) * z);
     lid.rotation.x = -THREE.MathUtils.degToRad(lerp(0, 104, o));
     // the layers apart along the screen's depth; the base's parts up and down
-    const spread = { wall: 0, win: .72, bar: 1.26, island: 1.8 };
+    const spread = { wall: 0, win: 1.15, bar: 2, island: 2.9 };
     for (const k in spread) layers[k].position.z = .0008 * layers[k].userData.order + spread[k] * eS;
-    parts.deck.position.set(0, parts.deck.userData.y + 1.75 * eB, .25 * eB);
+    parts.deck.position.set(0, parts.deck.userData.y + 2.05 * eB, .25 * eB);
+    keyLayer.position.y = .72 * eB;
     // the lid goes up with the deck it's hinged to: nothing passes through the screen
-    lid.position.set(0, 1.75 * eB, -D / 2 + .25 * eB);
-    parts.board.position.y = parts.board.userData.y - .3 * eB;
-    parts.case.position.y = parts.case.userData.y - 1.5 * eB;
+    lid.position.set(0, 2.8 * eB, -D / 2 - .3 * eB);
+    parts.board.position.y = parts.board.userData.y - .5 * eB;
+    parts.case.position.y = parts.case.userData.y - 2.5 * eB;
     shadow.position.y = parts.case.position.y - .05;
+    floor.position.y = parts.case.position.y - .09;
+    floorMat.opacity = .16 * (1 - z);
     // the parts rise from where they sit; the speakers out to the sides; the fans turn
-    for (const m of [deckMat, keyMat, padMat]) {
+    for (const m of [deckMat, padMat]) {
       m.transparent = eB > .001;
       m.opacity = 1 - .68 * eB;
       m.depthWrite = eB < .5;
     }
-    const rise = { ssd: .8, wifi: .72, fans: .98, fanL: .98, speakers: .6, spkL: .6, battery: .6 };
+    const rise = { ssd: 1.05, wifi: .95, fans: 1.3, fanL: 1.3, speakers: .95, spkL: .95, battery: 1 };
     for (const k in rise) {
       const g = comps[k], b = g.userData.base;
-      g.position.set(b.x * (1 + .3 * eB) + (k === "speakers" ? .9 : k === "spkL" ? -.9 : 0) * eB, rise[k] * eB - .15 * eB, b.z * (1 + .3 * eB));
+      g.position.set(b.x * (1 + .45 * eB) + (k === "speakers" ? 1.15 : k === "spkL" ? -1.15 : 0) * eB, rise[k] * eB, b.z * (1 + .45 * eB));
     }
     blades.forEach((b, i) => { b.rotation.z += dt * (i ? 5 : -5) * eB; });
     for (const k in layers) layers[k].children.find(c => c.isLineLoop).material.opacity = eS * .75;
@@ -583,9 +637,15 @@ function main() {
     ghosts.forEach(g => {
       const i = g.userData.i;
       g.visible = eT > .01;
-      g.position.set(-1.95 * i * eT, .08 * i * eT, -1.75 * i * eT);
+      g.position.set(GX * i * eT, GY * i * eT, GZ * i * eT);
+      g.rotation.y = .09 * i * eT;
     });
-    ghostMat.opacity = .14 * eT; ghostEdge.opacity = .6 * eT;
+    ghostMat.opacity = .2 * eT; ghostEdge.opacity = .85 * eT;
+    ghostScreens.forEach(m => { m.material.opacity = m.userData.strength * eT; });
+    railMat.opacity = .8 * eT;
+    rail.visible = eT > .01;
+    rail.scale.setScalar(Math.max(.001, eT));
+    beads.forEach((b, i) => { b.visible = eT > .01; b.position.set(GX * i * eT, (GY * i - .04) * eT, GZ * i * eT); });
     // unlocking: the lock screen fades as the desktop's layers settle in from a little smaller
     lock.material.opacity = 1 - unlocked.v;
     lock.visible = unlocked.v < 1;
@@ -593,22 +653,29 @@ function main() {
     for (const k of ["win", "bar", "island"]) layers[k].scale.setScalar(lerp(.94, 1, unlocked.v));
     // each app opening over the one before: in from a little smaller and lower
     apps.forEach((m, i) => {
-      const v = shown[i].v, covered = i < app && shown[i + 1].v >= 1;
-      m.visible = v > 0 && !covered;
-      m.material.opacity = v;
-      m.scale.setScalar(.9 + .1 * v);
-      m.position.y = -.08 * (1 - v);
+      const v = shown[i].v, next = shown[i + 1]?.v ?? 0, covered = i < app && next >= 1;
+      m.visible = v > 0.001 && !covered;
+      m.material.opacity = Math.min(1, v * 1.6);
+      // it rises from the bottom of the screen; the one under it sinks back and dims
+      m.scale.setScalar((.95 + .05 * v) * (1 - .05 * next));
+      m.position.y = -SH * .62 * (1 - v);
       m.position.z = .016 + .002 * i;
+      m.material.color.setScalar(1 - .5 * next);
     });
     caps.forEach((c, i) => c.classList.toggle("on", i === app));
 
     // the camera: from above, turning to the side as it comes apart, then in front, close
-    const el = lerp(lerp(44, 16, o) + 10 * eS + 14 * eB + 4 * eT, 4, z), az = (lerp(-8, 0, o) + 42 * eS + 24 * eB + 30 * eT) * (1 - z);
+    const drift = shown.reduce((sum, t) => sum + t.v, 0) - (apps.length + 1) / 2;
+    const el = lerp(lerp(44, 16, o) + 12 * eS + 14 * eB + 8 * eT, 4 + 1.5 * drift, z), az = (lerp(-8, 0, o) + 50 * eS + 26 * eB + 34 * eT) * (1 - z) + 5 * drift * z;
     laptop.updateMatrixWorld(true);
     const screenAt = screen.getWorldPosition(tmp.set(0, 0, 0)).clone();
-    tgt.set((narrow ? -.12 : -.42) * eS - .1 * eB - 2.8 * eT, lerp(0, LH * .4, o) - .22 * eS + .55 * eB + .1 * eT, lerp(.2, 0, o) + .55 * eS + .1 * eB - 2.3 * eT);
+    {
+      const low = screen.localToWorld(new THREE.Vector3(0, -SH / 2, 0)), high = screen.localToWorld(new THREE.Vector3(0, SH / 2, 0));
+      screenEdge.setFromNormalAndCoplanarPoint(high.sub(low).normalize(), low);
+    }
+    tgt.set((narrow ? -.12 : -.42) * eS - .1 * eB - 3.9 * eT, lerp(0, LH * .4, o) - .22 * eS + .55 * eB - .3 * eT, lerp(.2, 0, o) + .9 * eS + .1 * eB - 3.2 * eT);
     tgt.lerp(screenAt.add(new THREE.Vector3(0, -.12, 0)), z);
-    const far = fit(W * (1 + .95 * eS + .75 * eB + 1.75 * eT), lerp(D * .9, LH * 1.35, o) + 1.1 * eS + 3.5 * eB + .6 * eT, narrow ? .8 : .47, (narrow ? .74 : .82) * (vh - room - below) / vh);
+    const far = fit(W * (1 + 1.4 * eS + .9 * eB + 2.7 * eT), lerp(D * .9, LH * 1.35, o) + 1.5 * eS + 5.4 * eB + 4.4 * eT, narrow ? .8 : .47, (narrow ? .74 : .82) * (vh - room - below) / vh);
     const near = fit(W * 1.12, LH * 1.4, narrow ? .9 : .5, .86 * (vh - Math.min(capRoom, vh * .45)) / vh);
     const dist = lerp(far, near, z);
     const elr = THREE.MathUtils.degToRad(el), azr = THREE.MathUtils.degToRad(az);
@@ -620,6 +687,8 @@ function main() {
     // drawn: the laptop takes the picture's place (and the fallback's, had it come first)
     if (!window.__xpReady) { window.__xpReady = true; sec.classList.remove("nogl"); sec.classList.add("live"); }
     place(p, { s: eS, b: eB, t: eT });
+    const at = p < .32 ? 0 : p < .54 ? 1 : p < .75 ? 2 : 3;
+    steps.forEach((li, i) => li.toggleAttribute("data-on", i === at));
   }
 
   // the labels of the part taken apart: beside what they speak of (wide), or one at a time at the bottom
