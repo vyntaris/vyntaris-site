@@ -40,7 +40,7 @@
     img.addEventListener("load", done, { once: true });
     img.addEventListener("error", done, { once: true });
   };
-  $$("main img").forEach(soften);
+  $$("main img").filter(img => !img.closest(".stage")).forEach(soften);
 
   // side menus: one page at a time, the next picture already here when it's asked for
   $$(".switcher").forEach(sw => {
@@ -53,17 +53,25 @@
     const shots = $$(".stage img", sw);
     if (shots.length) {
       screen = document.createElement("div");
-      screen.className = "screen";
+      screen.className = "screen waiting";
       const base = new Image();
       base.src = "/shots/island-desktop.webp"; base.alt = ""; base.width = 1216; base.height = 760;
       screen.append(base);
       shots.forEach(img => { img.classList.add("shot"); img.dataset.of = img.closest("[data-page]").dataset.page; img.src = img.dataset.cut; img.loading = "eager"; screen.append(img); });
       $(".panes", sw).prepend(screen);
     }
+    let wanted = null, entered = !screen;
+    // a panel only ever moves once its picture is ready to draw
+    const show = id => {
+      const img = shots.find(i => i.dataset.of === id);
+      const go = () => { if (wanted === id && entered) shots.forEach(i => i.classList.toggle("on", i === img)); };
+      if (img) img.decode().then(go, go); else go();
+    };
     const open = id => {
+      wanted = id;
       buttons.forEach(b => b.setAttribute("aria-selected", String(b.dataset.for === id)));
       pages.forEach(p => { p.hidden = p.dataset.page !== id; });
-      if (screen) shots.forEach(img => img.classList.toggle("on", img.dataset.of === id));
+      if (screen) show(id);
     };
     nav.addEventListener("click", e => { const b = e.target.closest("button"); if (b) open(b.dataset.for); });
     nav.addEventListener("keydown", e => {
@@ -74,11 +82,17 @@
       b.focus(); open(b.dataset.for);
     });
     open(buttons[0].dataset.for);
-    new IntersectionObserver((es, o) => {
-      if (!es.some(e => e.isIntersecting)) return;
-      o.disconnect();
-      shots.forEach(img => { img.loading = "eager"; });
-    }, { rootMargin: "600px 0px" }).observe(sw);
+    if (screen) {
+      // first the wallpaper; the panel comes out of the island once you're looking at it
+      const base = screen.firstElementChild;
+      const wallpaper = base.decode().catch(() => {});
+      wallpaper.then(() => screen.classList.remove("waiting"));
+      new IntersectionObserver((es, o) => {
+        if (!es.some(e => e.isIntersecting)) return;
+        o.disconnect();
+        wallpaper.then(() => { entered = true; show(wanted); });
+      }, { threshold: .45 }).observe(screen);
+    }
   });
 
   // the copy buttons
