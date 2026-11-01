@@ -299,9 +299,10 @@ main > section { padding: clamp(56px, 8vw, 112px) var(--gutter); }
 .doc .cmd { margin: 10px 0; border-radius: var(--r-window); border: 1px solid var(--surface); background: var(--mantle); padding: 10px 14px; }
 .doc .cmd code, .doc pre { background: none; border: 0; }
 /* as on the desktop's wiki (config/quickshell/assets/wiki.css) */
-.box { margin: 12px 0; padding: 10px 16px; border: 1px solid var(--surface); border-left: 4px solid var(--accent); border-radius: 12px; background: var(--mantle); }
-.box.warn { border-left-color: var(--red); }
-.box b { display: block; padding-bottom: 6px; margin-bottom: 8px; border-bottom: 1px solid var(--subtext); font-weight: 700; font-size: 15px; }
+.box { margin: 12px 0; padding: 12px 16px; border: 1px solid color-mix(in srgb, var(--accent) 45%, var(--surface)); border-radius: 12px; background: color-mix(in srgb, var(--accent) 10%, var(--mantle)); }
+.box.warn { border-color: color-mix(in srgb, var(--red) 45%, var(--surface)); background: color-mix(in srgb, var(--red) 10%, var(--mantle)); }
+.box b { display: block; margin-bottom: 4px; font-weight: 700; font-size: 15px; color: var(--ink); }
+.box.warn b { color: var(--red); }
 .box p { margin: 0; }
 .related { float: right; width: 210px; margin: 0 0 12px 24px; }
 .related b { display: block; padding-bottom: 4px; margin-bottom: 6px; border-bottom: 3px solid var(--surface); text-align: center; color: var(--muted); font-size: 14px; }
@@ -322,6 +323,11 @@ main > section { padding: clamp(56px, 8vw, 112px) var(--gutter); }
 @media (min-width: 700px) and (max-width: 1100px), (min-width: 700px) and (max-aspect-ratio: 3 / 2) {
   .pitch { max-width: 300px; }
   .pitch h1 { font-size: 44px; }
+}
+@media (max-width: 640px) {
+  .get-big .do { flex-direction: column; }
+  .get-big .do .btn { width: 100%; }
+  .pitch .do .btn { flex: 1 1 0; padding-inline: 10px; }
 }
 .wiki.solo { max-width: 860px; }
 main img { transition: opacity .45s cubic-bezier(.2, 0, 0, 1), filter .45s cubic-bezier(.2, 0, 0, 1), transform .45s cubic-bezier(.2, 0, 0, 1); }
