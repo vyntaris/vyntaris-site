@@ -257,7 +257,6 @@ main > section { padding: clamp(56px, 8vw, 112px) var(--gutter); }
 
 .get-short { display: flex; flex-wrap: wrap; gap: 24px 48px; align-items: flex-end; justify-content: space-between; }
 .get-short .do { display: flex; flex-wrap: wrap; gap: 8px; }
-.btn.big { height: 44px; padding-inline: 22px; border-radius: 22px; font-size: 14px; }
 
 /* ---- the wiki: a side menu of the system's measure, and text you can read ---- */
 .wiki { display: flex; gap: 48px; max-width: 1120px; margin-inline: auto; padding: calc(var(--bar) + 48px) var(--gutter) 96px; align-items: flex-start; }
@@ -316,18 +315,12 @@ main img.arriving { opacity: 0; filter: blur(10px); transform: scale(1.012); }
 .xp-steps li[data-on] { color: var(--text); font-weight: 600; }
 .xp-steps li[data-on]::before { background: var(--accent); height: 10px; }
 .xp.narrow .xp-steps, .xp.still .xp-steps, .xp.nogl .xp-steps { display: none; }
-#download { position: relative; overflow: hidden; display: grid; align-items: center; min-height: 100svh; padding-block: calc(var(--bar) + 48px) 64px; background: radial-gradient(ellipse 70% 80% at 74% 46%, color-mix(in oklab, var(--accent) 22%, var(--crust)), var(--crust) 72%); }
-.get-big { position: relative; width: 100%; max-width: none; margin: 0; }
-.get-big h2 { margin-top: 12px; font-size: clamp(64px, 8.2vw, 170px); line-height: .94; letter-spacing: -.045em; font-weight: 800; }
-.get-note { margin-top: 24px; font-size: clamp(19px, 1.7vw, 28px); color: var(--subtext); }
-.get-big .do { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 36px; }
-.btn.huge { height: 64px; padding-inline: 34px; border-radius: 32px; font-size: 18px; }
-.btn.huge .ic { width: 22px; height: 22px; }
-.needs { display: flex; flex-wrap: wrap; max-width: 58vw; gap: 24px clamp(28px, 3.4vw, 64px); margin-top: clamp(48px, 7vh, 88px); }
-.needs dd { font: 300 clamp(30px, 3vw, 52px)/1 var(--mono); letter-spacing: -.03em; color: var(--text); }
-.needs dt { margin-top: 8px; font-size: 14px; color: var(--muted); }
-.get-logo { position: absolute; right: 2vw; top: 50%; width: 36vw; height: auto; transform: translateY(-50%); opacity: .9; filter: drop-shadow(0 0 80px color-mix(in oklab, var(--accent) 40%, transparent)); pointer-events: none; }
-@media (max-width: 1100px) { .needs { max-width: none; } .get-logo { top: auto; bottom: -8vw; right: -18vw; transform: none; width: 90vw; opacity: .16; } }
+.get-panel { flex-direction: row; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 28px 48px; margin-top: 32px; padding: 28px 32px; }
+.get-panel .do { display: flex; flex-wrap: wrap; gap: 8px; }
+.btn.big { height: 48px; padding-inline: 24px; border-radius: 24px; font-size: 15px; }
+.needs { display: flex; flex-wrap: wrap; gap: 20px 40px; }
+.needs dd { font: 300 26px/1.1 var(--mono); color: var(--text); }
+.needs dt { margin-top: 4px; font-size: 12px; color: var(--muted); }
 .foot { display: flex; flex-wrap: wrap; gap: 8px 20px; align-items: center; min-height: 44px; padding: 10px var(--gutter); background: var(--glass); border-top: 1px solid var(--accent); font-size: 12px; color: var(--muted); }
 .foot nav { display: flex; flex-wrap: wrap; gap: 4px 16px; margin-left: auto; }
 .foot a { color: var(--muted); text-decoration: none; }
