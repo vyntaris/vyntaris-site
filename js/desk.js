@@ -118,15 +118,67 @@
   }), { rootMargin: "-45% 0px -50% 0px" });
   links.forEach(a => { const s = $(a.hash); if (s) seen.observe(s); });
 
-  // the wiki's side menu follows where you are
-  const sideLinks = $$(".side a");
-  if (sideLinks.length) {
-    sideLinks[0].setAttribute("aria-current", "");
+  // the wiki: Contents follow where you are, closed on a phone; the search looks through every section
+  const tocLinks = $$(".toc a");
+  if (tocLinks.length) {
+    const toc = $(".toc");
+    if (matchMedia("(max-width: 860px)").matches) toc.open = false;
+    tocLinks[0].setAttribute("aria-current", "");
     const here = new IntersectionObserver(es => es.forEach(e => {
       if (!e.isIntersecting) return;
-      sideLinks.forEach(a => a.toggleAttribute("aria-current", a.hash === "#" + e.target.id));
+      tocLinks.forEach(a => {
+        const on = a.hash === "#" + e.target.id;
+        a.toggleAttribute("aria-current", on);
+        if (on) { const side = $(".side"), r = a.getBoundingClientRect(), b = side.getBoundingClientRect(); if (r.top < b.top + 60 || r.bottom > b.bottom - 20) side.scrollTop += r.top - b.top - b.height / 2; }
+      });
     }), { rootMargin: "-20% 0px -75% 0px" });
-    sideLinks.forEach(a => { const s = $(a.hash); if (s) here.observe(s); });
+    tocLinks.forEach(a => { const s = $(a.hash); if (s) here.observe(s); });
+
+    const sections = $$(".doc h2, .doc h3").map(h => {
+      const parts = [];
+      for (let n = h.nextElementSibling; n && !/^H[23]$/.test(n.tagName); n = n.nextElementSibling) parts.push(n.textContent);
+      return { id: h.id, title: h.textContent.replace(/^[\d.]+/, "").trim(), text: parts.join(" ").replace(/\s+/g, " ") };
+    });
+    const faq = $$(".doc details").map((d, i) => { d.id ||= "q" + (i + 1); return { id: d.id, title: $("summary", d).textContent, text: d.textContent.replace(/\s+/g, " "), details: d }; });
+    const pool = [...faq, ...sections];
+    const input = $("#wiki-search"), hits = $("#wiki-hits"), count = $("#wiki-count");
+    let shown = [], picked = 0;
+    const esc = s => s.replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+    const mark = (s, words) => words.reduce((out, w) => out.replace(new RegExp(w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "ig"), m => `<mark>${m}</mark>`), esc(s));
+    const go = hit => {
+      if (hit.details) hit.details.open = true;
+      input.value = ""; list();
+      if (matchMedia("(max-width: 860px)").matches) toc.open = false;
+      location.hash = hit.id;
+    };
+    function list() {
+      const words = input.value.trim().toLowerCase().split(/\s+/).filter(Boolean);
+      const asking = words.length > 0;
+      hits.hidden = !asking; toc.hidden = asking; count.hidden = !asking;
+      if (!asking) return;
+      shown = pool.filter(p => words.every(w => (p.title + " " + p.text).toLowerCase().includes(w)))
+        .map(p => ({ ...p, score: words.filter(w => p.title.toLowerCase().includes(w)).length })).sort((a, b) => b.score - a.score).slice(0, 8);
+      picked = Math.min(picked, Math.max(0, shown.length - 1));
+      count.textContent = shown.length;
+      if (!shown.length) { hits.innerHTML = "<p>No pages found</p>"; return; }
+      hits.replaceChildren(...shown.map((p, i) => {
+        const a = document.createElement("a");
+        a.href = "#" + p.id;
+        a.toggleAttribute("data-on", i === picked);
+        const at = Math.max(0, p.text.toLowerCase().indexOf(words[0]) - 24);
+        a.innerHTML = mark(p.title, words) + `<small>${mark(p.text.slice(at, at + 90), words)}</small>`;
+        a.addEventListener("click", e => { e.preventDefault(); go(p); });
+        return a;
+      }));
+    }
+    input.addEventListener("input", () => { picked = 0; list(); });
+    input.addEventListener("keydown", e => {
+      if (e.key === "ArrowDown" || e.key === "ArrowUp") { e.preventDefault(); if (shown.length) { picked = (picked + (e.key === "ArrowDown" ? 1 : -1) + shown.length) % shown.length; list(); } }
+      else if (e.key === "Enter") { e.preventDefault(); if (shown[picked]) go(shown[picked]); }
+      else if (e.key === "Escape") { input.value = ""; list(); }
+    });
+    const openHash = () => { const t = location.hash && $(location.hash); if (t && t.tagName === "DETAILS") t.open = true; };
+    addEventListener("hashchange", openHash); openHash();
   }
 
   // the laptop: three.js and its scene loaded only as it comes near; without WebGL, its picture and labels

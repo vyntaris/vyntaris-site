@@ -34,24 +34,37 @@
 
 
 <div class="wiki">
-  <nav class="side" aria-label="In the wiki"><a href="#install">Install</a><a href="#check">Checking the download</a><a href="#first">The first minutes</a><a href="#faq">Questions</a><a href="#trouble">When something's wrong</a><a href="#features">What it does for you</a><a href="#apps">The apps</a><a href="#hood">Under the hood</a><a href="#numbers">The numbers</a></nav>
+  <aside class="side">
+    <div class="search"><i><svg class="ic" viewBox="0 -960 960 960" aria-hidden="true"><path d="M378-329q-108.16 0-183.08-75Q120-479 120-585t75-181q75-75 181.5-75t181 75Q632-691 632-584.85 632-542 618-502q-14 40-42 75l242 240q9 8.56 9 21.78T818-143q-9 9-22.22 9-13.22 0-21.78-9L533-384q-30 26-69.96 40.5Q423.08-329 378-329Zm-1-60q81.25 0 138.13-57.5Q572-504 572-585t-56.87-138.5Q458.25-781 377-781q-82.08 0-139.54 57.5Q180-666 180-585t57.46 138.5Q294.92-389 377-389Z"/></svg></i><input id="wiki-search" type="search" aria-label="Search the wiki" placeholder="Search the wiki…" autocomplete="off"><b id="wiki-count" hidden></b></div>
+    <div id="wiki-hits" hidden></div>
+    <details class="toc" open><summary>Contents</summary><nav aria-label="Contents"><a class="l2" href="#install"><span>1</span>Installing, step by step</a><a class="l3" href="#1-save-your-files"><span>1.1</span>Save your files</a><a class="l3" href="#2-download-the-iso"><span>1.2</span>Download the ISO</a><a class="l3" href="#3-put-it-on-a-usb-stick"><span>1.3</span>Put it on a USB stick</a><a class="l3" href="#4-if-windows-stays-make-room-for-vyntaris"><span>1.4</span>If Windows stays: make room for Vyntaris</a><a class="l3" href="#5-turn-secure-boot-off"><span>1.5</span>Turn Secure Boot off</a><a class="l3" href="#6-start-from-the-stick"><span>1.6</span>Start from the stick</a><a class="l3" href="#7-answer-the-installer"><span>1.7</span>Answer the installer</a><a class="l3" href="#8-the-first-start"><span>1.8</span>The first start</a><a class="l2" href="#check"><span>2</span>Checking the download</a><a class="l2" href="#first"><span>3</span>The first minutes</a><a class="l2" href="#faq"><span>4</span>Questions</a><a class="l2" href="#trouble"><span>5</span>When something doesn't work</a><a class="l3" href="#the-usb-stick-doesn-t-start"><span>5.1</span>The USB stick doesn't start</a><a class="l3" href="#the-installer-shows-a-black-screen"><span>5.2</span>The installer shows a black screen</a><a class="l3" href="#no-internet-in-the-installer"><span>5.3</span>No internet in the installer</a><a class="l3" href="#the-installation-failed"><span>5.4</span>The installation failed</a><a class="l3" href="#vyntaris-doesn-t-start-after-an-update"><span>5.5</span>Vyntaris doesn't start after an update</a><a class="l3" href="#vyntaris-doesn-t-start-at-all"><span>5.6</span>Vyntaris doesn't start at all</a><a class="l3" href="#the-desktop-froze-or-disappeared"><span>5.7</span>The desktop froze or disappeared</a><a class="l3" href="#a-monitor-on-the-hdmi-port-stays-dark"><span>5.8</span>A monitor on the HDMI port stays dark</a><a class="l3" href="#something-else"><span>5.9</span>Something else</a><a class="l2" href="#features"><span>6</span>What it does for you</a><a class="l3" href="#updates"><span>6.1</span>Updates</a><a class="l3" href="#drivers"><span>6.2</span>Drivers</a><a class="l3" href="#upkeep"><span>6.3</span>Upkeep</a><a class="l3" href="#what-s-going-on-right-now"><span>6.4</span>What's going on right now</a><a class="l3" href="#privacy"><span>6.5</span>Privacy</a><a class="l3" href="#backups"><span>6.6</span>Backups</a><a class="l3" href="#the-arch-wiki-offline"><span>6.7</span>The Arch Wiki, offline</a><a class="l3" href="#your-phone"><span>6.8</span>Your phone</a><a class="l3" href="#quick-look"><span>6.9</span>Quick Look</a><a class="l3" href="#security"><span>6.10</span>Security</a><a class="l3" href="#games"><span>6.11</span>Games</a><a class="l2" href="#apps"><span>7</span>The apps</a><a class="l3" href="#store"><span>7.1</span>Store</a><a class="l3" href="#dr-help"><span>7.2</span>Dr. Help</a><a class="l2" href="#hood"><span>8</span>Under the hood</a><a class="l2" href="#numbers"><span>9</span>The numbers</a><a class="l3" href="#on-a-real-laptop"><span>9.1</span>On a real laptop</a></nav></details>
+  </aside>
   <main class="doc" id="main">
-    <h1>Wiki</h1>
-    <h2 id="install">Installing, step by step</h2>
+    <h1>Vyntaris wiki</h1>
+    <aside class="related" aria-label="Related articles">
+      <b>Related articles</b>
+      <a href="https://wiki.archlinux.org/title/System_maintenance">System maintenance</a>
+      <a href="https://wiki.archlinux.org/title/Pacman">pacman</a>
+      <a href="https://wiki.archlinux.org/title/Hyprland">Hyprland</a>
+      <a href="https://wiki.archlinux.org/title/Btrfs">Btrfs</a>
+      <a href="/policy/">Privacy policy</a>
+      <a href="https://github.com/vyntaris/vyntaris/issues">Report a problem</a>
+    </aside>
+    <p>How to install Vyntaris, what to do first, and what to do when something goes wrong. Below the desktop, Vyntaris is plain Arch, so the <a href="https://wiki.archlinux.org/">Arch Wiki</a> applies too.</p>
+    <h2 id="install"><span class="n">1</span>Installing, step by step</h2>
 <p>You need a 64-bit PC that starts in UEFI mode, 30 GB on the disk, 4 GB of memory, the internet (cable or
 Wi-Fi) and a USB stick of 4 GB or more. Installing takes about 15 to 30 minutes, most of it downloading.</p>
 
-<h3>1. Save your files</h3>
-<p>If you install on a whole disk, everything on it is erased. Copy what matters to another disk or to the
-cloud first. Installing next to Windows leaves Windows and its files alone, but a copy is still wise.</p>
+<h3 id="1-save-your-files"><span class="n">1.1</span>Save your files</h3>
+<div class="box warn"><b>Warning</b><p>If you install on a whole disk, everything on it is erased. Copy what matters to another disk or to the cloud first. Installing next to Windows leaves Windows and its files alone, but a copy is still wise.</p></div>
 
-<h3>2. Download the ISO</h3>
+<h3 id="2-download-the-iso"><span class="n">1.2</span>Download the ISO</h3>
 <p>Download <a href="https://dl.vyntarisos.com/vyntaris-x86_64.iso">vyntaris-x86_64.iso</a> (about 1.6 GB). To
 check that it arrived whole and is really Vyntaris's, see <a href="#check">Checking the download</a>; it's
 optional, but a good habit.</p>
 
-<h3>3. Put it on a USB stick</h3>
-<p>Writing the ISO erases the stick.</p>
+<h3 id="3-put-it-on-a-usb-stick"><span class="n">1.3</span>Put it on a USB stick</h3>
+<div class="box warn"><b>Warning</b><p>Writing the ISO erases the stick.</p></div>
 <ul>
   <li><strong>From Windows:</strong> <a href="https://rufus.ie/">Rufus</a>. Pick the stick and the ISO, press
     Start, and when it asks, choose <strong>Write in DD Image mode</strong>.</li>
@@ -60,25 +73,25 @@ optional, but a good habit.</p>
   <li><strong>Ventoy:</strong> copy the ISO onto a Ventoy stick like any other file.</li>
 </ul>
 
-<h3>4. If Windows stays: make room for Vyntaris</h3>
+<h3 id="4-if-windows-stays-make-room-for-vyntaris"><span class="n">1.4</span>If Windows stays: make room for Vyntaris</h3>
 <p>In Windows, open <strong>Disk Management</strong>, right-click the largest partition, choose
 <strong>Shrink Volume</strong> and free at least 30 GB. Leave the space empty. If the disk uses BitLocker, write
 down its recovery key first (Settings → Privacy &amp; security → Device encryption, or your Microsoft account):
 Windows may ask for it once after the change.</p>
 
-<h3>5. Turn Secure Boot off</h3>
+<h3 id="5-turn-secure-boot-off"><span class="n">1.5</span>Turn Secure Boot off</h3>
 <p>The stick starts only with Secure Boot off. Restart into the PC's firmware setup (usually F2, Del or F10 as
 it starts; from Windows: Settings → System → Recovery → Advanced startup → UEFI Firmware Settings), find
 <strong>Secure Boot</strong>, set it to Disabled, save and exit. After installing, you can turn it back on; see
 <a href="#secure-boot">the question about it</a>.</p>
 
-<h3>6. Start from the stick</h3>
+<h3 id="6-start-from-the-stick"><span class="n">1.6</span>Start from the stick</h3>
 <p>With the stick plugged in, restart and open the boot menu: usually <strong>F12</strong> (Dell, Lenovo, Acer),
 <strong>F11</strong> (MSI), <strong>F8</strong> (ASUS) or <strong>Esc</strong> then <strong>F9</strong> (HP).
 Pick the USB stick (if it's listed twice, the one marked UEFI). Choose <strong>Vyntaris</strong> in the menu that
 appears.</p>
 
-<h3>7. Answer the installer</h3>
+<h3 id="7-answer-the-installer"><span class="n">1.7</span>Answer the installer</h3>
 <p>The installer opens by itself and asks, one page at a time:</p>
 <ul>
   <li><strong>Internet:</strong> plug in a cable, or pick a Wi-Fi network and type its password.</li>
@@ -100,13 +113,13 @@ appears.</p>
 <p>The computer can stay alone while it installs. When it says <strong>Vyntaris is installed</strong>, take out
 the stick and restart.</p>
 
-<h3>8. The first start</h3>
+<h3 id="8-the-first-start"><span class="n">1.8</span>The first start</h3>
 <p>Log in with the password you chose. A short welcome asks for light or dark, the accent colour and the
 wallpaper, and offers the extras (games, for one). Drivers for your hardware install by themselves in the
 first minutes; a notification says when, and whether a restart is needed.</p>
 
 
-<h2 id="check">Checking the download</h2>
+<h2 id="check"><span class="n">2</span>Checking the download</h2>
 <p>This is optional, but it's a good habit. Put <a href="https://dl.vyntarisos.com/SHA256SUMS">SHA256SUMS</a>, <a href="https://dl.vyntarisos.com/SHA256SUMS.sig">SHA256SUMS.sig</a> and <a href="/vyntaris.gpg">vyntaris.gpg</a> in the same folder as the ISO.</p>
 <p>This checks that the file arrived whole:</p>
 <div class="cmd term"><pre id="sum">sha256sum --ignore-missing -c SHA256SUMS</pre><button type="button" data-copy="sum" hidden>Copy</button></div>
@@ -114,7 +127,8 @@ first minutes; a notification says when, and whether a restart is needed.</p>
 <div class="cmd term"><pre id="sig">gpg --import vyntaris.gpg &amp;&amp; gpg --verify SHA256SUMS.sig SHA256SUMS</pre><button type="button" data-copy="sig" hidden>Copy</button></div>
 <p>The signing key's fingerprint is <code>567C CD91 2301 A261 B06D AFFF C090 5C46 984D 9F8B</code>.</p>
 
-<h2 id="first">The first minutes</h2>
+<h2 id="first"><span class="n">3</span>The first minutes</h2>
+<div class="box tip"><b>Tip</b><p>Forgot a shortcut? <strong>SUPER+F1</strong> lists all of them.</p></div>
 <ul>
   <li><strong>Tap SUPER</strong> (the Windows key) for the control center: Wi-Fi, Bluetooth, sound, brightness,
     the calendar and notifications. Start typing to search apps, files and settings.</li>
@@ -130,7 +144,7 @@ first minutes; a notification says when, and whether a restart is needed.</p>
     off</code>, <code>100 eur to usd</code>, <code>timer 5m</code>.</li>
 </ul>
 
-<h2 id="faq">Questions</h2>
+<h2 id="faq"><span class="n">4</span>Questions</h2>
 <div class="faq">
 <details>
   <summary>Is Vyntaris free?</summary>
@@ -195,9 +209,9 @@ first minutes; a notification says when, and whether a restart is needed.</p>
 </details>
 </div>
 
-<h2 id="trouble">When something doesn't work</h2>
+<h2 id="trouble"><span class="n">5</span>When something doesn't work</h2>
 
-<h3>The USB stick doesn't start</h3>
+<h3 id="the-usb-stick-doesn-t-start"><span class="n">5.1</span>The USB stick doesn't start</h3>
 <ul>
   <li>Check that Secure Boot is off (step 5).</li>
   <li>In the boot menu, pick the entry for the stick marked <strong>UEFI</strong>.</li>
@@ -205,42 +219,42 @@ first minutes; a notification says when, and whether a restart is needed.</p>
   <li>Try another USB port, preferably one straight on the computer rather than a hub.</li>
 </ul>
 
-<h3>The installer shows a black screen</h3>
+<h3 id="the-installer-shows-a-black-screen"><span class="n">5.2</span>The installer shows a black screen</h3>
 <p>Some graphics cards don't start the graphical installer. In the menu where you picked
 <strong>Vyntaris</strong>, press <strong>e</strong>, add <code>installer=text</code> at the end of the line, and
 press Enter. The same questions are then asked in text. The graphical installer also offers <strong>Use the text
 installer</strong> on its first page.</p>
 
-<h3>No internet in the installer</h3>
+<h3 id="no-internet-in-the-installer"><span class="n">5.3</span>No internet in the installer</h3>
 <p>A network cable is the surest way. If the Wi-Fi isn't listed, the chip may need a driver that installs only
 after Vyntaris is in place: use a cable, or share your phone's connection over USB (USB tethering).</p>
 
-<h3>The installation failed</h3>
+<h3 id="the-installation-failed"><span class="n">5.4</span>The installation failed</h3>
 <p>The installer shows why. If it mentions keys or signatures, the computer's clock is usually wrong: open the
 installer's terminal, run <code>fix-keyring</code>, and install again. If the download was cut off, check the
 internet and try again.</p>
 
-<h3>Vyntaris doesn't start after an update</h3>
+<h3 id="vyntaris-doesn-t-start-after-an-update"><span class="n">5.5</span>Vyntaris doesn't start after an update</h3>
 <p>Restart, up to three times. After the third failed start, Vyntaris goes back to how it was before the update
 by itself, and tells you so when you log in. You can also pick <strong>Undo the update</strong> in the start
 menu (hold <strong>Space</strong> while the computer starts to show it), or use Settings → Backups → Undo last
 update while it still runs.</p>
 
-<h3>Vyntaris doesn't start at all</h3>
+<h3 id="vyntaris-doesn-t-start-at-all"><span class="n">5.6</span>Vyntaris doesn't start at all</h3>
 <p>Start from the USB stick, and on the installer's first page choose <strong>Repair an installed
 Vyntaris</strong>. It can go back to any snapshot, make the boot images again, finish an interrupted update, or
 open a terminal inside the installed system. Your files stay as they are.</p>
 
-<h3>The desktop froze or disappeared</h3>
+<h3 id="the-desktop-froze-or-disappeared"><span class="n">5.7</span>The desktop froze or disappeared</h3>
 <p>The bar and the desktop restart by themselves within seconds. If it happens again and again, Vyntaris goes
 back to the login screen. One app that uses up the memory is closed before the whole desktop freezes.</p>
 
-<h3>A monitor on the HDMI port stays dark</h3>
+<h3 id="a-monitor-on-the-hdmi-port-stays-dark"><span class="n">5.8</span>A monitor on the HDMI port stays dark</h3>
 <p>On many laptops with two graphics cards, the HDMI port belongs to the NVIDIA card, whose driver Vyntaris starts
 only when it's needed. Turn on Settings → Drivers → <strong>Start its driver with the system</strong>, and
 restart.</p>
 
-<h3>Something else</h3>
+<h3 id="something-else"><span class="n">5.9</span>Something else</h3>
 <ol>
   <li>Open <strong>Dr. Help</strong> (tap SUPER, type <code>check my system</code>). It finds the most common
     problems and puts a fix next to each one.</li>
@@ -248,35 +262,37 @@ restart.</p>
     adds what the system says, takes out your names and addresses, and shows you everything before it goes.</li>
   <li>Or open an issue on <a href="https://github.com/vyntaris/vyntaris/issues/new/choose">GitHub</a> yourself.</li>
 </ol>
-<h2 id="features">What it does for you</h2>
-<h3 id="updates">Updates</h3>
+<h2 id="features"><span class="n">6</span>What it does for you</h2>
+<h3 id="updates"><span class="n">6.1</span>Updates</h3>
 <p>Before every upgrade, Timeshift saves a copy of the system. If the new system fails to start three times, the old one comes back on its own. Your files are never part of those copies, and the last three are kept along with the one from the install.</p>
-<h3>Drivers</h3>
+<h3 id="drivers"><span class="n">6.2</span>Drivers</h3>
 <p>Graphics, Wi-Fi, sound, printers and scanners install after each start, and when you plug in a printer. You only get firmware for the hardware you have.</p>
-<h3>Upkeep</h3>
+<h3 id="upkeep"><span class="n">6.3</span>Upkeep</h3>
 <p>The package cache gets trimmed every week, and so do SSDs. Btrfs is read through once a month to catch damage. Mirrors stay fast, and firmware comes from fwupd.</p>
-<h3>What's going on right now</h3>
+<h3 id="what-s-going-on-right-now"><span class="n">6.4</span>What's going on right now</h3>
 <p>Downloads, timers, a stopwatch, installs and backups show up in the island. Click an install and you'll see its terminal, progress bars and all.</p>
-<h3>Privacy</h3>
+<h3 id="privacy"><span class="n">6.5</span>Privacy</h3>
 <p>When an app uses your microphone, camera or screen, a dot lights up in the bar. Its panel tells you which app it is and has a button to close it. Vyntaris itself has no accounts, telemetry or analytics; the details are in the <a href="/policy/">privacy policy</a>.</p>
-<h3>Backups</h3>
-<p>Your folders go to your own Google Drive, once a day, at every start, or every hour. What you change or delete keeps its last copy there, and the app can only see what it put there itself.</p>
-<h3>Your phone</h3>
+<h3 id="backups"><span class="n">6.6</span>Backups</h3>
+<p>Your folders go to your own Google Drive: at every start, at shutdown, or only when you ask. What you change or delete keeps its last copy in an Older folder there, and the app can only see what it put there itself.</p>
+<h3 id="the-arch-wiki-offline"><span class="n">6.7</span>The Arch Wiki, offline</h3>
+<p>The whole Arch Wiki can live on your computer, in your colours, with its own search. Press <strong>SUPER+SHIFT+H</strong>, or tap SUPER and type <code>?</code> before what you're looking for. If it isn't installed yet, the panel offers it: about 240 MB, and then it works without internet.</p>
+<h3 id="your-phone"><span class="n">6.8</span>Your phone</h3>
 <p>Pair it through KDE Connect and you get its battery in the bar, its notifications on the desktop, a shared clipboard, files both ways, and the phone as a touchpad.</p>
-<h3>Quick Look</h3>
+<h3 id="quick-look"><span class="n">6.9</span>Quick Look</h3>
 <p>In the file manager, press Space to look at a picture, PDF, video, song or Office file without opening an app.</p>
-<h3>Security</h3>
+<h3 id="security"><span class="n">6.10</span>Security</h3>
 <p>There's an nftables firewall, only signed packages get installed, and Firefox comes with uBlock Origin, Bitwarden and Privacy Badger.</p>
-<h3>Games</h3>
+<h3 id="games"><span class="n">6.11</span>Games</h3>
 <p>Tap SUPER and type <code>set up games</code> for Steam with Proton, Lutris, GameMode and MangoHud.</p>
 
-<h2 id="apps">The apps</h2>
-<h3>Store</h3>
+<h2 id="apps"><span class="n">7</span>The apps</h2>
+<h3 id="store"><span class="n">7.1</span>Store</h3>
 <p>It lists every app in Arch's repositories, and you install or remove them with a click. The AUR is off until you turn it on, because anyone can upload a recipe there and Arch doesn't check them. Each one shows its votes and when it last changed, and the Store asks before building it.</p>
-<h3>Dr. Help</h3>
+<h3 id="dr-help"><span class="n">7.2</span>Dr. Help</h3>
 <p>It goes through the checks the Arch Wiki's System maintenance page recommends: failed services, errors in the log, leftover packages, mirrors, firmware, disk health. Anything it can fix gets a button, and fixing everything at once takes one password.</p>
 
-<h2 id="hood">Under the hood</h2>
+<h2 id="hood"><span class="n">8</span>Under the hood</h2>
 <p>Vyntaris is a package from its own signed pacman repository, on top of plain Arch. Update with <code>pacman -Syu</code> or one click in the island.</p>
 <div class="win"><div class="term fetch-body"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" fill-rule="evenodd" d="M12.79 11.4L13.97 10.96L14.92 10.55L15.79 10.12L16.57 9.68L16.88 9.05L16.82 8.75L16.79 8.45L16.78 8.15L16.81 7.85L16.85 7.55L16.92 7.26L17.02 6.97L17.14 6.7L17.28 6.44L17.45 6.19L17.66 5.93L17.86 5.71L18.09 5.51L18.33 5.34L18.59 5.18L18.86 5.04L20.16 2.43L16.16 2.43zM6.69 12.72L8.05 12.57L9.18 12.38L10.35 12.12L11.45 11.83L7.26 2.43L1.08 2.43zM22.55 8.18L22.5 7.74L22.36 7.32L22.14 6.93L21.85 6.6L21.5 6.32L21.1 6.12L20.67 6L20.22 5.97L19.78 6.02L19.36 6.16L18.97 6.38L18.64 6.67L18.36 7.03L18.16 7.42L18.04 7.85L18.01 8.3L18.06 8.74L18.2 9.16L18.42 9.55L18.71 9.88L19.07 10.16L19.46 10.36L19.89 10.48L20.34 10.51L20.78 10.46L21.2 10.32L21.59 10.1L21.92 9.81L22.2 9.45L22.4 9.06L22.52 8.63zM3.06 13.46L3.08 13.5L0.65 14.24L0.75 14.52L0.89 14.78L1.1 15.07L1.3 15.28L1.56 15.51L1.85 15.7L2.15 15.86L2.52 16.01L2.92 16.14L3.34 16.24L3.77 16.32L4.23 16.37L4.78 16.41L5.88 16.41L7.15 16.31L7.92 16.21L8.7 16.08L9.49 15.92L10.4 15.7L11.22 15.49L12.13 15.21L12.93 14.95L13.82 14.62L14.69 14.27L15.44 13.94L16.25 13.55L16.93 13.19L17.66 12.77L18.25 12.39L18.81 12L19.32 11.6L18.83 11.42L18.37 11.17L17.96 10.85L17.59 10.48L16.86 10.93L15.99 11.39L15.03 11.84L13.99 12.27L12.9 12.66L11.87 12.98L10.83 13.27L9.7 13.53L8.59 13.73L7.52 13.88L6.52 13.96L5.6 13.98L4.79 13.94L4.06 13.84L3.48 13.69L3.23 13.58zM13.4 16.08L11.97 16.54L11.02 16.81L10.07 17.05L9.15 17.24L11.07 20.77z"/></svg>
   <dl>
@@ -290,7 +306,7 @@ restart.</p>
   </dl>
 </div></div>
 
-<h2 id="numbers">The numbers</h2>
+<h2 id="numbers"><span class="n">9</span>The numbers</h2>
 <p>GNOME, KDE Plasma and Vyntaris ran in three identical virtual machines on the same Arch Linux base. We timed each from the screen, at the moment it stopped changing, and took the median of three starts. This was in October 2026.</p>
 <p>Vyntaris has the best result in 8 of 20. Lower is better, except free memory, and the best of each row is in bold. Where an app has two times, the first is its first opening after the start.</p>
 <div class="table-scroll"><table class="measures">
@@ -320,7 +336,7 @@ restart.</p>
       </tbody>
     </table></div>
 <p class="fine">GNOME and KDE Plasma were measured on 22 and 23 October, Vyntaris again on 25 October as it ships now, the same way, with the same kernel, Mesa and Firefox. The size is that of every package installed, so logs and snapshots don't count. In these virtual machines nothing draws on a graphics card: every desktop draws with the processor, which slows Hyprland's windows more than the others'.</p>
-<h3>On a real laptop</h3>
+<h3 id="on-a-real-laptop"><span class="n">9.1</span>On a real laptop</h3>
 <p>Vyntaris on an AMD Ryzen 7 5800H and an RTX 3060, opening each app again, the median of five.</p>
 <div class="real"><dl>
         <div><dt>Terminal</dt><dd>0.23 s</dd></div>
