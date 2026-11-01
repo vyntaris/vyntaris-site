@@ -132,7 +132,7 @@
         if (on) { const side = $(".side"), r = a.getBoundingClientRect(), b = side.getBoundingClientRect(); if (r.top < b.top + 60 || r.bottom > b.bottom - 20) side.scrollTop += r.top - b.top - b.height / 2; }
       });
     }), { rootMargin: "-20% 0px -75% 0px" });
-    tocLinks.forEach(a => { const s = $(a.hash); if (s) here.observe(s); });
+    tocLinks.forEach(a => { const s = document.getElementById(a.hash.slice(1)); if (s) here.observe(s); });
 
     const sections = $$(".doc h2, .doc h3").map(h => {
       const parts = [];
@@ -177,7 +177,7 @@
       else if (e.key === "Enter") { e.preventDefault(); if (shown[picked]) go(shown[picked]); }
       else if (e.key === "Escape") { input.value = ""; list(); }
     });
-    const openHash = () => { const t = location.hash && $(location.hash); if (t && t.tagName === "DETAILS") t.open = true; };
+    const openHash = () => { const t = location.hash && document.getElementById(location.hash.slice(1)); if (t && t.tagName === "DETAILS") t.open = true; };
     addEventListener("hashchange", openHash); openHash();
   }
 
