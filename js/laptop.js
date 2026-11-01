@@ -662,7 +662,7 @@ function main() {
     tgt.set((narrow ? -.12 : -.42) * eS - .1 * eB - 3.9 * eT, lerp(0, LH * .4, o) - .22 * eS + .55 * eB - .3 * eT, lerp(.2, 0, o) + .9 * eS + .1 * eB - 3.2 * eT);
     tgt.lerp(screenAt.add(new THREE.Vector3(0, -.12, 0)), z);
     const far = fit(W * (1 + 1.4 * eS + .9 * eB + 2.7 * eT), lerp(D * .9, LH * 1.35, o) + 1.5 * eS + 5.4 * eB + 4.4 * eT, narrow ? .8 : .47, (narrow ? .74 : .82) * (vh - room - below) / vh);
-    const near = fit(W * 1.12, LH * 1.4, narrow ? .9 : .5, .86 * (vh - Math.min(capRoom, vh * .45)) / vh);
+    const near = fit(W * 1.12, LH * 1.4, narrow ? .76 : .5, .86 * (vh - Math.min(capRoom, vh * .45)) / vh);
     const dist = lerp(far, near, z);
     const elr = THREE.MathUtils.degToRad(el), azr = THREE.MathUtils.degToRad(az);
     camera.position.set(tgt.x + dist * Math.cos(elr) * Math.sin(azr), tgt.y + dist * Math.sin(elr), tgt.z + dist * Math.cos(elr) * Math.cos(azr));
